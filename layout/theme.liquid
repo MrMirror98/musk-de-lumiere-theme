@@ -34,10 +34,10 @@
 
     {%- capture seo_desc -%}
       {%- if template == 'index' -%}
-        A luxury niche fragrance house. Twelve signatures where French perfumery meets the heritage of oud — eight eaux de parfum in the L'Arbre de Vie collection and four everyday signatures in Les Essentials. Handcrafted in New Jersey. Complimentary samples with every order.
+        A luxury niche fragrance house. Twelve signatures where French perfumery meets the heritage of oud — eight eaux de parfum in the L'Arbre de Vie collection and four everyday signatures in Les Essentials. Complimentary samples with every order.
       {%- elsif template contains 'product' -%}
         {%- if product.metafields.custom.notes_summary != blank -%}
-          {{ product.title }} — {{ product.metafields.custom.notes_summary }}. Handcrafted luxury eau de parfum by Musk de Lumière. Complimentary sample with every order.
+          {{ product.title }} — {{ product.metafields.custom.notes_summary }}. Luxury eau de parfum by Musk de Lumière. Complimentary sample with every order.
         {%- else -%}
           {{ product.title }} — a signature from Musk de Lumière. {{ product.description | strip_html | truncatewords: 28 }}
         {%- endif -%}
@@ -93,10 +93,10 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Musk de Lumière",
-      "alternateName": "MDL",
+      "alternateName": "Musk of Noor LLC",
       "url": "{{ shop.url }}",
       "logo": "{{ 'logo-musk-de-lumiere.png' | asset_url | prepend: 'https:' }}",
-      "description": "A fragrance house where French perfumery meets the ancient heritage of oud. Handcrafted in Parsippany, New Jersey.",
+      "description": "A fragrance house where French perfumery meets the ancient heritage of oud.",
       "email": "muskdelumiere@outlook.com",
       "address": {
         "@type": "PostalAddress",

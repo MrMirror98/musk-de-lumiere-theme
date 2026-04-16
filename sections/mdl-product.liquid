@@ -190,12 +190,115 @@
         {%- endif -%}
         <details class="mdl-pdp__detail">
           <summary>Shipping &amp; Returns</summary>
-          <p>Complimentary domestic shipping on all orders over $100. 30-day returns on unopened items. Discrete packaging with signature Musk de Lumière wrapping. {{ mf.country_of_origin | default: 'Made in Parsippany, New Jersey · USA' }}.</p>
+          <p>Complimentary domestic shipping on all orders over $100. 30-day returns on unopened items. Discrete packaging with signature Musk de Lumière wrapping.</p>
         </details>
       </div>
     </div>
   </aside>
 </article>
+
+
+<!-- ============== BYREDO-STYLE SCENT NOTES — FULL SCREEN ============== -->
+{%- if mf.scent_top != blank and mf.scent_top != "—" -%}
+<section class="mdl-notes" id="product-notes">
+  <div class="mdl-notes__bg"
+       style="background-image: linear-gradient(0deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.4) 100%),
+              url('{% if product.images.size > 1 %}{{ product.images[1] | image_url: width: 2400 }}{% elsif product.featured_image %}{{ product.featured_image | image_url: width: 2400 }}{% endif %}');">
+    <div class="swiper mdl-notes__swiper" id="mdl-notes-swiper">
+      <div class="swiper-wrapper">
+        {%- if mf.scent_top != blank and mf.scent_top != "—" -%}
+        <div class="swiper-slide">
+          <div class="mdl-notes__slide">
+            <div class="mdl-notes__label">Top Notes</div>
+            <ul class="mdl-notes__list">
+              {%- assign tops = mf.scent_top | split: ", " -%}
+              {%- for note in tops -%}
+                <li>{{ note }}</li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+        {%- endif -%}
+        {%- if mf.scent_heart != blank and mf.scent_heart != "—" -%}
+        <div class="swiper-slide">
+          <div class="mdl-notes__slide">
+            <div class="mdl-notes__label">Heart Notes</div>
+            <ul class="mdl-notes__list">
+              {%- assign hearts = mf.scent_heart | split: ", " -%}
+              {%- for note in hearts -%}
+                <li>{{ note }}</li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+        {%- endif -%}
+        {%- if mf.scent_base != blank and mf.scent_base != "—" -%}
+        <div class="swiper-slide">
+          <div class="mdl-notes__slide">
+            <div class="mdl-notes__label">Base Notes</div>
+            <ul class="mdl-notes__list">
+              {%- assign bases = mf.scent_base | split: ", " -%}
+              {%- for note in bases -%}
+                <li>{{ note }}</li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+        {%- endif -%}
+      </div>
+      <div class="swiper-scrollbar mdl-notes__scrollbar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CAMPAIGN / STORY BLOCK ============== -->
+<section class="mdl-campaign">
+  <div class="mdl-campaign__grid">
+    {%- if product.images.size > 2 -%}
+    <div class="mdl-campaign__img mdl-campaign__img--full">
+      <img src="{{ product.images[2] | image_url: width: 2400 }}" alt="{{ product.title }} campaign" loading="lazy">
+    </div>
+    {%- endif -%}
+    <div class="mdl-campaign__text">
+      {%- if mf.inspiration != blank -%}
+        <h2 class="mdl-campaign__title">The Inspiration</h2>
+        <p class="mdl-campaign__body">{{ mf.inspiration }}</p>
+      {%- elsif mf.olfactive_description != blank -%}
+        <h2 class="mdl-campaign__title">The Story</h2>
+        <p class="mdl-campaign__body">{{ mf.olfactive_description }}</p>
+      {%- endif -%}
+      <a href="/collections/{% if is_larbre %}larbre-de-vie{% else %}les-essentials{% endif %}" class="mdl-campaign__link">Explore the Collection</a>
+    </div>
+    {%- if product.images.size > 3 -%}
+    <div class="mdl-campaign__img mdl-campaign__img--half">
+      <img src="{{ product.images[3] | image_url: width: 1200 }}" alt="{{ product.title }}" loading="lazy">
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<!-- ============== SAMPLE PROMO BLOCK ============== -->
+<section class="mdl-sample-promo">
+  <div class="mdl-sample-promo__inner">
+    <div class="mdl-sample-promo__text">
+      <h2 class="mdl-sample-promo__title">Try It First, Love It Forever</h2>
+      <p class="mdl-sample-promo__body">Every fragrance tells a story, revealed softly through time. A complimentary 2.5 ml sample accompanies each order — inviting you to explore before you commit. Trust your senses.</p>
+      <a href="/products/discovery-set-larbre-de-vie" class="mdl-sample-promo__link">Explore the Discovery Set</a>
+    </div>
+    <div class="mdl-sample-promo__img">
+      {%- assign disc = all_products['discovery-set-larbre-de-vie'] -%}
+      {%- if disc != blank and disc.featured_image -%}
+        <img src="{{ disc.featured_image | image_url: width: 800 }}" alt="L'Arbre de Vie Discovery Set" loading="lazy">
+      {%- else -%}
+        <div class="mdl-sample-promo__placeholder">
+          <em>Discovery Set</em>
+          <strong>L'Arbre de Vie</strong>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
 
 <!-- ============== YOU MAY ALSO LIKE ============== -->
 {%- assign related_collection = product.collections.first -%}
