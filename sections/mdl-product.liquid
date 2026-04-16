@@ -13,54 +13,38 @@
   <meta itemprop="sku" content="{{ product.selected_or_first_available_variant.sku }}">
 
   <!-- ============================================================
-       HERO SECTION — full viewport, gallery left + info overlay right
+       HERO — full-width 2-per-view swiper, card floats on right image
   ============================================================ -->
   <section class="pdp__hero">
-    <!-- LEFT: Horizontal image swiper -->
-    <div class="pdp__gallery">
-      <div class="swiper pdp__swiper" id="pdp-gallery-swiper">
-        <div class="swiper-wrapper">
-          {%- if product.images.size > 0 -%}
-            {%- for image in product.images -%}
-              <div class="swiper-slide">
-                <img src="{{ image | image_url: width: 1400 }}" alt="{{ product.title }} — {{ col_label }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" itemprop="image">
-              </div>
-            {%- endfor -%}
-          {%- else -%}
+    <div class="swiper pdp__swiper" id="pdp-gallery-swiper">
+      <div class="swiper-wrapper">
+        {%- if product.images.size > 0 -%}
+          {%- for image in product.images -%}
             <div class="swiper-slide">
-              <div class="pdp__ph"><span class="pdp__ph-col">{{ col_label }}</span><span class="pdp__ph-name">{{ product.title }}</span><span class="pdp__ph-type">eau de parfum</span></div>
+              <img src="{{ image | image_url: width: 1400 }}" alt="{{ product.title }} — {{ col_label }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" itemprop="image">
             </div>
-            <div class="swiper-slide">
-              <div class="pdp__ph pdp__ph--dark">{%- if mf.key_notes != blank -%}<span class="pdp__ph-notes-lbl">Key Notes</span><span class="pdp__ph-notes">{{ mf.key_notes }}</span>{%- else -%}<span class="pdp__ph-col">{{ col_label }}</span><span class="pdp__ph-name">{{ product.title }}</span>{%- endif -%}</div>
-            </div>
-          {%- endif -%}
-        </div>
-        <!-- Nav arrows -->
-        <button class="pdp__arrow pdp__arrow--prev" id="pdp-prev" aria-label="Previous image">
-          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>
-        <button class="pdp__arrow pdp__arrow--next" id="pdp-next" aria-label="Next image">
-          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
-        </button>
-        <!-- Pagination dots -->
-        <div class="pdp__dots" id="pdp-dots"></div>
-      </div>
-    </div>
-
-    <!-- RIGHT: Background image + floating info card -->
-    <div class="pdp__right">
-      <div class="pdp__right-bg">
-        {%- if product.images.size > 1 -%}
-          <img src="{{ product.images[1] | image_url: width: 1400 }}" alt="" loading="eager">
-        {%- elsif product.featured_image -%}
-          <img src="{{ product.featured_image | image_url: width: 1400 }}" alt="" loading="eager">
+          {%- endfor -%}
         {%- else -%}
-          <div class="pdp__right-ph"></div>
+          <div class="swiper-slide">
+            <div class="pdp__ph"><span class="pdp__ph-col">{{ col_label }}</span><span class="pdp__ph-name">{{ product.title }}</span><span class="pdp__ph-type">eau de parfum</span></div>
+          </div>
+          <div class="swiper-slide">
+            <div class="pdp__ph pdp__ph--dark">{%- if mf.key_notes != blank -%}<span class="pdp__ph-notes-lbl">Key Notes</span><span class="pdp__ph-notes">{{ mf.key_notes }}</span>{%- else -%}<span class="pdp__ph-col">{{ col_label }}</span><span class="pdp__ph-name">{{ product.title }}</span>{%- endif -%}</div>
+          </div>
+          <div class="swiper-slide">
+            <div class="pdp__ph"><span class="pdp__ph-col">{{ col_label }}</span><span class="pdp__ph-name">{{ product.title }}</span><span class="pdp__ph-type">50 ml</span></div>
+          </div>
         {%- endif -%}
       </div>
+      <!-- Nav arrows -->
+      <button class="pdp__arrow pdp__arrow--prev" id="pdp-prev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <button class="pdp__arrow pdp__arrow--next" id="pdp-next" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
+      <!-- Pagination dots — centered at bottom of LEFT image -->
+      <div class="pdp__dots" id="pdp-dots"></div>
+    </div>
 
-      <!-- Info card floating on top -->
-      <div class="pdp__card">
+    <!-- Info card floating on right half -->
+    <div class="pdp__card">
         <p class="pdp__card-type">{{ mf.concentration | default: 'Eau de Parfum' }}</p>
         <h1 class="pdp__card-name" itemprop="name">{{ product.title }}</h1>
         <p class="pdp__card-price" id="pdp-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
@@ -108,9 +92,16 @@
           </button>
         </form>
 
+        <!-- Dynamic checkout (Apple Pay / Shop Pay / Google Pay) -->
+        <div class="pdp__card-dynamic">
+          {%- form 'product', product -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            {{ form | payment_button }}
+          {%- endform -%}
+        </div>
+
         <p class="pdp__card-ship">Complimentary shipping over $100 · 30-day returns</p>
       </div>
-    </div>
   </section>
 
   <!-- ============================================================
@@ -226,8 +217,12 @@
 <script>
 (function(){
   /* Gallery horizontal swiper */
+  var isMob = window.innerWidth <= 1024;
   new Swiper('#pdp-gallery-swiper', {
-    slidesPerView: 1, speed: 600, loop: true,
+    slidesPerView: isMob ? 1 : 2,
+    spaceBetween: 0,
+    speed: 600,
+    loop: false,
     navigation: { prevEl: '#pdp-prev', nextEl: '#pdp-next' },
     pagination: { el: '#pdp-dots', clickable: true }
   });
