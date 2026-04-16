@@ -64,21 +64,17 @@ html, body {
 .mdl-header.light-mode .mdl-header__burger span { background: rgba(10,10,10,0.6); }
 .mdl-header.light-mode .mdl-header__logo img { filter: drop-shadow(0 4px 28px rgba(201,168,76,0.35)) brightness(0.92); }
 
-.mdl-header__nav-wrap {
-  display: contents; /* pass through for grid on desktop */
-}
-.mdl-header__nav { display: flex; gap: 44px; list-style: none; }
-.mdl-header__nav a {
-  font-size: 9px; font-weight: 500;
-  letter-spacing: 0.32em; text-transform: uppercase;
-  color: rgba(245,240,232,0.7); text-decoration: none;
-  transition: color 0.3s; white-space: nowrap;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
-}
-.mdl-header__nav a:hover { color: #C9A84C; }
+/* Desktop nav links hidden — burger + drawer is the menu everywhere */
+.mdl-header__nav-wrap { display: none; }
+.mdl-header__nav { display: none; }
 
 
-.mdl-header__logo { display: flex; align-items: center; justify-content: center; }
+.mdl-header__logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
 .mdl-header__logo a { display: block; line-height: 0; text-decoration: none; }
 .mdl-header__logo img {
   height: 170px; width: auto;
@@ -87,8 +83,11 @@ html, body {
 }
 
 .mdl-header__icons {
-  display: flex; align-items: center;
-  justify-content: flex-end; gap: 28px;
+  position: absolute;
+  top: 50%; right: 56px;
+  transform: translateY(-50%);
+  display: flex; align-items: center; gap: 28px;
+  z-index: 2;
 }
 .mdl-header__icon {
   background: none; border: none; cursor: pointer; padding: 0;
@@ -109,8 +108,13 @@ html, body {
   display: flex; align-items: center; justify-content: center;
 }
 .mdl-header__burger {
-  display: none; flex-direction: column; gap: 6px;
+  display: flex; flex-direction: column; gap: 6px;
   background: none; border: none; cursor: pointer;
+  position: absolute;
+  left: 56px; top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  padding: 6px;
 }
 .mdl-header__burger span {
   display: block; width: 22px; height: 1px; background: rgba(245,240,232,0.7);
