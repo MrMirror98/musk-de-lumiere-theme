@@ -1,0 +1,272 @@
+{{ 'homepage-mdl.css' | asset_url | stylesheet_tag }}
+
+<style>
+/* COLLECTION PAGE — Byredo editorial style */
+html, body { overflow: auto !important; height: auto !important; position: static !important; }
+
+.mdl-coll { background: #FFFFFF; color: #0A0A0A; min-height: 100vh; padding-top: 180px; }
+
+/* Hero */
+.mdl-coll__hero {
+  padding: 0 96px 80px;
+  max-width: 700px;
+}
+.mdl-coll__eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: #C9A84C; margin-bottom: 20px;
+}
+.mdl-coll__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 300; line-height: 0.95;
+  letter-spacing: -0.02em; color: #0A0A0A;
+  margin-bottom: 24px;
+}
+.mdl-coll__title em { font-style: italic; color: #C9A84C; }
+.mdl-coll__desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px; font-style: italic; font-weight: 300;
+  line-height: 1.8; color: rgba(10,10,10,0.55);
+  max-width: 520px;
+}
+
+/* Product grid — editorial 2-column with large cards */
+.mdl-coll__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.mdl-coll__card {
+  display: flex; flex-direction: column;
+  text-decoration: none; color: inherit;
+  overflow: hidden;
+  border-top: 1px solid rgba(10,10,10,0.06);
+}
+.mdl-coll__card:nth-child(odd) { border-right: 1px solid rgba(10,10,10,0.06); }
+
+.mdl-coll__card-img {
+  aspect-ratio: 4/5;
+  overflow: hidden;
+  background: linear-gradient(160deg, #F2EDE6, #E8DFCF);
+}
+.mdl-coll__card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 1s cubic-bezier(0.19,1,0.22,1);
+}
+.mdl-coll__card:hover .mdl-coll__card-img img { transform: scale(1.06); }
+
+.mdl-coll__card-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px;
+}
+.mdl-coll__card-placeholder em {
+  font-style: normal; font-size: 9px; font-weight: 600;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: rgba(10,10,10,0.2);
+}
+.mdl-coll__card-placeholder strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 400; font-style: italic;
+  color: rgba(10,10,10,0.32);
+}
+
+.mdl-coll__card-info { padding: 28px 32px 40px; }
+.mdl-coll__card-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 8px; font-weight: 600;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: #C9A84C; margin-bottom: 10px;
+}
+.mdl-coll__card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 300;
+  color: #0A0A0A; margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+.mdl-coll__card-notes {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; font-style: italic; font-weight: 300;
+  color: rgba(10,10,10,0.45);
+  line-height: 1.6; margin-bottom: 14px;
+}
+.mdl-coll__card-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px; font-weight: 400;
+  letter-spacing: 0.1em; color: rgba(10,10,10,0.65);
+}
+
+/* Full-width editorial banner between products */
+.mdl-coll__banner {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 60vh;
+  background: #0A0A0A; color: #F5F0E8;
+}
+.mdl-coll__banner-img { overflow: hidden; }
+.mdl-coll__banner-img img { width: 100%; height: 100%; object-fit: cover; }
+.mdl-coll__banner-text {
+  padding: 80px 64px;
+  display: flex; flex-direction: column;
+  justify-content: center;
+}
+.mdl-coll__banner-eyebrow {
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: #C9A84C; margin-bottom: 20px;
+}
+.mdl-coll__banner-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300; font-style: italic;
+  line-height: 1.1; margin-bottom: 24px;
+}
+.mdl-coll__banner-body {
+  font-size: 13px; font-weight: 300;
+  line-height: 1.9; letter-spacing: 0.06em;
+  color: rgba(245,240,232,0.6);
+  max-width: 420px; margin-bottom: 32px;
+}
+.mdl-coll__banner-cta {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: #F5F0E8; text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.mdl-coll__banner-cta:hover { color: #C9A84C; }
+
+/* Footer area */
+.mdl-coll__footer {
+  grid-column: 1 / -1;
+  padding: 80px 96px;
+  text-align: center;
+}
+.mdl-coll__footer-cta {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: #0A0A0A; text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.mdl-coll__footer-cta:hover { color: #C9A84C; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .mdl-coll { padding-top: 140px; }
+  .mdl-coll__hero { padding: 0 24px 48px; }
+  .mdl-coll__title { font-size: 44px; }
+  .mdl-coll__desc { font-size: 15px; }
+  .mdl-coll__card-info { padding: 20px 20px 32px; }
+  .mdl-coll__card-name { font-size: 22px; }
+  .mdl-coll__banner { grid-template-columns: 1fr; min-height: auto; }
+  .mdl-coll__banner-text { padding: 48px 24px; }
+}
+@media (max-width: 600px) {
+  .mdl-coll__grid { grid-template-columns: 1fr; }
+  .mdl-coll__card:nth-child(odd) { border-right: none; }
+}
+</style>
+
+<div class="mdl-coll">
+  <!-- HERO -->
+  <header class="mdl-coll__hero">
+    <p class="mdl-coll__eyebrow">Musk de Lumière</p>
+    <h1 class="mdl-coll__title">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="mdl-coll__desc">{{ collection.description }}</p>
+    {%- endif -%}
+  </header>
+
+  <!-- PRODUCT GRID -->
+  <div class="mdl-coll__grid">
+    {%- for product in collection.products -%}
+
+      {%- comment -%} Insert editorial banner after the 4th product {%- endcomment -%}
+      {%- if forloop.index == 5 -%}
+        <div class="mdl-coll__banner">
+          <div class="mdl-coll__banner-img">
+            {%- if section.settings.banner_image != blank -%}
+              <img src="{{ section.settings.banner_image | image_url: width: 1400 }}" alt="{{ collection.title }}" loading="lazy">
+            {%- else -%}
+              <div style="width:100%;height:100%;background:linear-gradient(135deg,#1A150E,#0A0807);"></div>
+            {%- endif -%}
+          </div>
+          <div class="mdl-coll__banner-text">
+            <p class="mdl-coll__banner-eyebrow">The Collection</p>
+            <h2 class="mdl-coll__banner-title">
+              {%- if collection.handle == 'larbre-de-vie' -%}
+                Eight signatures. Four Roots. Four Branches. One tree.
+              {%- elsif collection.handle == 'les-essentials' -%}
+                Four everyday fragrances. One essential ritual.
+              {%- else -%}
+                {{ collection.title }}
+              {%- endif -%}
+            </h2>
+            <p class="mdl-coll__banner-body">
+              {%- if collection.handle == 'larbre-de-vie' -%}
+                L'Arbre de Vie is the architecture of the Maison — oud-rooted signatures that form the Roots, and lighter florals that reach for the sun as the Branches. Each one composed to be worn, remembered, and returned to.
+              {%- elsif collection.handle == 'les-essentials' -%}
+                Les Essentials are the everyday signatures — lighter, versatile, ready to wear from morning to midnight.
+              {%- else -%}
+                {{ collection.description | strip_html }}
+              {%- endif -%}
+            </p>
+            {%- assign disc = all_products['discovery-set-larbre-de-vie'] -%}
+            {%- if disc != blank and disc.id and collection.handle == 'larbre-de-vie' -%}
+              <a href="{{ disc.url }}" class="mdl-coll__banner-cta">Discover the Discovery Set →</a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <a href="{{ product.url }}" class="mdl-coll__card">
+        <div class="mdl-coll__card-img">
+          {%- if product.featured_image -%}
+            <img src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title }} by Musk de Lumière" loading="lazy">
+          {%- else -%}
+            <div class="mdl-coll__card-placeholder">
+              <em>{{ collection.title }}</em>
+              <strong>{{ product.title }}</strong>
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="mdl-coll__card-info">
+          <p class="mdl-coll__card-tag">
+            {%- if product.tags contains "Les Racines" -%}Les Racines — The Roots
+            {%- elsif product.tags contains "Les Branches" -%}Les Branches — The Light
+            {%- elsif product.tags contains "Discovery Set" -%}Discovery Coffret
+            {%- elsif product.tags contains "Les Essentials" -%}Les Essentials
+            {%- else -%}{{ collection.title }}
+            {%- endif -%}
+          </p>
+          <h2 class="mdl-coll__card-name">{{ product.title }}</h2>
+          {%- if product.metafields.custom.notes_summary != blank -%}
+            <p class="mdl-coll__card-notes">{{ product.metafields.custom.notes_summary }}</p>
+          {%- endif -%}
+          <p class="mdl-coll__card-price">{{ product.price | money }}</p>
+        </div>
+      </a>
+    {%- endfor -%}
+
+    <!-- Bottom CTA -->
+    <div class="mdl-coll__footer">
+      {%- if collection.handle == 'larbre-de-vie' -%}
+        <a href="/collections/les-essentials" class="mdl-coll__footer-cta">Explore Les Essentials →</a>
+      {%- elsif collection.handle == 'les-essentials' -%}
+        <a href="/collections/larbre-de-vie" class="mdl-coll__footer-cta">Explore L'Arbre de Vie →</a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "MDL Collection",
+  "settings": [
+    { "type": "image_picker", "id": "banner_image", "label": "Editorial banner image (shown after 4th product)" }
+  ]
+}
+{% endschema %}
