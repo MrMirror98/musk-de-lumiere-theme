@@ -130,16 +130,18 @@
           </a>
         </div>
         <div class="s-scroll">
-          <span class="s-scroll__txt">Scroll</span>
-          <span class="s-scroll__line"></span>
+          <span class="s-scroll__txt">Slide</span>
+          <svg class="s-scroll__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </div>
       </div>
 
-      <!-- SLIDE 2: DISCOVERY — writings top, image middle, popup bottom -->
-      <div class="swiper-slide s-showcase s-showcase--dark s-showcase--with-center" data-mode="dark">
+      <!-- SLIDE 2: DISCOVERY — writings IN FRONT of image -->
+      <div class="swiper-slide s-showcase s-showcase--dark" data-mode="dark">
         <div class="s-showcase__bg">
-          {%- if section.settings.discovery_bg_image != blank -%}
-            <img src="{{ section.settings.discovery_bg_image | image_url: width: 2400 }}" alt="">
+          {%- if section.settings.discovery_image != blank -%}
+            <img src="{{ section.settings.discovery_image | image_url: width: 2400 }}" alt="L'Arbre de Vie Discovery Set — 8 signatures 2.5ml each" loading="lazy">
+          {%- elsif discovery_product != blank and discovery_product.featured_image -%}
+            <img src="{{ discovery_product.featured_image | image_url: width: 2400 }}" alt="L'Arbre de Vie Discovery Set" loading="lazy">
           {%- else -%}
             <div class="s-showcase__bg s-showcase__bg--gradient-dark" style="position:absolute;inset:0;"></div>
           {%- endif -%}
@@ -150,23 +152,11 @@
           <h2 class="s-showcase__title">The <em>Discovery</em>.</h2>
           <p class="s-showcase__lead">Begin your journey through the Maison. The L'Arbre de Vie Discovery Set holds the eight signatures in miniature — the full architecture of the tree, in your hands.</p>
         </div>
-        <div class="s-showcase__center">
-          {%- if section.settings.discovery_image != blank -%}
-            <img src="{{ section.settings.discovery_image | image_url: width: 1200 }}" alt="L'Arbre de Vie Discovery Set">
-          {%- elsif discovery_product != blank and discovery_product.featured_image -%}
-            <img src="{{ discovery_product.featured_image | image_url: width: 1200 }}" alt="L'Arbre de Vie Discovery Set">
-          {%- else -%}
-            <div class="s-showcase__center-placeholder">
-              <em>Coffret · 8 × 2.5ml</em>
-              <strong>L'Arbre de Vie</strong>
-            </div>
-          {%- endif -%}
-        </div>
         <div class="s-showcase__num"><em>02</em>/ 07</div>
         {%- if discovery_product != blank and discovery_product.id -%}
-          <a href="{{ discovery_product.url }}" class="s-popup">
+          <a href="{{ discovery_product.url }}" class="s-popup" aria-label="Shop the L'Arbre de Vie Discovery Set">
         {%- else -%}
-          <a href="/collections/larbre-de-vie" class="s-popup">
+          <a href="/collections/larbre-de-vie" class="s-popup" aria-label="Explore L'Arbre de Vie collection">
         {%- endif -%}
           <div class="s-popup__img">
             {%- if section.settings.discovery_image != blank -%}
@@ -186,76 +176,23 @@
         </a>
       </div>
 
-      <!-- SLIDE 3: THE ROOTS — writings top, image middle, popup bottom -->
-      <div class="swiper-slide s-showcase s-showcase--dark s-showcase--with-center" data-mode="dark">
+      <!-- SLIDE 3: THE LIGHT — writings IN FRONT of image (now before Roots) -->
+      <div class="swiper-slide s-showcase s-showcase--light" data-mode="light">
         <div class="s-showcase__bg">
-          {%- if section.settings.roots_bg_image != blank -%}
-            <img src="{{ section.settings.roots_bg_image | image_url: width: 2400 }}" alt="">
-          {%- else -%}
-            <div class="s-showcase__bg s-showcase__bg--gradient-dark" style="position:absolute;inset:0;"></div>
-          {%- endif -%}
-        </div>
-        <div class="s-showcase__overlay"></div>
-        <div class="s-showcase__title-wrap">
-          <p class="s-showcase__chapter">03 — Les Racines</p>
-          <h2 class="s-showcase__title">The <em>Roots</em>.</h2>
-          <p class="s-showcase__lead">From the base of the tree. Heavy, smoke-laden, leather-warm — the four oud-rooted signatures that form the architecture of the Maison's deepest creations.</p>
-        </div>
-        <div class="s-showcase__center">
-          {%- if section.settings.roots_image != blank -%}
-            <img src="{{ section.settings.roots_image | image_url: width: 1200 }}" alt="Les Racines">
-          {%- else -%}
-            <div class="s-showcase__center-placeholder">
-              <em>Les Racines · Oud</em>
-              <strong>Royale · Chérie<br>Sultanat · Impériale</strong>
-            </div>
-          {%- endif -%}
-        </div>
-        <div class="s-showcase__num"><em>03</em>/ 07</div>
-        <a href="/collections/larbre-de-vie" class="s-popup">
-          <div class="s-popup__img">
-            {%- if section.settings.roots_popup_image != blank -%}
-              <img src="{{ section.settings.roots_popup_image | image_url: width: 300 }}" alt="">
-            {%- else -%}
-              <div class="s-popup__img-placeholder">Les Racines</div>
-            {%- endif -%}
-          </div>
-          <div class="s-popup__content">
-            <p class="s-popup__tag">L'Arbre de Vie</p>
-            <h3 class="s-popup__name">Les Racines</h3>
-            <p class="s-popup__sub">Royale · Chérie · Sultanat · Impériale</p>
-            <span class="s-popup__cta">Explore the Roots <span class="s-popup__cta-line"></span></span>
-          </div>
-        </a>
-      </div>
-
-      <!-- SLIDE 4: THE LIGHT — writings top, image middle, popup bottom -->
-      <div class="swiper-slide s-showcase s-showcase--light s-showcase--with-center" data-mode="light">
-        <div class="s-showcase__bg">
-          {%- if section.settings.light_bg_image != blank -%}
-            <img src="{{ section.settings.light_bg_image | image_url: width: 2400 }}" alt="">
+          {%- if section.settings.light_image != blank -%}
+            <img src="{{ section.settings.light_image | image_url: width: 2400 }}" alt="Les Branches — floral fragrances" loading="lazy">
           {%- else -%}
             <div class="s-showcase__bg s-showcase__bg--gradient-light" style="position:absolute;inset:0;"></div>
           {%- endif -%}
         </div>
         <div class="s-showcase__overlay"></div>
         <div class="s-showcase__title-wrap">
-          <p class="s-showcase__chapter">04 — Les Branches</p>
+          <p class="s-showcase__chapter">03 — Les Branches</p>
           <h2 class="s-showcase__title">The <em>Light</em>.</h2>
           <p class="s-showcase__lead">From the canopy. Néroli at midnight, white rose, oceanic blue, the dream of Hayal — the Maison's lighter expressions, where the tree reaches for the sun.</p>
         </div>
-        <div class="s-showcase__center">
-          {%- if section.settings.light_image != blank -%}
-            <img src="{{ section.settings.light_image | image_url: width: 1200 }}" alt="Les Branches">
-          {%- else -%}
-            <div class="s-showcase__center-placeholder">
-              <em>Les Branches · Floral</em>
-              <strong>Paradis · Néroli<br>Hayal · Rosée</strong>
-            </div>
-          {%- endif -%}
-        </div>
-        <div class="s-showcase__num"><em>04</em>/ 07</div>
-        <a href="/collections/larbre-de-vie" class="s-popup">
+        <div class="s-showcase__num"><em>03</em>/ 07</div>
+        <a href="/collections/larbre-de-vie" class="s-popup" aria-label="Explore Les Branches — The Light">
           <div class="s-popup__img">
             {%- if section.settings.light_popup_image != blank -%}
               <img src="{{ section.settings.light_popup_image | image_url: width: 300 }}" alt="">
@@ -272,6 +209,39 @@
         </a>
       </div>
 
+      <!-- SLIDE 4: THE ROOTS — writings IN FRONT of image -->
+      <div class="swiper-slide s-showcase s-showcase--dark" data-mode="dark">
+        <div class="s-showcase__bg">
+          {%- if section.settings.roots_image != blank -%}
+            <img src="{{ section.settings.roots_image | image_url: width: 2400 }}" alt="Les Racines — oud fragrances" loading="lazy">
+          {%- else -%}
+            <div class="s-showcase__bg s-showcase__bg--gradient-dark" style="position:absolute;inset:0;"></div>
+          {%- endif -%}
+        </div>
+        <div class="s-showcase__overlay"></div>
+        <div class="s-showcase__title-wrap">
+          <p class="s-showcase__chapter">04 — Les Racines</p>
+          <h2 class="s-showcase__title">The <em>Roots</em>.</h2>
+          <p class="s-showcase__lead">From the base of the tree. Heavy, smoke-laden, leather-warm — the four oud-rooted signatures that form the architecture of the Maison's deepest creations.</p>
+        </div>
+        <div class="s-showcase__num"><em>04</em>/ 07</div>
+        <a href="/collections/larbre-de-vie" class="s-popup" aria-label="Explore Les Racines — The Roots">
+          <div class="s-popup__img">
+            {%- if section.settings.roots_popup_image != blank -%}
+              <img src="{{ section.settings.roots_popup_image | image_url: width: 300 }}" alt="">
+            {%- else -%}
+              <div class="s-popup__img-placeholder">Les Racines</div>
+            {%- endif -%}
+          </div>
+          <div class="s-popup__content">
+            <p class="s-popup__tag">L'Arbre de Vie</p>
+            <h3 class="s-popup__name">Les Racines</h3>
+            <p class="s-popup__sub">Royale · Chérie · Sultanat · Impériale</p>
+            <span class="s-popup__cta">Explore the Roots <span class="s-popup__cta-line"></span></span>
+          </div>
+        </a>
+      </div>
+
       <!-- SLIDE 5: LES ESSENTIALS — Everyday Grid -->
       <div class="swiper-slide s-collection" data-mode="dark">
         <div class="s-collection__head">
@@ -284,14 +254,13 @@
         </div>
         <div class="s-grid">
           {%- assign ess_names = "Prism,Bel Homme,Madam Alece,Fleur Rouge" | split: "," -%}
-          {%- assign ess_notes = "Citrus · Cedar · Vetiver,Bergamot · Lavender · Musk,Iris · Pear · White Tea,Rose · Pink Pepper · Patchouli" | split: "," -%}
           {%- for h in essential_handles -%}
             {%- assign p = all_products[h] -%}
             {%- if p != blank and p.id -%}
-              <a href="{{ p.url }}" class="s-card">
+              <a href="{{ p.url }}" class="s-card" aria-label="{{ p.title }} — Les Essentials">
                 <div class="s-card__img">
                   {%- if p.featured_image -%}
-                    <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }}" loading="lazy">
+                    <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }} by Musk de Lumière" loading="lazy">
                   {%- else -%}
                     <div class="s-card__placeholder">
                       <em>Les Essentials</em>
@@ -316,7 +285,7 @@
                 <div class="s-card__info">
                   <p class="s-card__tag">Les Essentials</p>
                   <h3 class="s-card__name">{{ ess_names[forloop.index0] }}</h3>
-                  <p class="s-card__price">{{ ess_notes[forloop.index0] }}</p>
+                  <p class="s-card__price">Coming Soon</p>
                 </div>
               </div>
             {%- endif -%}

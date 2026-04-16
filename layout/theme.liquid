@@ -1,50 +1,170 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html lang="{{ request.locale.iso_code }}" class="no-js">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#0A0A0A">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
     {%- endif -%}
 
-    <title>
-      {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
-    </title>
+    {%- capture seo_title -%}
+      {%- if template == 'index' -%}
+        Musk de Lumière — French Perfumery Meets Ancient Oud | Luxury Fragrance
+      {%- elsif template contains 'product' -%}
+        {{ product.title }} Eau de Parfum — Musk de Lumière
+      {%- elsif template contains 'collection' -%}
+        {{ collection.title }} — Musk de Lumière
+      {%- else -%}
+        {{ page_title }}{% unless page_title contains shop.name %} — Musk de Lumière{% endunless %}
+      {%- endif -%}
+    {%- endcapture -%}
+    <title>{{ seo_title | strip }}</title>
 
-    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+    {%- capture seo_desc -%}
+      {%- if template == 'index' -%}
+        Musk de Lumière — Une maison de parfumerie. Twelve fragrances where French perfumery tradition meets the ancient heritage of oud. Handcrafted in Parsippany, New Jersey. Discover L'Arbre de Vie and Les Essentials.
+      {%- elsif template contains 'product' -%}
+        {{ product.title }} — a Musk de Lumière signature. {{ product.description | strip_html | truncatewords: 28 }}
+      {%- elsif template contains 'collection' -%}
+        {{ collection.title }} by Musk de Lumière. {{ collection.description | strip_html | truncatewords: 28 | default: "Discover our luxury fragrance collection, handcrafted in New Jersey." }}
+      {%- else -%}
+        {{ page_description | default: "Musk de Lumière — A fragrance house where French perfumery meets the heritage of oud." }}
+      {%- endif -%}
+    {%- endcapture -%}
+    <meta name="description" content="{{ seo_desc | strip | escape }}">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="keywords" content="Musk de Lumière, luxury perfume, oud fragrance, niche perfume, French perfumery, L'Arbre de Vie, Les Essentials, artisan fragrance, eau de parfum, New Jersey perfume, Royale Oud, Chérie Oud, Sultanat Oud, Impériale Oud, Hayal, Paradis de Bleu, Néroli de Nuit, Rosée Blanche, Bel Homme, Madam Alece, Prism, Fleur Rouge">
+    <meta name="author" content="Musk de Lumière">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- Open Graph — Facebook, LinkedIn, messaging apps -->
+    <meta property="og:site_name" content="Musk de Lumière">
+    <meta property="og:type" content="{% if template contains 'product' %}product{% else %}website{% endif %}">
+    <meta property="og:title" content="{{ seo_title | strip | escape }}">
+    <meta property="og:description" content="{{ seo_desc | strip | escape }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:locale" content="{{ request.locale.iso_code | replace: '-', '_' }}">
+    {%- if template contains 'product' and product.featured_image -%}
+      <meta property="og:image" content="https:{{ product.featured_image | image_url: width: 1200 }}">
+      <meta property="og:image:width" content="1200">
+      <meta property="og:image:height" content="1200">
+      <meta property="og:image:alt" content="{{ product.title }} by Musk de Lumière">
+      <meta property="product:price:amount" content="{{ product.price | money_without_currency | strip }}">
+      <meta property="product:price:currency" content="{{ cart.currency.iso_code }}">
+      <meta property="product:availability" content="{% if product.available %}in stock{% else %}out of stock{% endif %}">
+      <meta property="product:brand" content="Musk de Lumière">
+    {%- else -%}
+      <meta property="og:image" content="{{ 'logo-musk-de-lumiere.png' | asset_url | prepend: 'https:' }}">
+    {%- endif -%}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@muskdelumiere">
+    <meta name="twitter:title" content="{{ seo_title | strip | escape }}">
+    <meta name="twitter:description" content="{{ seo_desc | strip | escape }}">
+    {%- if template contains 'product' and product.featured_image -%}
+      <meta name="twitter:image" content="https:{{ product.featured_image | image_url: width: 1200 }}">
+    {%- endif -%}
+
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <meta property="og:site_name" content="{{ shop.name }}">
-    <meta property="og:url" content="{{ canonical_url }}">
-    <meta property="og:title" content="{{ page_title }}">
-    <meta property="og:type" content="{% if request.page_type == 'product' %}product{% else %}website{% endif %}">
-    {% if page_description %}<meta property="og:description" content="{{ page_description | escape }}">{% endif %}
-    <meta name="twitter:card" content="summary_large_image">
-
     {{ content_for_header }}
+
+    <!-- Schema.org structured data — Organization (every page) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Musk de Lumière",
+      "alternateName": "MDL",
+      "url": "{{ shop.url }}",
+      "logo": "{{ 'logo-musk-de-lumiere.png' | asset_url | prepend: 'https:' }}",
+      "description": "A fragrance house where French perfumery meets the ancient heritage of oud. Handcrafted in Parsippany, New Jersey.",
+      "email": "muskdelumiere@outlook.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2 Cranberry Road, A-1A",
+        "addressLocality": "Parsippany",
+        "addressRegion": "NJ",
+        "postalCode": "07054",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        {% if settings.social_instagram_link != blank %}"{{ settings.social_instagram_link }}"{% endif %}
+        {% if settings.social_instagram_link != blank and settings.social_tiktok_link != blank %},{% endif %}
+        {% if settings.social_tiktok_link != blank %}"{{ settings.social_tiktok_link }}"{% endif %}
+      ]
+    }
+    </script>
+
+    <!-- Website structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Musk de Lumière",
+      "url": "{{ shop.url }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ shop.url }}/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    {%- if template contains 'product' -%}
+    <!-- Product structured data — critical for Google Shopping -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "image": [
+        {%- for image in product.images limit: 4 -%}
+          "https:{{ image | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ],
+      "description": {{ product.description | strip_html | json }},
+      "sku": {{ product.selected_or_first_available_variant.sku | default: product.id | json }},
+      "brand": {
+        "@type": "Brand",
+        "name": "Musk de Lumière"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "{{ shop.url }}{{ product.url }}",
+        "priceCurrency": "{{ cart.currency.iso_code }}",
+        "price": "{{ product.price | money_without_currency | strip | replace: ',', '' }}",
+        "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+        "itemCondition": "https://schema.org/NewCondition"
+      }
+    }
+    </script>
+    {%- endif -%}
 
     <style>
       *, *::before, *::after { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; background: #0A0A0A; color: #F5F0E8; font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased; }
       a { color: inherit; }
     </style>
+    <script>document.documentElement.classList.replace('no-js','js');</script>
   </head>
 
-  <body>
+  <body class="mdl-body">
     {%- unless template == 'index' -%}
       {%- render 'mdl-chrome' -%}
     {%- endunless -%}
 
-    <main>{{ content_for_layout }}</main>
+    <main id="main-content" role="main">{{ content_for_layout }}</main>
 
     <script>
       window.routes = {
