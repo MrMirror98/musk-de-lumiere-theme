@@ -371,8 +371,30 @@
   const slidenum = document.getElementById('mdl-slidenum');
   const swiperEl = document.getElementById('mdl-swiper');
 
+  /* ========== iOS viewport fix ==========
+     Set --mdl-vh to the REAL pixel height so slides match the visible area
+     regardless of Safari chrome state. */
+  function setVh(){
+    document.documentElement.style.setProperty('--mdl-vh', window.innerHeight + 'px');
+  }
+  setVh();
+  let vhTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(vhTimer);
+    vhTimer = setTimeout(function(){
+      setVh();
+      if(window.mdlSwiper) window.mdlSwiper.update();
+    }, 80);
+  });
+  window.addEventListener('orientationchange', function(){
+    setTimeout(function(){
+      setVh();
+      if(window.mdlSwiper) window.mdlSwiper.update();
+    }, 250);
+  });
+
   const isMobile = window.matchMedia('(max-width: 1024px)').matches;
-  const swiper = new Swiper('#mdl-swiper', {
+  const swiper = window.mdlSwiper = new Swiper('#mdl-swiper', {
     direction: 'vertical',
     slidesPerView: 1,
     speed: isMobile ? 700 : 1000,
