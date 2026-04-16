@@ -17,26 +17,34 @@
 
     {%- capture seo_title -%}
       {%- if template == 'index' -%}
-        Musk de Lumière — French Perfumery Meets Ancient Oud | Luxury Fragrance
+        Musk de Lumière | Luxury Niche Perfumery — Oud, Florals & Everyday Signatures
       {%- elsif template contains 'product' -%}
-        {{ product.title }} Eau de Parfum — Musk de Lumière
+        {%- if product.metafields.custom.concentration != blank -%}
+          {{ product.title }} — {{ product.metafields.custom.concentration }} | Musk de Lumière
+        {%- else -%}
+          {{ product.title }} — Eau de Parfum | Musk de Lumière
+        {%- endif -%}
       {%- elsif template contains 'collection' -%}
-        {{ collection.title }} — Musk de Lumière
+        {{ collection.title }} Collection — Luxury Fragrance | Musk de Lumière
       {%- else -%}
-        {{ page_title }}{% unless page_title contains shop.name %} — Musk de Lumière{% endunless %}
+        {{ page_title }}{% unless page_title contains shop.name %} | Musk de Lumière{% endunless %}
       {%- endif -%}
     {%- endcapture -%}
     <title>{{ seo_title | strip }}</title>
 
     {%- capture seo_desc -%}
       {%- if template == 'index' -%}
-        Musk de Lumière — Une maison de parfumerie. Twelve fragrances where French perfumery tradition meets the ancient heritage of oud. Handcrafted in Parsippany, New Jersey. Discover L'Arbre de Vie and Les Essentials.
+        A luxury niche fragrance house. Twelve signatures where French perfumery meets the heritage of oud — eight eaux de parfum in the L'Arbre de Vie collection and four everyday signatures in Les Essentials. Handcrafted in New Jersey. Complimentary samples with every order.
       {%- elsif template contains 'product' -%}
-        {{ product.title }} — a Musk de Lumière signature. {{ product.description | strip_html | truncatewords: 28 }}
+        {%- if product.metafields.custom.notes_summary != blank -%}
+          {{ product.title }} — {{ product.metafields.custom.notes_summary }}. Handcrafted luxury eau de parfum by Musk de Lumière. Complimentary sample with every order.
+        {%- else -%}
+          {{ product.title }} — a signature from Musk de Lumière. {{ product.description | strip_html | truncatewords: 28 }}
+        {%- endif -%}
       {%- elsif template contains 'collection' -%}
-        {{ collection.title }} by Musk de Lumière. {{ collection.description | strip_html | truncatewords: 28 | default: "Discover our luxury fragrance collection, handcrafted in New Jersey." }}
+        {{ collection.title }} — the luxury fragrance collection by Musk de Lumière. {{ collection.description | strip_html | truncatewords: 28 | default: "Discover handcrafted eaux de parfum, composed in New Jersey and rooted in French tradition." }}
       {%- else -%}
-        {{ page_description | default: "Musk de Lumière — A fragrance house where French perfumery meets the heritage of oud." }}
+        {{ page_description | default: "Musk de Lumière — a luxury niche fragrance house where French perfumery meets the heritage of oud." }}
       {%- endif -%}
     {%- endcapture -%}
     <meta name="description" content="{{ seo_desc | strip | escape }}">
