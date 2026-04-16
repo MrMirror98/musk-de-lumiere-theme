@@ -934,7 +934,15 @@ html, body {
 .mdl-cart-item img { width: 90px; height: 110px; object-fit: cover; background: #1A1A1A; }
 .mdl-cart-item__info { display: flex; flex-direction: column; }
 .mdl-cart-item__name { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: #F5F0E8; margin-bottom: 4px; }
-.mdl-cart-item__variant { font-size: 10px; letter-spacing: 0.12em; color: rgba(245,240,232,0.4); margin-bottom: auto; }
+.mdl-cart-item__variant { font-size: 10px; letter-spacing: 0.12em; color: rgba(245,240,232,0.4); margin-bottom: 6px; }
+.mdl-cart-item__sample {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; font-style: italic;
+  color: #C9A84C; letter-spacing: 0.04em;
+  margin-bottom: auto;
+  padding-top: 4px;
+  border-top: 1px dashed rgba(201,168,76,0.2);
+}
 .mdl-cart-item__row { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
 .mdl-cart-item__qty {
   display: flex; align-items: center; gap: 12px;

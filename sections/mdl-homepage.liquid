@@ -661,6 +661,7 @@
         <div class="mdl-cart-item__info">
           <div class="mdl-cart-item__name">${item.product_title}</div>
           <div class="mdl-cart-item__variant">${item.variant_title || ''}</div>
+          ${item.properties && item.properties['Complimentary Sample'] ? `<div class="mdl-cart-item__sample">+ Free Sample: ${item.properties['Complimentary Sample']}</div>` : ''}
           <div class="mdl-cart-item__row">
             <div class="mdl-cart-item__qty">
               <button data-act="dec" data-key="${item.key}">−</button>
