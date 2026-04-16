@@ -1,4 +1,10 @@
 :root {
+  /* Musk de Lumière Brand Colors */
+  --color-brand-gold: #C9A84C;
+  --color-brand-dark: #0A0A0A;
+  --color-brand-cream: #F5F0E8;
+  --color-brand-text: #1A1A1A;
+
   --alpha-button-background: 1;
   --alpha-button-border: 1;
   --alpha-link: 0.85;
