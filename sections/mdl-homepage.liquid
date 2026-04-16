@@ -3,14 +3,12 @@
 
 {%- assign larbre = collections['larbre-de-vie'] -%}
 {%- assign essentials = collections['les-essentials'] -%}
-
-<!-- Get specific products by handle for the tree structure -->
-{%- assign heavy_handles = "royale-oud,cherie-oud,sultanat-oud,imperiale-oud" | split: "," -%}
-{%- assign light_handles = "paradis-de-bleu,neroli-de-nuit,hayal,rosee-blanche" | split: "," -%}
+{%- assign discovery_handle = "discovery-set-larbre-de-vie" -%}
+{%- assign discovery_product = all_products[discovery_handle] -%}
 {%- assign essential_handles = "prism,bel-homme,madam-alece,fleur-rouge" | split: "," -%}
 
-<!-- ANNOUNCEMENT BAR -->
-<div class="mdl-bar">
+<!-- GLASS ANNOUNCEMENT BAR -->
+<div class="mdl-bar" id="mdl-bar">
   Complimentary samples with every order &nbsp;·&nbsp;
   <a href="/collections/larbre-de-vie">&nbsp;Discover L'Arbre de Vie →</a>
 </div>
@@ -46,7 +44,7 @@
 <!-- SLIDE NUMBER -->
 <div class="mdl-slide-num" id="mdl-slidenum">
   <span class="mdl-slide-num__cur" id="mdl-cur">01</span>
-  <span class="mdl-slide-num__tot">/ 06</span>
+  <span class="mdl-slide-num__tot">/ 07</span>
 </div>
 
 <!-- MOBILE NAV DRAWER -->
@@ -68,7 +66,7 @@
   <button class="mdl-search-overlay__close" id="mdl-search-close" aria-label="Close search">
     <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
-  <form class="mdl-search-overlay__form" action="/search" method="get" role="search">
+  <form class="mdl-search-overlay__form" action="/search" method="get">
     <input type="hidden" name="type" value="product">
     <input class="mdl-search-overlay__input" type="search" name="q" placeholder="Search the Maison..." autocomplete="off" id="mdl-search-input">
   </form>
@@ -80,7 +78,7 @@
 
 <!-- CART DRAWER -->
 <div class="mdl-cart-drawer__overlay" id="mdl-cart-overlay"></div>
-<aside class="mdl-cart-drawer" id="mdl-cart-drawer" aria-hidden="true">
+<aside class="mdl-cart-drawer" id="mdl-cart-drawer">
   <div class="mdl-cart-drawer__head">
     <h2 class="mdl-cart-drawer__title">Your Cart</h2>
     <button class="mdl-cart-drawer__close" id="mdl-cart-close" aria-label="Close cart">
@@ -103,7 +101,7 @@
 </aside>
 
 <!-- ============================================
-     SWIPER — 6 SLIDES, TREE STRUCTURE
+     SWIPER — 7 SLIDES
 ============================================ -->
 <div class="mdl-swiper-wrap">
   <div class="swiper mdl-swiper" id="mdl-swiper">
@@ -137,118 +135,127 @@
         </div>
       </div>
 
-      <!-- SLIDE 2: L'ARBRE DE VIE — HEAVY/OUD (BOTTOM OF TREE) — DARK -->
-      <div class="swiper-slide s-collection s-collection--dark" data-mode="dark">
-        <div class="s-bignum">02</div>
-        <div class="s-collection__head">
-          <div class="s-collection__head-left">
-            <p class="s-collection__eyebrow">L'Arbre de Vie · Les Racines</p>
-            <h2 class="s-collection__title">The <em>Roots</em>.</h2>
-            <p class="s-collection__sub">Four oud-rooted signatures from the base of the tree. Heavy, smoke-laden, leather-warm — the architecture of the Maison's deepest creations.</p>
-          </div>
-          <a href="/collections/larbre-de-vie" class="s-view-all">View All</a>
-        </div>
-        <div class="s-grid">
-          {%- assign heavy_names = "Royale Oud,Chérie Oud,Sultanat Oud,Impériale Oud" | split: "," -%}
-          {%- assign heavy_notes = "Leather · Smoke,Vanilla · Tonka,Amberwood · Powder,Velvet Rose" | split: "," -%}
-          {%- for h in heavy_handles -%}
-            {%- assign p = all_products[h] -%}
-            {%- if p != blank and p.id -%}
-              <a href="{{ p.url }}" class="s-card">
-                <div class="s-card__img">
-                  {%- if p.featured_image -%}
-                    <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }}" loading="lazy">
-                  {%- else -%}
-                    <div class="s-card__placeholder">
-                      <em>L'Arbre de Vie</em>
-                      <strong>{{ p.title }}</strong>
-                    </div>
-                  {%- endif -%}
-                </div>
-                <div class="s-card__info">
-                  <p class="s-card__tag">L'Arbre de Vie</p>
-                  <h3 class="s-card__name">{{ p.title }}</h3>
-                  <p class="s-card__price">{{ p.price | money }}</p>
-                </div>
-              </a>
+      <!-- SLIDE 2: DISCOVERY SET — L'ARBRE DE VIE -->
+      <div class="swiper-slide s-discovery" data-mode="dark">
+        <div class="s-discovery__bg-gradient"></div>
+        <div class="s-discovery__visual">
+          <div class="s-discovery__hero-img">
+            {%- if section.settings.discovery_image != blank -%}
+              <img src="{{ section.settings.discovery_image | image_url: width: 1000 }}" alt="L'Arbre de Vie Discovery Set">
+            {%- elsif discovery_product != blank and discovery_product.featured_image -%}
+              <img src="{{ discovery_product.featured_image | image_url: width: 1000 }}" alt="L'Arbre de Vie Discovery Set">
             {%- else -%}
-              <div class="s-card">
-                <div class="s-card__img">
-                  <div class="s-card__placeholder">
-                    <em>L'Arbre de Vie</em>
-                    <strong>{{ heavy_names[forloop.index0] }}</strong>
-                  </div>
-                </div>
-                <div class="s-card__info">
-                  <p class="s-card__tag">L'Arbre de Vie</p>
-                  <h3 class="s-card__name">{{ heavy_names[forloop.index0] }}</h3>
-                  <p class="s-card__price">{{ heavy_notes[forloop.index0] }}</p>
-                </div>
+              <div class="s-discovery__hero-placeholder">
+                <em>Coffret · Discovery Set</em>
+                <strong>L'Arbre de Vie</strong>
               </div>
             {%- endif -%}
-          {%- endfor -%}
+          </div>
+          <div class="s-discovery__thumbs">
+            {%- if section.settings.discovery_thumb_1 != blank -%}
+              <div class="s-discovery__thumb"><img src="{{ section.settings.discovery_thumb_1 | image_url: width: 200 }}" alt=""></div>
+            {%- else -%}
+              <div class="s-discovery__thumb">Royale</div>
+            {%- endif -%}
+            {%- if section.settings.discovery_thumb_2 != blank -%}
+              <div class="s-discovery__thumb"><img src="{{ section.settings.discovery_thumb_2 | image_url: width: 200 }}" alt=""></div>
+            {%- else -%}
+              <div class="s-discovery__thumb">Chérie</div>
+            {%- endif -%}
+            {%- if section.settings.discovery_thumb_3 != blank -%}
+              <div class="s-discovery__thumb"><img src="{{ section.settings.discovery_thumb_3 | image_url: width: 200 }}" alt=""></div>
+            {%- else -%}
+              <div class="s-discovery__thumb">Hayal</div>
+            {%- endif -%}
+            {%- if section.settings.discovery_thumb_4 != blank -%}
+              <div class="s-discovery__thumb"><img src="{{ section.settings.discovery_thumb_4 | image_url: width: 200 }}" alt=""></div>
+            {%- else -%}
+              <div class="s-discovery__thumb">Néroli</div>
+            {%- endif -%}
+          </div>
+        </div>
+        <div class="s-discovery__info">
+          <p class="s-discovery__chapter">02 — Le Coffret</p>
+          <h2 class="s-discovery__title">The <em>Discovery</em>.</h2>
+          <p class="s-discovery__lead">Begin your journey through the Maison. The L'Arbre de Vie Discovery Set holds eight signatures in miniature — the full architecture of the tree, in your hands.</p>
+          <div class="s-discovery__includes">
+            <p class="s-discovery__includes-label">Eight Signatures · 2ml each</p>
+            <ul class="s-discovery__includes-list">
+              <li>Royale Oud</li>
+              <li>Chérie Oud</li>
+              <li>Sultanat Oud</li>
+              <li>Impériale Oud</li>
+              <li>Paradis de Bleu</li>
+              <li>Néroli de Nuit</li>
+              <li>Hayal</li>
+              <li>Rosée Blanche</li>
+            </ul>
+          </div>
+          {%- if discovery_product != blank and discovery_product.id -%}
+            <a href="{{ discovery_product.url }}" class="s-discovery__cta">
+              Shop the Discovery Set —— {{ discovery_product.price | money }}
+            </a>
+          {%- else -%}
+            <a href="/collections/larbre-de-vie" class="s-discovery__cta">
+              Explore the Collection →
+            </a>
+          {%- endif -%}
         </div>
       </div>
 
-      <!-- SLIDE 3: L'ARBRE DE VIE — LIGHT/FLORAL (TOP OF TREE) — CREAM -->
-      <div class="swiper-slide s-collection s-collection--cream" data-mode="light">
-        <div class="s-bignum">03</div>
-        <div class="s-collection__head">
-          <div class="s-collection__head-left">
-            <p class="s-collection__eyebrow">L'Arbre de Vie · Les Branches</p>
-            <h2 class="s-collection__title">The <em>Light</em>.</h2>
-            <p class="s-collection__sub">Four florals from the canopy. Néroli at midnight, white rose, oceanic blue, the dream of Hayal — the Maison's lighter expressions.</p>
-          </div>
-          <a href="/collections/larbre-de-vie" class="s-view-all">View All</a>
+      <!-- SLIDE 3: THE ROOTS — Showcase + Popup -->
+      <div class="swiper-slide s-showcase s-showcase--dark" data-mode="dark">
+        <div class="s-showcase__bg">
+          {%- if section.settings.roots_image != blank -%}
+            <img src="{{ section.settings.roots_image | image_url: width: 2400 }}" alt="Les Racines">
+          {%- else -%}
+            <div class="s-showcase__bg s-showcase__bg--gradient-dark" style="position:absolute;inset:0;"></div>
+          {%- endif -%}
         </div>
-        <div class="s-grid">
-          {%- assign light_names = "Paradis de Bleu,Néroli de Nuit,Hayal,Rosée Blanche" | split: "," -%}
-          {%- assign light_notes = "Aquatic · Salt · Iris,Néroli · Bergamot · Dusk,Saffron · Amber · Dream,White Rose · Powder · Musk" | split: "," -%}
-          {%- for h in light_handles -%}
-            {%- assign p = all_products[h] -%}
-            {%- if p != blank and p.id -%}
-              <a href="{{ p.url }}" class="s-card">
-                <div class="s-card__img">
-                  {%- if p.featured_image -%}
-                    <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }}" loading="lazy">
-                  {%- else -%}
-                    <div class="s-card__placeholder">
-                      <em>L'Arbre de Vie</em>
-                      <strong>{{ p.title }}</strong>
-                    </div>
-                  {%- endif -%}
-                </div>
-                <div class="s-card__info">
-                  <p class="s-card__tag">L'Arbre de Vie</p>
-                  <h3 class="s-card__name">{{ p.title }}</h3>
-                  <p class="s-card__price">{{ p.price | money }}</p>
-                </div>
-              </a>
-            {%- else -%}
-              <div class="s-card">
-                <div class="s-card__img">
-                  <div class="s-card__placeholder">
-                    <em>L'Arbre de Vie</em>
-                    <strong>{{ light_names[forloop.index0] }}</strong>
-                  </div>
-                </div>
-                <div class="s-card__info">
-                  <p class="s-card__tag">L'Arbre de Vie</p>
-                  <h3 class="s-card__name">{{ light_names[forloop.index0] }}</h3>
-                  <p class="s-card__price">{{ light_notes[forloop.index0] }}</p>
-                </div>
-              </div>
-            {%- endif -%}
-          {%- endfor -%}
+        <div class="s-showcase__overlay"></div>
+        <div class="s-showcase__title-wrap">
+          <p class="s-showcase__chapter">03 — Les Racines</p>
+          <h2 class="s-showcase__title">The <em>Roots</em>.</h2>
+          <p class="s-showcase__lead">From the base of the tree. Heavy, smoke-laden, leather-warm — the four oud-rooted signatures that form the architecture of the Maison's deepest creations.</p>
         </div>
+        <div class="s-showcase__num"><em>03</em>/ 07</div>
+        <a href="/collections/larbre-de-vie?filter=roots" class="s-popup">
+          <p class="s-popup__tag">L'Arbre de Vie</p>
+          <h3 class="s-popup__name">Les Racines</h3>
+          <p class="s-popup__sub">Royale · Chérie · Sultanat · Impériale</p>
+          <span class="s-popup__cta">Explore <span class="s-popup__cta-line"></span></span>
+        </a>
       </div>
 
-      <!-- SLIDE 4: LES ESSENTIALS — EVERYDAY -->
-      <div class="swiper-slide s-collection s-collection--neutral" data-mode="dark">
-        <div class="s-bignum">04</div>
+      <!-- SLIDE 4: THE LIGHT — Showcase + Popup -->
+      <div class="swiper-slide s-showcase s-showcase--light" data-mode="light">
+        <div class="s-showcase__bg">
+          {%- if section.settings.light_image != blank -%}
+            <img src="{{ section.settings.light_image | image_url: width: 2400 }}" alt="Les Branches">
+          {%- else -%}
+            <div class="s-showcase__bg s-showcase__bg--gradient-light" style="position:absolute;inset:0;"></div>
+          {%- endif -%}
+        </div>
+        <div class="s-showcase__overlay"></div>
+        <div class="s-showcase__title-wrap">
+          <p class="s-showcase__chapter">04 — Les Branches</p>
+          <h2 class="s-showcase__title">The <em>Light</em>.</h2>
+          <p class="s-showcase__lead">From the canopy. Néroli at midnight, white rose, oceanic blue, the dream of Hayal — the Maison's lighter expressions, where the tree reaches for the sun.</p>
+        </div>
+        <div class="s-showcase__num"><em>04</em>/ 07</div>
+        <a href="/collections/larbre-de-vie?filter=light" class="s-popup">
+          <p class="s-popup__tag">L'Arbre de Vie</p>
+          <h3 class="s-popup__name">Les Branches</h3>
+          <p class="s-popup__sub">Paradis · Néroli · Hayal · Rosée</p>
+          <span class="s-popup__cta">Explore <span class="s-popup__cta-line"></span></span>
+        </a>
+      </div>
+
+      <!-- SLIDE 5: LES ESSENTIALS — Everyday Grid -->
+      <div class="swiper-slide s-collection" data-mode="dark">
         <div class="s-collection__head">
           <div class="s-collection__head-left">
-            <p class="s-collection__eyebrow">Les Essentials · Le Quotidien</p>
+            <p class="s-collection__eyebrow">05 — Le Quotidien</p>
             <h2 class="s-collection__title">For <em>every day</em>.</h2>
             <p class="s-collection__sub">Four magnificent everyday creations. Lighter, fresher, accessible — the Maison's signatures distilled for modern living. Available in 10ml and 100ml.</p>
           </div>
@@ -296,11 +303,11 @@
         </div>
       </div>
 
-      <!-- SLIDE 5: BRAND STORY -->
+      <!-- SLIDE 6: BRAND STORY -->
       <div class="swiper-slide" data-mode="dark">
         <div class="s-story">
           <div class="s-story__left">
-            <p class="s-story__eyebrow">L'Histoire de la Maison</p>
+            <p class="s-story__eyebrow">06 — L'Histoire de la Maison</p>
             <h2 class="s-story__title">A house built on <em>memory.</em></h2>
             <p class="s-story__body">Musk de Lumière is a fragrance house built on the belief that scent is the closest thing to memory. From our atelier in New Jersey, we draw from French perfumery tradition and the ancient heritage of oud — composing each fragrance not to be worn, but to be lived in.</p>
             <a href="/pages/about" class="s-story__link">Read Our Story <span></span></a>
@@ -315,17 +322,16 @@
         </div>
       </div>
 
-      <!-- SLIDE 6: NEWSLETTER + FOOTER -->
-      <div class="swiper-slide s-last" data-mode="dark">
+      <!-- SLIDE 7: NEWSLETTER + FOOTER -->
+      <div class="swiper-slide s-last" data-mode="light">
         <div class="s-newsletter">
-          <p class="s-newsletter__eyebrow">Le Cercle Privé</p>
+          <p class="s-newsletter__eyebrow">07 — Le Cercle Privé</p>
           <h2 class="s-newsletter__title">Where Light Begins.</h2>
           <p class="s-newsletter__sub">First access to new releases, private events, and the rituals of the Maison.</p>
           {%- form 'customer', id: 'mdl-nl' -%}
             <input type="hidden" name="contact[tags]" value="newsletter">
             <div class="s-newsletter__form">
-              <input class="s-newsletter__input" type="email" name="contact[email]"
-                     placeholder="Your email address" required>
+              <input class="s-newsletter__input" type="email" name="contact[email]" placeholder="Your email address" required>
               <button type="submit" class="s-newsletter__btn">Subscribe</button>
             </div>
           {%- endform -%}
@@ -369,6 +375,7 @@
 <script>
 (function(){
   const header = document.getElementById('mdl-header');
+  const bar = document.getElementById('mdl-bar');
   const counter = document.getElementById('mdl-cur');
   const slidenum = document.getElementById('mdl-slidenum');
   const swiperEl = document.getElementById('mdl-swiper');
@@ -386,21 +393,22 @@
         if(counter) counter.textContent = n;
         const slide = this.slides[this.activeIndex];
         const mode = slide.getAttribute('data-mode') || 'dark';
-        // Header style
         if(this.activeIndex === 0) {
           header.classList.remove('solid', 'light-mode');
+          bar.classList.remove('bar-light');
         } else {
           header.classList.add('solid');
-          if(mode === 'light') header.classList.add('light-mode');
-          else header.classList.remove('light-mode');
-        }
-        // Pagination + slide num style
-        if(mode === 'light') {
-          swiperEl.classList.add('pagination-light');
-          slidenum.classList.add('light');
-        } else {
-          swiperEl.classList.remove('pagination-light');
-          slidenum.classList.remove('light');
+          if(mode === 'light') {
+            header.classList.add('light-mode');
+            bar.classList.add('bar-light');
+            swiperEl.classList.add('pagination-light');
+            slidenum.classList.add('light');
+          } else {
+            header.classList.remove('light-mode');
+            bar.classList.remove('bar-light');
+            swiperEl.classList.remove('pagination-light');
+            slidenum.classList.remove('light');
+          }
         }
       }
     }
@@ -420,13 +428,12 @@
   document.getElementById('mdl-close').addEventListener('click', closeDrawer);
   document.querySelectorAll('.mdl-drawer a').forEach(a => a.addEventListener('click', closeDrawer));
 
-  // ============= SEARCH =============
+  // SEARCH
   const searchOverlay = document.getElementById('mdl-search');
   const searchInput = document.getElementById('mdl-search-input');
   const searchResults = document.getElementById('mdl-search-results');
   const searchHint = document.getElementById('mdl-search-hint');
   let searchTimer = null;
-
   document.getElementById('mdl-search-open').addEventListener('click', function(){
     searchOverlay.classList.add('open');
     setTimeout(() => searchInput.focus(), 300);
@@ -439,78 +446,38 @@
   searchInput.addEventListener('input', function(e){
     clearTimeout(searchTimer);
     const q = e.target.value.trim();
-    if(q.length < 2) {
-      searchResults.innerHTML = '';
-      searchHint.textContent = 'Start typing to discover fragrances';
-      return;
-    }
+    if(q.length < 2) { searchResults.innerHTML = ''; searchHint.textContent = 'Start typing to discover fragrances'; return; }
     searchHint.textContent = 'Searching...';
     searchTimer = setTimeout(() => {
       fetch(`/search/suggest.json?q=${encodeURIComponent(q)}&resources[type]=product&resources[limit]=6`)
         .then(r => r.json())
         .then(data => {
           const products = data.resources.results.products || [];
-          if(products.length === 0) {
-            searchHint.textContent = 'No fragrances found';
-            searchResults.innerHTML = '';
-            return;
-          }
+          if(products.length === 0) { searchHint.textContent = 'No fragrances found'; searchResults.innerHTML = ''; return; }
           searchHint.textContent = `${products.length} ${products.length === 1 ? 'result' : 'results'}`;
           searchResults.innerHTML = products.map(p => `
             <a href="${p.url}" class="mdl-search-result">
               ${p.image ? `<img src="${p.image}" class="mdl-search-result__img" alt="${p.title}">` : '<div class="mdl-search-result__img"></div>'}
-              <div>
-                <div class="mdl-search-result__name">${p.title}</div>
-                <div class="mdl-search-result__price">${p.price}</div>
-              </div>
-            </a>
-          `).join('');
+              <div><div class="mdl-search-result__name">${p.title}</div><div class="mdl-search-result__price">${p.price}</div></div>
+            </a>`).join('');
         });
     }, 250);
   });
 
-  // ============= CART =============
+  // CART
   const cartDrawer = document.getElementById('mdl-cart-drawer');
   const cartOverlay = document.getElementById('mdl-cart-overlay');
   const cartBody = document.getElementById('mdl-cart-body');
   const cartFoot = document.getElementById('mdl-cart-foot');
   const cartTotal = document.getElementById('mdl-cart-total');
   const cartCount = document.getElementById('mdl-cart-count');
-
-  function openCart(){
-    cartDrawer.classList.add('open');
-    cartOverlay.classList.add('open');
-    swiper.mousewheel.disable();
-    fetchCart();
-  }
-  function closeCart(){
-    cartDrawer.classList.remove('open');
-    cartOverlay.classList.remove('open');
-    swiper.mousewheel.enable();
-  }
-  document.getElementById('mdl-cart-open').addEventListener('click', openCart);
-  document.getElementById('mdl-cart-close').addEventListener('click', closeCart);
-  cartOverlay.addEventListener('click', closeCart);
-
-  function formatMoney(cents){
-    return '$' + (cents/100).toFixed(2);
-  }
-
-  function fetchCart(){
-    fetch('/cart.js').then(r => r.json()).then(cart => renderCart(cart));
-  }
+  function fmt(c){ return '$' + (c/100).toFixed(2); }
+  function fetchCart(){ fetch('/cart.js').then(r=>r.json()).then(renderCart); }
   function renderCart(cart){
-    if(cartCount) {
-      cartCount.textContent = cart.item_count;
-      cartCount.style.display = cart.item_count > 0 ? 'flex' : 'none';
-    }
-    if(cart.item_count === 0) {
-      cartBody.innerHTML = `<div class="mdl-cart-drawer__empty">
-        <p>Your cart awaits.</p>
-        <a href="/collections/larbre-de-vie">Discover the Maison →</a>
-      </div>`;
-      cartFoot.style.display = 'none';
-      return;
+    if(cartCount){ cartCount.textContent = cart.item_count; cartCount.style.display = cart.item_count > 0 ? 'flex' : 'none'; }
+    if(cart.item_count === 0){
+      cartBody.innerHTML = `<div class="mdl-cart-drawer__empty"><p>Your cart awaits.</p><a href="/collections/larbre-de-vie">Discover the Maison →</a></div>`;
+      cartFoot.style.display = 'none'; return;
     }
     cartBody.innerHTML = cart.items.map(item => `
       <div class="mdl-cart-item" data-key="${item.key}">
@@ -524,38 +491,31 @@
               <span>${item.quantity}</span>
               <button data-act="inc" data-key="${item.key}">+</button>
             </div>
-            <div class="mdl-cart-item__price">${formatMoney(item.line_price)}</div>
+            <div class="mdl-cart-item__price">${fmt(item.line_price)}</div>
           </div>
           <button class="mdl-cart-item__remove" data-act="rm" data-key="${item.key}">Remove</button>
         </div>
-      </div>
-    `).join('');
-    cartTotal.textContent = formatMoney(cart.total_price);
+      </div>`).join('');
+    cartTotal.textContent = fmt(cart.total_price);
     cartFoot.style.display = 'block';
-    bindCartActions();
-  }
-  function bindCartActions(){
     cartBody.querySelectorAll('button[data-act]').forEach(btn => {
       btn.addEventListener('click', function(){
         const key = this.getAttribute('data-key');
         const act = this.getAttribute('data-act');
         const item = cartBody.querySelector(`.mdl-cart-item[data-key="${key}"]`);
-        const currentQty = parseInt(item.querySelector('.mdl-cart-item__qty span').textContent);
-        let newQty = currentQty;
-        if(act === 'inc') newQty = currentQty + 1;
-        if(act === 'dec') newQty = Math.max(0, currentQty - 1);
-        if(act === 'rm') newQty = 0;
-        fetch('/cart/change.js', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({id: key, quantity: newQty})
-        }).then(r => r.json()).then(cart => renderCart(cart));
+        const cur = parseInt(item.querySelector('.mdl-cart-item__qty span').textContent);
+        let q = cur;
+        if(act==='inc') q = cur+1; if(act==='dec') q = Math.max(0,cur-1); if(act==='rm') q = 0;
+        fetch('/cart/change.js', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:key,quantity:q})}).then(r=>r.json()).then(renderCart);
       });
     });
   }
-  // Initial cart load
+  function openCart(){ cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); swiper.mousewheel.disable(); fetchCart(); }
+  function closeCart(){ cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); swiper.mousewheel.enable(); }
+  document.getElementById('mdl-cart-open').addEventListener('click', openCart);
+  document.getElementById('mdl-cart-close').addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
   fetchCart();
-  // Expose globally for product pages
   window.mdlOpenCart = openCart;
   window.mdlRefreshCart = fetchCart;
 })();
@@ -566,8 +526,17 @@
   "name": "MDL Homepage",
   "settings": [
     { "type": "header", "content": "Hero Video" },
-    { "type": "url", "id": "hero_video", "label": "Hero video URL (MP4)", "info": "Upload to Shopify Files, paste URL here" },
+    { "type": "url", "id": "hero_video", "label": "Hero video URL (MP4)" },
     { "type": "image_picker", "id": "hero_image", "label": "Hero fallback image" },
+    { "type": "header", "content": "Discovery Set (Slide 2)" },
+    { "type": "image_picker", "id": "discovery_image", "label": "Main discovery set image" },
+    { "type": "image_picker", "id": "discovery_thumb_1", "label": "Thumbnail 1" },
+    { "type": "image_picker", "id": "discovery_thumb_2", "label": "Thumbnail 2" },
+    { "type": "image_picker", "id": "discovery_thumb_3", "label": "Thumbnail 3" },
+    { "type": "image_picker", "id": "discovery_thumb_4", "label": "Thumbnail 4" },
+    { "type": "header", "content": "Showcase Slides" },
+    { "type": "image_picker", "id": "roots_image", "label": "The Roots background image" },
+    { "type": "image_picker", "id": "light_image", "label": "The Light background image" },
     { "type": "header", "content": "Story" },
     { "type": "image_picker", "id": "story_image", "label": "Brand story image" }
   ],
