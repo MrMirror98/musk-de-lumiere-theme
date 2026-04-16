@@ -37,60 +37,127 @@
   </div>
 </header>
 
-<!-- MOBILE NAV DRAWER — same as homepage -->
+<!-- MOBILE NAV DRAWER — dropdown menu -->
 <nav class="mdl-drawer" id="mdl-drawer" aria-label="Mobile navigation" aria-hidden="true">
   <button class="mdl-drawer__close" id="mdl-close" aria-label="Close menu">
     <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
+
   <div class="mdl-drawer__inner">
     <div class="mdl-drawer__logo">
       <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="Musk de Lumière" width="140" height="60">
     </div>
+
+    <!-- L'ARBRE DE VIE -->
     <section class="mdl-drawer__sec">
-      <h4 class="mdl-drawer__label">La Collection</h4>
-      <ul>
-        <li><a href="/collections/larbre-de-vie">L'Arbre de Vie <span class="mdl-drawer__hint">8 Signatures</span></a></li>
-        <li><a href="/collections/larbre-de-vie">Les Racines <span class="mdl-drawer__hint">The Roots · Oud</span></a></li>
-        <li><a href="/collections/larbre-de-vie">Les Branches <span class="mdl-drawer__hint">The Light · Floral</span></a></li>
+      <h4 class="mdl-drawer__label"><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></h4>
+
+      <!-- The Roots dropdown -->
+      <div class="mdl-drop">
+        <button class="mdl-drop__toggle" aria-expanded="false" aria-controls="drop-roots">
+          <span class="mdl-drop__title">The Roots <em class="mdl-drop__hint">Oud</em></span>
+          <svg class="mdl-drop__chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="mdl-drop__body" id="drop-roots">
+          <ul>
+            {%- assign p1 = all_products['royale-oud'] -%}
+            <li><a href="{% if p1 != blank and p1.id %}{{ p1.url }}{% else %}/collections/larbre-de-vie{% endif %}">Royale Oud</a></li>
+            {%- assign p2 = all_products['cherie-oud'] -%}
+            <li><a href="{% if p2 != blank and p2.id %}{{ p2.url }}{% else %}/collections/larbre-de-vie{% endif %}">Chérie Oud</a></li>
+            {%- assign p3 = all_products['sultanat-oud'] -%}
+            <li><a href="{% if p3 != blank and p3.id %}{{ p3.url }}{% else %}/collections/larbre-de-vie{% endif %}">Sultanat Oud</a></li>
+            {%- assign p4 = all_products['imperiale-oud'] -%}
+            <li><a href="{% if p4 != blank and p4.id %}{{ p4.url }}{% else %}/collections/larbre-de-vie{% endif %}">Impériale Oud</a></li>
+            <li><a href="/collections/larbre-de-vie" class="mdl-drop__all">View all Roots <span>→</span></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- The Light dropdown -->
+      <div class="mdl-drop">
+        <button class="mdl-drop__toggle" aria-expanded="false" aria-controls="drop-light">
+          <span class="mdl-drop__title">The Light <em class="mdl-drop__hint">Floral</em></span>
+          <svg class="mdl-drop__chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="mdl-drop__body" id="drop-light">
+          <ul>
+            {%- assign l1 = all_products['paradis-de-bleu'] -%}
+            <li><a href="{% if l1 != blank and l1.id %}{{ l1.url }}{% else %}/collections/larbre-de-vie{% endif %}">Paradis de Bleu</a></li>
+            {%- assign l2 = all_products['neroli-de-nuit'] -%}
+            <li><a href="{% if l2 != blank and l2.id %}{{ l2.url }}{% else %}/collections/larbre-de-vie{% endif %}">Néroli de Nuit</a></li>
+            {%- assign l3 = all_products['hayal'] -%}
+            <li><a href="{% if l3 != blank and l3.id %}{{ l3.url }}{% else %}/collections/larbre-de-vie{% endif %}">Hayal</a></li>
+            {%- assign l4 = all_products['rosee-blanche'] -%}
+            <li><a href="{% if l4 != blank and l4.id %}{{ l4.url }}{% else %}/collections/larbre-de-vie{% endif %}">Rosée Blanche</a></li>
+            <li><a href="/collections/larbre-de-vie" class="mdl-drop__all">View all Light <span>→</span></a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Discovery Set direct link -->
+      <ul class="mdl-drawer__direct">
         {%- assign ds = all_products['discovery-set-larbre-de-vie'] -%}
-        {%- if ds != blank and ds.id -%}
-          <li><a href="{{ ds.url }}">Discovery Set <span class="mdl-drawer__hint">8 × 2.5ml</span></a></li>
-        {%- else -%}
-          <li><a href="/collections/larbre-de-vie">Discovery Set <span class="mdl-drawer__hint">8 × 2.5ml</span></a></li>
-        {%- endif -%}
+        <li><a href="{% if ds != blank and ds.id %}{{ ds.url }}{% else %}/collections/larbre-de-vie{% endif %}">Discovery Set <em class="mdl-drawer__hint">8 × 2.5ml</em></a></li>
       </ul>
     </section>
+
+    <!-- LES ESSENTIALS -->
     <section class="mdl-drawer__sec">
-      <h4 class="mdl-drawer__label">Les Essentials</h4>
-      <ul>
-        <li><a href="/collections/les-essentials">Le Quotidien <span class="mdl-drawer__hint">Everyday · 10ml & 100ml</span></a></li>
+      <h4 class="mdl-drawer__label"><a href="/collections/les-essentials">Les Essentials</a></h4>
+
+      <div class="mdl-drop">
+        <button class="mdl-drop__toggle" aria-expanded="false" aria-controls="drop-everyday">
+          <span class="mdl-drop__title">Everyday <em class="mdl-drop__hint">10ml & 100ml</em></span>
+          <svg class="mdl-drop__chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="mdl-drop__body" id="drop-everyday">
+          <ul>
+            {%- assign e1 = all_products['prism'] -%}
+            <li><a href="{% if e1 != blank and e1.id %}{{ e1.url }}{% else %}/collections/les-essentials{% endif %}">Prism</a></li>
+            {%- assign e2 = all_products['bel-homme'] -%}
+            <li><a href="{% if e2 != blank and e2.id %}{{ e2.url }}{% else %}/collections/les-essentials{% endif %}">Bel Homme</a></li>
+            {%- assign e3 = all_products['madam-alece'] -%}
+            <li><a href="{% if e3 != blank and e3.id %}{{ e3.url }}{% else %}/collections/les-essentials{% endif %}">Madam Alece</a></li>
+            {%- assign e4 = all_products['fleur-rouge'] -%}
+            <li><a href="{% if e4 != blank and e4.id %}{{ e4.url }}{% else %}/collections/les-essentials{% endif %}">Fleur Rouge</a></li>
+            <li><a href="/collections/les-essentials" class="mdl-drop__all">View all Essentials <span>→</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMING SOON -->
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">Coming Soon</h4>
+      <ul class="mdl-drawer__direct">
+        <li><span class="mdl-drawer__coming">Gift Sets <em>Soon</em></span></li>
+        <li><span class="mdl-drawer__coming">Home Fragrances <em>Soon</em></span></li>
+        <li><span class="mdl-drawer__coming">Essentials Discovery <em>Soon</em></span></li>
       </ul>
     </section>
+
+    <!-- MAISON -->
     <section class="mdl-drawer__sec">
-      <h4 class="mdl-drawer__label">À Venir</h4>
-      <ul>
-        <li><span class="mdl-drawer__coming">Gift Sets <em>Coming Soon</em></span></li>
-        <li><span class="mdl-drawer__coming">Home Fragrances <em>Coming Soon</em></span></li>
-        <li><span class="mdl-drawer__coming">Les Essentials Discovery <em>Coming Soon</em></span></li>
-      </ul>
-    </section>
-    <section class="mdl-drawer__sec">
-      <h4 class="mdl-drawer__label">La Maison</h4>
-      <ul>
-        <li><a href="/pages/about">L'Histoire <span class="mdl-drawer__hint">Our Story</span></a></li>
+      <h4 class="mdl-drawer__label">Maison</h4>
+      <ul class="mdl-drawer__direct">
+        <li><a href="/pages/about">Our Story <em class="mdl-drawer__hint">L'Histoire</em></a></li>
         <li><a href="/pages/the-craft">The Craft</a></li>
         <li><a href="/pages/journal">Journal</a></li>
         <li><a href="/pages/contact">Contact</a></li>
       </ul>
     </section>
+
+    <!-- SERVICE -->
     <section class="mdl-drawer__sec">
       <h4 class="mdl-drawer__label">Service</h4>
-      <ul>
+      <ul class="mdl-drawer__direct">
         <li><a href="/policies/shipping-policy">Shipping</a></li>
         <li><a href="/policies/refund-policy">Returns</a></li>
         <li><a href="/pages/faq">FAQ</a></li>
       </ul>
     </section>
+
+    <!-- LEGAL -->
     <section class="mdl-drawer__sec">
       <h4 class="mdl-drawer__label">Legal</h4>
       <ul class="mdl-drawer__legal">
@@ -98,6 +165,8 @@
         <li><a href="/policies/terms-of-service">Terms of Service</a></li>
       </ul>
     </section>
+
+    <!-- ACCOUNT + CART -->
     <div class="mdl-drawer__foot">
       <a href="/account" class="mdl-drawer__util">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
@@ -176,6 +245,30 @@
   }
   closeBtn.addEventListener('click', closeDrawer);
   drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+  // ====== DROPDOWN ACCORDIONS IN MENU ======
+  document.querySelectorAll('.mdl-drop__toggle').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      const targetId = btn.getAttribute('aria-controls');
+      const body = document.getElementById(targetId);
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+      btn.setAttribute('aria-expanded', !isOpen);
+      if(!isOpen){
+        body.classList.add('open');
+        // set max-height to actual content height for smooth animation
+        body.style.maxHeight = body.scrollHeight + 'px';
+      } else {
+        body.style.maxHeight = '0';
+        body.addEventListener('transitionend', function h(){
+          body.classList.remove('open');
+          body.removeEventListener('transitionend', h);
+        });
+      }
+    });
+  });
+
 
   // Search
   const searchOverlay = document.getElementById('mdl-search');

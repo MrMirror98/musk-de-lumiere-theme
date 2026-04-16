@@ -963,11 +963,11 @@ html, body {
 .mdl-cart-drawer__checkout:hover { background: #B8983E; }
 
 /* ================================================
-   MOBILE NAV DRAWER — editorial luxury menu
+   MOBILE NAV DRAWER — luxury dropdown menu
 ================================================ */
 .mdl-drawer {
   position: fixed; inset: 0;
-  background: linear-gradient(180deg, #0A0A0A 0%, #08070A 100%);
+  background: linear-gradient(180deg, #0A0A0A 0%, #07070A 100%);
   z-index: 600;
   transform: translateX(-100%);
   transition: transform 0.55s cubic-bezier(0.77,0,0.175,1);
@@ -979,7 +979,7 @@ html, body {
 .mdl-drawer__close {
   position: fixed;
   top: 22px; right: 22px;
-  background: rgba(245,240,232,0.05);
+  background: rgba(245,240,232,0.04);
   border: 1px solid rgba(245,240,232,0.08);
   border-radius: 50%;
   width: 40px; height: 40px;
@@ -987,68 +987,197 @@ html, body {
   display: flex; align-items: center; justify-content: center;
   color: rgba(245,240,232,0.55);
   z-index: 10;
-  transition: color 0.3s, background 0.3s;
+  transition: color 0.3s, background 0.3s, transform 0.3s;
 }
-.mdl-drawer__close:hover { color: #C9A84C; background: rgba(201,168,76,0.08); }
-.mdl-drawer__close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+.mdl-drawer__close:hover { color: #C9A84C; background: rgba(201,168,76,0.08); transform: rotate(90deg); }
+.mdl-drawer__close svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.6; }
 
 .mdl-drawer__inner {
-  padding: 40px 32px 60px;
+  padding: 40px 28px 60px;
   max-width: 520px;
   margin: 0 auto;
 }
 
 .mdl-drawer__logo {
   text-align: center;
-  padding: 16px 0 40px;
+  padding: 16px 0 32px;
   border-bottom: 1px solid rgba(201,168,76,0.1);
-  margin-bottom: 30px;
+  margin-bottom: 24px;
 }
 .mdl-drawer__logo img {
-  height: 70px; width: auto;
-  filter: drop-shadow(0 2px 14px rgba(201,168,76,0.2));
+  height: 62px; width: auto;
+  filter: drop-shadow(0 2px 14px rgba(201,168,76,0.22));
 }
 
 .mdl-drawer__sec {
-  padding: 20px 0;
+  padding: 14px 0;
   border-top: 1px solid rgba(201,168,76,0.07);
 }
 .mdl-drawer__sec:first-of-type { border-top: none; padding-top: 0; }
 
+/* Section label — now clickable if wrapped in <a>, static otherwise */
 .mdl-drawer__label {
   font-family: 'Montserrat', sans-serif;
   font-size: 9px; font-weight: 600;
   letter-spacing: 0.42em;
   text-transform: uppercase;
   color: #C9A84C;
-  margin: 0 0 18px 0;
+  margin: 0 0 20px 0;
+  display: block;
+}
+.mdl-drawer__label a {
+  color: inherit;
+  text-decoration: none;
+  display: inline-block;
+  padding-bottom: 3px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s;
+}
+.mdl-drawer__label a:hover { border-color: #C9A84C; }
+
+/* =========== DROPDOWN (button + animated body) =========== */
+.mdl-drop {
+  margin-bottom: 8px;
+}
+.mdl-drop__toggle {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 10px 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  transition: color 0.25s, padding-left 0.25s;
+}
+.mdl-drop__toggle:hover,
+.mdl-drop__toggle:active {
+  color: #C9A84C;
+  padding-left: 4px;
 }
 
-.mdl-drawer__sec ul {
-  list-style: none; padding: 0; margin: 0;
+.mdl-drop__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  font-style: italic;
+  color: #F5F0E8;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  transition: color 0.25s;
+}
+.mdl-drop__toggle:hover .mdl-drop__title,
+.mdl-drop__toggle[aria-expanded="true"] .mdl-drop__title {
+  color: #C9A84C;
+}
+
+.mdl-drop__hint {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-size: 8px; font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.3);
+}
+
+.mdl-drop__chev {
+  width: 14px; height: 14px;
+  stroke: rgba(201,168,76,0.6);
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+.mdl-drop__toggle[aria-expanded="true"] .mdl-drop__chev {
+  transform: rotate(180deg);
+  stroke: #C9A84C;
+}
+
+.mdl-drop__body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mdl-drop__body.open {
+  max-height: 400px;
+}
+
+.mdl-drop__body ul {
+  list-style: none;
+  padding: 10px 0 10px 18px;
+  margin: 0 0 4px 6px;
+  border-left: 1px solid rgba(201,168,76,0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mdl-drop__body li {
+  padding: 0;
+}
+.mdl-drop__body a {
+  display: block;
+  padding: 7px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(245,240,232,0.7);
+  text-decoration: none;
+  letter-spacing: 0.015em;
+  transition: color 0.25s, padding-left 0.25s;
+}
+.mdl-drop__body a:hover {
+  color: #C9A84C;
+  padding-left: 6px;
+}
+
+/* View all link — set apart */
+.mdl-drop__all {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 12px !important;
+  border-top: 1px solid rgba(201,168,76,0.1);
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 9px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.32em !important;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.75) !important;
+}
+.mdl-drop__all span { font-family: serif; font-size: 12px; }
+
+/* =========== Direct links (no dropdown) =========== */
+.mdl-drawer__direct {
+  list-style: none;
+  padding: 0; margin: 0;
   display: flex; flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 }
-.mdl-drawer__sec li {
-  line-height: 1.3;
-}
-
-.mdl-drawer__sec a {
+.mdl-drawer__direct li { padding: 0; }
+.mdl-drawer__direct a {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  padding: 10px 0;
   font-family: 'Cormorant Garamond', serif;
   font-size: 22px;
   font-weight: 300;
   font-style: italic;
   color: #F5F0E8;
   text-decoration: none;
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 10px 14px;
   transition: color 0.25s, padding-left 0.25s;
-  padding-left: 0;
 }
-.mdl-drawer__sec a:hover,
-.mdl-drawer__sec a:active {
+.mdl-drawer__direct a:hover {
   color: #C9A84C;
   padding-left: 6px;
 }
@@ -1059,26 +1188,27 @@ html, body {
   font-size: 8px; font-weight: 500;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(245,240,232,0.28);
+  color: rgba(245,240,232,0.3);
 }
 
-/* Coming soon items — gray italic + small badge */
+/* Coming soon items */
 .mdl-drawer__coming {
   font-family: 'Cormorant Garamond', serif;
   font-size: 22px;
   font-weight: 300;
   font-style: italic;
-  color: rgba(245,240,232,0.32);
+  color: rgba(245,240,232,0.3);
   display: flex;
   align-items: baseline;
   gap: 14px;
+  padding: 10px 0;
   cursor: default;
 }
 .mdl-drawer__coming em {
   font-family: 'Montserrat', sans-serif;
   font-style: normal;
   font-size: 7px; font-weight: 600;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: #C9A84C;
   border: 1px solid rgba(201,168,76,0.32);
@@ -1087,13 +1217,23 @@ html, body {
 }
 
 /* Legal section — smaller text */
+.mdl-drawer__legal {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex; flex-direction: column;
+  gap: 8px;
+}
 .mdl-drawer__legal a {
   font-family: 'Montserrat', sans-serif;
   font-size: 11px; font-weight: 400;
   font-style: normal;
   letter-spacing: 0.1em;
   color: rgba(245,240,232,0.5);
+  text-decoration: none;
+  padding: 4px 0;
+  transition: color 0.3s;
 }
+.mdl-drawer__legal a:hover { color: #C9A84C; }
 
 /* Footer — Account + Cart utility buttons */
 .mdl-drawer__foot {
