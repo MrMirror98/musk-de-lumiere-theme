@@ -371,12 +371,17 @@
   const slidenum = document.getElementById('mdl-slidenum');
   const swiperEl = document.getElementById('mdl-swiper');
 
+  const isMobile = window.matchMedia('(max-width: 1024px)').matches;
   const swiper = new Swiper('#mdl-swiper', {
     direction: 'vertical',
     slidesPerView: 1,
-    speed: 1000,
-    mousewheel: { sensitivity: 1, thresholdDelta: 40 },
+    speed: isMobile ? 700 : 1000,
+    mousewheel: { sensitivity: 1, thresholdDelta: 40, releaseOnEdges: true },
     keyboard: { enabled: true },
+    touchReleaseOnEdges: true,
+    threshold: 8,
+    longSwipesRatio: 0.18,
+    longSwipesMs: 200,
     pagination: { el: '.swiper-pagination', clickable: true },
     on: {
       slideChange: function() {
