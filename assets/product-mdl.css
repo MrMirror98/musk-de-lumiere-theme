@@ -52,7 +52,7 @@ html, body { overflow: auto !important; height: auto !important; position: stati
 /* Info card — floats on the RIGHT half of the hero, glass effect */
 .pdp__card {
   position: absolute;
-  top: 50%; left: 50%;
+  top: 50%; left: 75%;
   width: 420px;
   max-width: 460px;
   transform: translate(-50%, -50%);
