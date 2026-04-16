@@ -1,0 +1,254 @@
+{{ 'homepage-mdl.css' | asset_url | stylesheet_tag }}
+
+{%- assign larbre_collection = collections['larbre-de-vie'] -%}
+{%- assign essentials_collection = collections['les-essentials'] -%}
+
+<!-- HERO -->
+<section class="mdl-hero">
+  <div class="mdl-hero__bg">
+    {%- if section.settings.hero_image != blank -%}
+      <img src="{{ section.settings.hero_image | image_url: width: 2000 }}"
+           alt="Musk de Lumière" loading="eager" fetchpriority="high">
+    {%- endif -%}
+  </div>
+  <div class="mdl-hero__overlay"></div>
+  <div class="mdl-hero__content">
+    <p class="mdl-hero__eyebrow">Musk de Lumière — Parfums d'Exception</p>
+    <h1 class="mdl-hero__title">
+      Where Light<br>Becomes <em>Scent</em>
+    </h1>
+    <p class="mdl-hero__subtitle">
+      Twelve fragrances. Two collections. One obsession with the art of perfumery.
+    </p>
+    <a href="/collections" class="mdl-hero__cta">
+      Explore Collections
+      <span class="mdl-hero__cta-arrow"></span>
+    </a>
+  </div>
+</section>
+
+<!-- COLLECTIONS SPLIT -->
+<section aria-label="Collections">
+  <div class="mdl-collections">
+
+    <a href="/collections/larbre-de-vie" class="mdl-collection-panel mdl-collection-panel--dark">
+      <div class="mdl-collection-panel__bg">
+        {%- if section.settings.larbre_image != blank -%}
+          <img src="{{ section.settings.larbre_image | image_url: width: 1200 }}" alt="L'Arbre de Vie" loading="lazy">
+        {%- endif -%}
+      </div>
+      <div class="mdl-collection-panel__overlay"></div>
+      <div class="mdl-collection-panel__content">
+        <p class="mdl-collection-panel__label">Full Collection · 50ml</p>
+        <h2 class="mdl-collection-panel__title">L'Arbre<br>de Vie</h2>
+        <span class="mdl-collection-panel__link">Discover</span>
+      </div>
+    </a>
+
+    <a href="/collections/les-essentials" class="mdl-collection-panel mdl-collection-panel--light">
+      <div class="mdl-collection-panel__bg">
+        {%- if section.settings.essentials_image != blank -%}
+          <img src="{{ section.settings.essentials_image | image_url: width: 1200 }}" alt="Les Essentials" loading="lazy">
+        {%- endif -%}
+      </div>
+      <div class="mdl-collection-panel__overlay"></div>
+      <div class="mdl-collection-panel__content">
+        <p class="mdl-collection-panel__label">Discovery Set · 10ml</p>
+        <h2 class="mdl-collection-panel__title">Les<br>Essentials</h2>
+        <span class="mdl-collection-panel__link">Discover</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="mdl-products">
+  <div class="mdl-products__header">
+    <h2 class="mdl-products__title">L'Arbre de Vie</h2>
+    <a href="/collections/larbre-de-vie" class="mdl-products__view-all">View All</a>
+  </div>
+  <div class="mdl-products__grid">
+    {%- if larbre_collection != blank and larbre_collection.products.size > 0 -%}
+      {%- for product in larbre_collection.products limit: 4 -%}
+        <a href="{{ product.url }}" class="mdl-product-card">
+          <div class="mdl-product-card__image-wrap">
+            {%- if product.featured_image != blank -%}
+              <img src="{{ product.featured_image | image_url: width: 600 }}"
+                   alt="{{ product.title }}" loading="lazy">
+            {%- else -%}
+              <div class="mdl-product-card__placeholder">
+                {{ product.title | upcase }}
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="mdl-product-card__info">
+            <p class="mdl-product-card__collection">L'Arbre de Vie</p>
+            <h3 class="mdl-product-card__name">{{ product.title }}</h3>
+            {%- if product.metafields.custom.scent_notes != blank -%}
+              <p class="mdl-product-card__notes">{{ product.metafields.custom.scent_notes }}</p>
+            {%- endif -%}
+            <p class="mdl-product-card__price">{{ product.price | money }}</p>
+          </div>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        {%- assign placeholders = "Royale Oud,Chérie Oud,Sultanat Oud,Impériale Oud" | split: "," -%}
+        <div class="mdl-product-card">
+          <div class="mdl-product-card__image-wrap">
+            <div class="mdl-product-card__placeholder">Product Image</div>
+          </div>
+          <div class="mdl-product-card__info">
+            <p class="mdl-product-card__collection">L'Arbre de Vie</p>
+            <h3 class="mdl-product-card__name">{{ placeholders[forloop.index0] }}</h3>
+            <p class="mdl-product-card__notes">Leather · Oud · Smoke</p>
+            <p class="mdl-product-card__price">From $120.00</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+<!-- BRAND STORY -->
+<section class="mdl-story">
+  <div class="mdl-story__text-side">
+    <p class="mdl-story__eyebrow">The House</p>
+    <h2 class="mdl-story__title">
+      Born from light.<br>
+      Rooted in <em>tradition.</em>
+    </h2>
+    <p class="mdl-story__text">
+      Musk de Lumière is a fragrance house built on the belief that scent is the closest thing to memory. Drawing from French perfumery tradition and the ancient art of oud, our fragrances are composed for those who understand that luxury is not worn — it is felt.
+    </p>
+    <a href="/pages/about" class="mdl-story__link">Our Story</a>
+  </div>
+  <div class="mdl-story__visual">
+    {%- if section.settings.story_image != blank -%}
+      <img src="{{ section.settings.story_image | image_url: width: 900 }}" alt="Musk de Lumière Atelier" loading="lazy">
+    {%- else -%}
+      <div class="mdl-story__visual-placeholder">Campaign Image</div>
+    {%- endif -%}
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="mdl-newsletter">
+  <p class="mdl-newsletter__eyebrow">The Inner Circle</p>
+  <h2 class="mdl-newsletter__title">First Access. Always.</h2>
+  <p class="mdl-newsletter__subtitle">New collections, exclusive releases, and the art behind the scent.</p>
+  {%- form 'customer', id: 'mdl-newsletter-form' -%}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    <div class="mdl-newsletter__form">
+      <input
+        class="mdl-newsletter__input"
+        type="email"
+        name="contact[email]"
+        placeholder="Your email address"
+        required
+        autocomplete="email"
+      >
+      <button type="submit" class="mdl-newsletter__btn">Subscribe</button>
+    </div>
+  {%- endform -%}
+</section>
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <div class="mdl-footer">
+    <div class="mdl-footer__brand">
+      <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="{{ shop.name }}" width="120" height="48" loading="lazy">
+      <p class="mdl-footer__tagline">A fragrance house born from light and rooted in the art of perfumery.</p>
+      <div class="mdl-footer__social">
+        {%- if settings.social_instagram_link != blank -%}
+          <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>
+        {%- endif -%}
+        {%- if settings.social_tiktok_link != blank -%}
+          <a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener">TikTok</a>
+        {%- endif -%}
+        {%- if settings.social_facebook_link != blank -%}
+          <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener">Facebook</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div>
+      <p class="mdl-footer__col-title">Collections</p>
+      <ul class="mdl-footer__links">
+        <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
+        <li><a href="/collections/les-essentials">Les Essentials</a></li>
+        <li><a href="/collections">All Fragrances</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="mdl-footer__col-title">The House</p>
+      <ul class="mdl-footer__links">
+        <li><a href="/pages/about">Our Story</a></li>
+        <li><a href="/pages/the-craft">The Craft</a></li>
+        <li><a href="/pages/contact">Contact</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <p class="mdl-footer__col-title">Information</p>
+      <ul class="mdl-footer__links">
+        <li><a href="/policies/shipping-policy">Shipping</a></li>
+        <li><a href="/policies/refund-policy">Returns</a></li>
+        <li><a href="/policies/privacy-policy">Privacy</a></li>
+        <li><a href="/policies/terms-of-service">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mdl-footer__bottom">
+    <span class="mdl-footer__copy">© {{ 'now' | date: '%Y' }} Musk de Lumière. All rights reserved.</span>
+    <span class="mdl-footer__copy">2 Cranberry Rd, Parsippany, NJ 07054</span>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "MDL Homepage",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero background image"
+    },
+    {
+      "type": "header",
+      "content": "Collections"
+    },
+    {
+      "type": "image_picker",
+      "id": "larbre_image",
+      "label": "L'Arbre de Vie image"
+    },
+    {
+      "type": "image_picker",
+      "id": "essentials_image",
+      "label": "Les Essentials image"
+    },
+    {
+      "type": "header",
+      "content": "Brand Story"
+    },
+    {
+      "type": "image_picker",
+      "id": "story_image",
+      "label": "Story section image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "MDL Homepage"
+    }
+  ]
+}
+{% endschema %}

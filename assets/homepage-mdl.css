@@ -1,0 +1,661 @@
+/* ============================================
+   MUSK DE LUMIÈRE — HOMEPAGE
+   Byredo-minimal. Luxury. Our magic.
+============================================ */
+
+/* ---- Global Reset for Brand ---- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #FFFFFF;
+  font-family: 'Montserrat', sans-serif;
+  color: #1A1A1A;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- HERO ---- */
+.mdl-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  background: #0A0A0A;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.mdl-hero__bg {
+  position: absolute;
+  inset: 0;
+  background: #0A0A0A;
+  /* Placeholder: will be replaced with real image/video */
+}
+
+.mdl-hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+
+.mdl-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10,10,10,0.85) 0%,
+    rgba(10,10,10,0.2) 50%,
+    transparent 100%
+  );
+}
+
+.mdl-hero__content {
+  position: relative;
+  z-index: 2;
+  padding: 0 80px 80px;
+  max-width: 700px;
+}
+
+.mdl-hero__eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0 0 20px;
+}
+
+.mdl-hero__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 300;
+  line-height: 1.05;
+  color: #F5F0E8;
+  margin: 0 0 28px;
+  letter-spacing: -0.01em;
+}
+
+.mdl-hero__title em {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.mdl-hero__subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  color: rgba(245,240,232,0.65);
+  margin: 0 0 40px;
+  line-height: 1.8;
+  max-width: 420px;
+}
+
+.mdl-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #F5F0E8;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,168,76,0.5);
+  padding-bottom: 4px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.mdl-hero__cta:hover {
+  color: #C9A84C;
+  border-color: #C9A84C;
+}
+
+.mdl-hero__cta-arrow {
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+.mdl-hero__cta:hover .mdl-hero__cta-arrow {
+  width: 36px;
+}
+
+/* ---- COLLECTIONS SPLIT ---- */
+.mdl-collections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.mdl-collection-panel {
+  position: relative;
+  height: 85vh;
+  min-height: 500px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mdl-collection-panel__bg {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.mdl-collection-panel:hover .mdl-collection-panel__bg {
+  transform: scale(1.04);
+}
+
+.mdl-collection-panel--dark .mdl-collection-panel__bg {
+  background: #0A0A0A;
+}
+
+.mdl-collection-panel--light .mdl-collection-panel__bg {
+  background: #F5F0E8;
+}
+
+.mdl-collection-panel__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+}
+
+.mdl-collection-panel__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.mdl-collection-panel--dark .mdl-collection-panel__overlay {
+  background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 60%);
+}
+
+.mdl-collection-panel--light .mdl-collection-panel__overlay {
+  background: linear-gradient(to top, rgba(245,240,232,0.85) 0%, transparent 60%);
+}
+
+.mdl-collection-panel__content {
+  position: relative;
+  z-index: 2;
+  padding: 48px;
+}
+
+.mdl-collection-panel__label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+.mdl-collection-panel--dark .mdl-collection-panel__label {
+  color: #C9A84C;
+}
+
+.mdl-collection-panel--light .mdl-collection-panel__label {
+  color: #C9A84C;
+}
+
+.mdl-collection-panel__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 300;
+  line-height: 1.1;
+  margin: 0 0 20px;
+  letter-spacing: 0.02em;
+}
+
+.mdl-collection-panel--dark .mdl-collection-panel__title {
+  color: #F5F0E8;
+}
+
+.mdl-collection-panel--light .mdl-collection-panel__title {
+  color: #1A1A1A;
+}
+
+.mdl-collection-panel__link {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mdl-collection-panel--dark .mdl-collection-panel__link {
+  color: rgba(245,240,232,0.7);
+}
+
+.mdl-collection-panel--light .mdl-collection-panel__link {
+  color: rgba(26,26,26,0.6);
+}
+
+.mdl-collection-panel__link::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.mdl-collection-panel:hover .mdl-collection-panel__link::after {
+  width: 36px;
+}
+
+/* ---- FEATURED PRODUCTS ---- */
+.mdl-products {
+  padding: 120px 80px;
+  background: #FFFFFF;
+}
+
+.mdl-products__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 64px;
+}
+
+.mdl-products__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  color: #1A1A1A;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.mdl-products__view-all {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(26,26,26,0.3);
+  padding-bottom: 3px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.mdl-products__view-all:hover {
+  color: #C9A84C;
+  border-color: #C9A84C;
+}
+
+.mdl-products__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+}
+
+/* ---- PRODUCT CARD ---- */
+.mdl-product-card {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  overflow: hidden;
+}
+
+.mdl-product-card__image-wrap {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: #F5F0E8;
+  overflow: hidden;
+}
+
+.mdl-product-card__image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.mdl-product-card:hover .mdl-product-card__image-wrap img {
+  transform: scale(1.06);
+}
+
+.mdl-product-card__placeholder {
+  width: 100%;
+  height: 100%;
+  background: #F0EBE3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(26,26,26,0.3);
+  letter-spacing: 0.1em;
+}
+
+.mdl-product-card__info {
+  padding: 20px 0 32px;
+}
+
+.mdl-product-card__collection {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0 0 6px;
+}
+
+.mdl-product-card__name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #1A1A1A;
+  margin: 0 0 6px;
+  letter-spacing: 0.03em;
+}
+
+.mdl-product-card__notes {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  color: rgba(26,26,26,0.5);
+  margin: 0 0 10px;
+  letter-spacing: 0.08em;
+}
+
+.mdl-product-card__price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #1A1A1A;
+  letter-spacing: 0.1em;
+}
+
+/* ---- BRAND STORY ---- */
+.mdl-story {
+  padding: 140px 80px;
+  background: #0A0A0A;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 120px;
+  align-items: center;
+}
+
+.mdl-story__eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0 0 24px;
+}
+
+.mdl-story__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 300;
+  line-height: 1.15;
+  color: #F5F0E8;
+  margin: 0 0 32px;
+  letter-spacing: 0.02em;
+}
+
+.mdl-story__title em {
+  font-style: italic;
+  color: #C9A84C;
+}
+
+.mdl-story__text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 2;
+  color: rgba(245,240,232,0.6);
+  margin: 0 0 40px;
+}
+
+.mdl-story__link {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(201,168,76,0.4);
+  padding-bottom: 4px;
+  transition: border-color 0.3s;
+}
+
+.mdl-story__link:hover { border-color: #C9A84C; }
+
+.mdl-story__visual {
+  aspect-ratio: 4/5;
+  background: #1A1A1A;
+  position: relative;
+  overflow: hidden;
+}
+
+.mdl-story__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+}
+
+.mdl-story__visual-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(245,240,232,0.2);
+  letter-spacing: 0.15em;
+}
+
+/* ---- NEWSLETTER ---- */
+.mdl-newsletter {
+  padding: 100px 80px;
+  background: #F5F0E8;
+  text-align: center;
+}
+
+.mdl-newsletter__eyebrow {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0 0 20px;
+}
+
+.mdl-newsletter__title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  color: #1A1A1A;
+  margin: 0 0 16px;
+}
+
+.mdl-newsletter__subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: rgba(26,26,26,0.5);
+  margin: 0 0 48px;
+}
+
+.mdl-newsletter__form {
+  display: flex;
+  align-items: center;
+  max-width: 440px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgba(26,26,26,0.25);
+}
+
+.mdl-newsletter__input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: #1A1A1A;
+  padding: 12px 0;
+}
+
+.mdl-newsletter__input::placeholder {
+  color: rgba(26,26,26,0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 10px;
+}
+
+.mdl-newsletter__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #1A1A1A;
+  padding: 12px 0 12px 20px;
+  transition: color 0.2s;
+}
+
+.mdl-newsletter__btn:hover { color: #C9A84C; }
+
+/* ---- FOOTER ---- */
+.mdl-footer {
+  background: #0A0A0A;
+  padding: 80px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 60px;
+  border-top: 1px solid rgba(201,168,76,0.15);
+}
+
+.mdl-footer__brand img {
+  height: 48px;
+  width: auto;
+  margin-bottom: 24px;
+}
+
+.mdl-footer__tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(245,240,232,0.4);
+  margin: 0 0 24px;
+  line-height: 1.7;
+  max-width: 220px;
+}
+
+.mdl-footer__social {
+  display: flex;
+  gap: 16px;
+}
+
+.mdl-footer__social a {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.35);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.mdl-footer__social a:hover { color: #C9A84C; }
+
+.mdl-footer__col-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0 0 24px;
+}
+
+.mdl-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mdl-footer__links a {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: rgba(245,240,232,0.45);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.mdl-footer__links a:hover { color: #F5F0E8; }
+
+.mdl-footer__bottom {
+  background: #0A0A0A;
+  padding: 24px 80px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mdl-footer__copy {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: rgba(245,240,232,0.2);
+}
+
+/* ---- RESPONSIVE ---- */
+@media screen and (max-width: 989px) {
+  .mdl-hero__content { padding: 0 24px 60px; }
+  .mdl-collections { grid-template-columns: 1fr; }
+  .mdl-collection-panel { height: 65vw; min-height: 360px; }
+  .mdl-collection-panel__content { padding: 32px 24px; }
+  .mdl-products { padding: 80px 24px; }
+  .mdl-products__grid { grid-template-columns: repeat(2, 1fr); gap: 1px; }
+  .mdl-products__header { margin-bottom: 40px; }
+  .mdl-story { grid-template-columns: 1fr; gap: 48px; padding: 80px 24px; }
+  .mdl-story__visual { aspect-ratio: 16/9; }
+  .mdl-newsletter { padding: 80px 24px; }
+  .mdl-footer { grid-template-columns: 1fr 1fr; gap: 40px; padding: 60px 24px; }
+  .mdl-footer__bottom { padding: 20px 24px; flex-direction: column; gap: 8px; }
+}
+
+@media screen and (max-width: 600px) {
+  .mdl-products__grid { grid-template-columns: 1fr; }
+  .mdl-footer { grid-template-columns: 1fr; }
+}
