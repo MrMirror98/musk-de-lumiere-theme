@@ -2,240 +2,217 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 {%- assign mf = product.metafields.custom -%}
-{%- assign is_larbre = false -%}
-{%- if product.tags contains "L'Arbre de Vie" -%}{%- assign is_larbre = true -%}{%- endif -%}
-{%- assign is_essential = false -%}
-{%- if product.tags contains "Les Essentials" -%}{%- assign is_essential = true -%}{%- endif -%}
-{%- assign collection_label = "Musk de Lumière" -%}
-{%- if is_larbre -%}{%- assign collection_label = "L'Arbre de Vie" -%}{%- endif -%}
-{%- if is_essential -%}{%- assign collection_label = "Les Essentials" -%}{%- endif -%}
+{%- assign is_larbre = false -%}{%- if product.tags contains "L'Arbre de Vie" -%}{%- assign is_larbre = true -%}{%- endif -%}
+{%- assign is_essential = false -%}{%- if product.tags contains "Les Essentials" -%}{%- assign is_essential = true -%}{%- endif -%}
+{%- assign col_label = "Musk de Lumière" -%}
+{%- if is_larbre -%}{%- assign col_label = "L'Arbre de Vie" -%}{%- endif -%}
+{%- if is_essential -%}{%- assign col_label = "Les Essentials" -%}{%- endif -%}
 
-<!-- ============================================================
-     PRODUCT DETAIL PAGE — Byredo-grade
-============================================================ -->
 <article class="pdp" itemscope itemtype="https://schema.org/Product">
   <meta itemprop="brand" content="Musk de Lumière">
   <meta itemprop="sku" content="{{ product.selected_or_first_available_variant.sku }}">
 
-  <!-- ===== LEFT: GALLERY (scrolls with page) ===== -->
-  <div class="pdp__gallery">
-    {%- if product.images.size > 0 -%}
-      {%- for image in product.images -%}
-        <div class="pdp__img">
-          <img src="{{ image | image_url: width: 1400 }}"
-               alt="{{ product.title }} — {{ collection_label }} by Musk de Lumière"
-               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-               itemprop="image"
-               width="1400" height="1750">
-        </div>
-      {%- endfor -%}
-    {%- else -%}
-      <!-- Luxury placeholder when no images uploaded yet -->
-      <div class="pdp__img">
-        <div class="pdp__placeholder">
-          <div class="pdp__ph-inner">
-            <span class="pdp__ph-collection">{{ collection_label }}</span>
-            <span class="pdp__ph-name">{{ product.title }}</span>
-            <span class="pdp__ph-type">Eau de Parfum</span>
-          </div>
-        </div>
-      </div>
-      <div class="pdp__img">
-        <div class="pdp__placeholder pdp__placeholder--alt">
-          <div class="pdp__ph-inner">
-            {%- if mf.key_notes != blank -%}
-              <span class="pdp__ph-notes-label">Key Notes</span>
-              <span class="pdp__ph-notes">{{ mf.key_notes }}</span>
-            {%- else -%}
-              <span class="pdp__ph-collection">{{ collection_label }}</span>
-              <span class="pdp__ph-name">{{ product.title }}</span>
-            {%- endif -%}
-          </div>
-        </div>
-      </div>
-    {%- endif -%}
-  </div>
-
-  <!-- ===== RIGHT: INFO PANEL (sticky) ===== -->
-  <div class="pdp__info">
-    <div class="pdp__info-inner">
-
-      <!-- Collection + Concentration -->
-      <p class="pdp__concentration">{{ mf.concentration | default: 'Eau de Parfum' }}</p>
-      <h1 class="pdp__name" itemprop="name">{{ product.title }}</h1>
-      <p class="pdp__price" id="pdp-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-        <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
-        <meta itemprop="price" content="{{ product.selected_or_first_available_variant.price | divided_by: 100.00 }}">
-        <meta itemprop="availability" content="{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}">
-        {{ product.selected_or_first_available_variant.price | money }}
-      </p>
-
-      <!-- Size selector (if multi-variant) -->
-      {%- if product.variants.size > 1 -%}
-        <div class="pdp__sizes">
-          <p class="pdp__sizes-label">Size</p>
-          <div class="pdp__sizes-row">
-            {%- for variant in product.variants -%}
-              <button type="button"
-                      class="pdp__size {% if variant.id == product.selected_or_first_available_variant.id %}is-active{% endif %}"
-                      data-id="{{ variant.id }}"
-                      data-price="{{ variant.price | money }}">
-                {{ variant.title }}
-              </button>
+  <!-- ============================================================
+       HERO SECTION — full viewport, gallery left + info overlay right
+  ============================================================ -->
+  <section class="pdp__hero">
+    <!-- LEFT: Horizontal image swiper -->
+    <div class="pdp__gallery">
+      <div class="swiper pdp__swiper" id="pdp-gallery-swiper">
+        <div class="swiper-wrapper">
+          {%- if product.images.size > 0 -%}
+            {%- for image in product.images -%}
+              <div class="swiper-slide">
+                <img src="{{ image | image_url: width: 1400 }}" alt="{{ product.title }} — {{ col_label }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}" itemprop="image">
+              </div>
             {%- endfor -%}
-          </div>
+          {%- else -%}
+            <div class="swiper-slide">
+              <div class="pdp__ph"><span class="pdp__ph-col">{{ col_label }}</span><span class="pdp__ph-name">{{ product.title }}</span><span class="pdp__ph-type">eau de parfum</span></div>
+            </div>
+            <div class="swiper-slide">
+              <div class="pdp__ph pdp__ph--dark">{%- if mf.key_notes != blank -%}<span class="pdp__ph-notes-lbl">Key Notes</span><span class="pdp__ph-notes">{{ mf.key_notes }}</span>{%- else -%}<span class="pdp__ph-col">{{ col_label }}</span><span class="pdp__ph-name">{{ product.title }}</span>{%- endif -%}</div>
+            </div>
+          {%- endif -%}
         </div>
+        <!-- Nav arrows -->
+        <button class="pdp__arrow pdp__arrow--prev" id="pdp-prev" aria-label="Previous image">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="pdp__arrow pdp__arrow--next" id="pdp-next" aria-label="Next image">
+          <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <!-- Pagination dots -->
+        <div class="pdp__dots" id="pdp-dots"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Background image + floating info card -->
+    <div class="pdp__right">
+      <div class="pdp__right-bg">
+        {%- if product.images.size > 1 -%}
+          <img src="{{ product.images[1] | image_url: width: 1400 }}" alt="" loading="eager">
+        {%- elsif product.featured_image -%}
+          <img src="{{ product.featured_image | image_url: width: 1400 }}" alt="" loading="eager">
+        {%- else -%}
+          <div class="pdp__right-ph"></div>
+        {%- endif -%}
+      </div>
+
+      <!-- Info card floating on top -->
+      <div class="pdp__card">
+        <p class="pdp__card-type">{{ mf.concentration | default: 'Eau de Parfum' }}</p>
+        <h1 class="pdp__card-name" itemprop="name">{{ product.title }}</h1>
+        <p class="pdp__card-price" id="pdp-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+          <meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}">
+          <meta itemprop="price" content="{{ product.selected_or_first_available_variant.price | divided_by: 100.00 }}">
+          <meta itemprop="availability" content="{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </p>
+
+        {%- if product.variants.size > 1 -%}
+          <div class="pdp__card-sizes">
+            <span class="pdp__card-sizes-label">Size</span>
+            <div class="pdp__card-sizes-row">
+              {%- for v in product.variants -%}
+                <button type="button" class="pdp__card-size {% if v.id == product.selected_or_first_available_variant.id %}is-active{% endif %}" data-id="{{ v.id }}" data-price="{{ v.price | money }}">{{ v.title }}</button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <form id="pdp-form">
+          <input type="hidden" name="id" id="pdp-variant-id" value="{{ product.selected_or_first_available_variant.id }}">
+
+          <!-- Sample selector -->
+          <div class="pdp__card-sample">
+            <span class="pdp__card-sample-label">Complimentary Sample</span>
+            <div class="pdp__card-select-wrap">
+              <select name="properties[Complimentary Sample]" id="pdp-sample" class="pdp__card-select">
+                <option value="Surprise me — Maison's choice">Surprise me — Maison's choice</option>
+                <option value="Royale Oud — 2.5ml" {% if product.handle == 'royale-oud' %}disabled{% endif %}>Royale Oud</option>
+                <option value="Chérie Oud — 2.5ml" {% if product.handle == 'cherie-oud' %}disabled{% endif %}>Chérie Oud</option>
+                <option value="Sultanat Oud — 2.5ml" {% if product.handle == 'sultanat-oud' %}disabled{% endif %}>Sultanat Oud</option>
+                <option value="Impériale Oud — 2.5ml" {% if product.handle == 'imperiale-oud' %}disabled{% endif %}>Impériale Oud</option>
+                <option value="Paradis de Bleu — 2.5ml" {% if product.handle == 'paradis-de-bleu' %}disabled{% endif %}>Paradis de Bleu</option>
+                <option value="Néroli de Nuit — 2.5ml" {% if product.handle == 'neroli-de-nuit' %}disabled{% endif %}>Néroli de Nuit</option>
+                <option value="Hayal — 2.5ml" {% if product.handle == 'hayal' %}disabled{% endif %}>Hayal</option>
+                <option value="Rosée Blanche — 2.5ml" {% if product.handle == 'rosee-blanche' %}disabled{% endif %}>Rosée Blanche</option>
+              </select>
+              <svg class="pdp__card-select-icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+          </div>
+
+          <button type="submit" class="pdp__card-add" id="pdp-add">
+            <span class="pdp__card-add-text">Add to Cart</span>
+          </button>
+        </form>
+
+        <p class="pdp__card-ship">Complimentary shipping over $100 · 30-day returns</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BELOW THE FOLD — Description + Good to Know + Notes
+  ============================================================ -->
+  <section class="pdp__below">
+    <div class="pdp__below-inner">
+      {%- if mf.olfactive_description != blank or product.description != blank -%}
+        <details class="pdp__acc" open>
+          <summary>Description <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="pdp__acc-body">
+            {%- if mf.olfactive_description != blank -%}<p>{{ mf.olfactive_description }}</p>{%- endif -%}
+            {%- if product.description != blank -%}<p class="pdp__acc-small">{{ product.description | strip_html }}</p>{%- endif -%}
+          </div>
+        </details>
       {%- endif -%}
 
-      <!-- Add to Cart -->
-      <form id="pdp-form" class="pdp__form">
-        <input type="hidden" name="id" id="pdp-variant-id" value="{{ product.selected_or_first_available_variant.id }}">
-
-        <!-- Complimentary Sample -->
-        <div class="pdp__sample">
-          <div class="pdp__sample-top">
-            <span class="pdp__sample-label">Complimentary Sample</span>
+      {%- if mf.fragrance_family != blank or mf.gender != blank or mf.sillage != blank -%}
+        <details class="pdp__acc" open>
+          <summary>Good to Know <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="pdp__acc-body">
+            <div class="pdp__acc-tags">
+              {%- if mf.fragrance_family != blank -%}<span>{{ mf.fragrance_family }}</span>{%- endif -%}
+              {%- if mf.gender != blank -%}<span>{{ mf.gender | capitalize }}</span>{%- endif -%}
+              {%- if mf.sillage != blank -%}<span>{{ mf.sillage }} Sillage</span>{%- endif -%}
+              {%- if mf.longevity != blank -%}<span>{{ mf.longevity }}</span>{%- endif -%}
+              {%- if mf.best_season != blank -%}<span>{{ mf.best_season }}</span>{%- endif -%}
+              {%- if mf.best_occasion != blank -%}<span>{{ mf.best_occasion }}</span>{%- endif -%}
+            </div>
           </div>
-          <div class="pdp__select-wrap">
-            <select name="properties[Complimentary Sample]" id="pdp-sample" class="pdp__select">
-              <option value="Surprise me — Maison's choice">Surprise me — Maison's choice</option>
-              <option value="Royale Oud — 2.5ml" {% if product.handle == 'royale-oud' %}disabled{% endif %}>Royale Oud</option>
-              <option value="Chérie Oud — 2.5ml" {% if product.handle == 'cherie-oud' %}disabled{% endif %}>Chérie Oud</option>
-              <option value="Sultanat Oud — 2.5ml" {% if product.handle == 'sultanat-oud' %}disabled{% endif %}>Sultanat Oud</option>
-              <option value="Impériale Oud — 2.5ml" {% if product.handle == 'imperiale-oud' %}disabled{% endif %}>Impériale Oud</option>
-              <option value="Paradis de Bleu — 2.5ml" {% if product.handle == 'paradis-de-bleu' %}disabled{% endif %}>Paradis de Bleu</option>
-              <option value="Néroli de Nuit — 2.5ml" {% if product.handle == 'neroli-de-nuit' %}disabled{% endif %}>Néroli de Nuit</option>
-              <option value="Hayal — 2.5ml" {% if product.handle == 'hayal' %}disabled{% endif %}>Hayal</option>
-              <option value="Rosée Blanche — 2.5ml" {% if product.handle == 'rosee-blanche' %}disabled{% endif %}>Rosée Blanche</option>
-            </select>
-            <svg class="pdp__select-icon" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+        </details>
+      {%- endif -%}
+
+      {%- if mf.scent_top != blank and mf.scent_top != "—" -%}
+        <details class="pdp__acc">
+          <summary>Notes &amp; Accords <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></summary>
+          <div class="pdp__acc-body">
+            <div class="pdp__pyramid">
+              {%- if mf.scent_top != blank and mf.scent_top != "—" -%}<div class="pdp__pyr-row"><span>Top</span><span>{{ mf.scent_top }}</span></div>{%- endif -%}
+              {%- if mf.scent_heart != blank and mf.scent_heart != "—" -%}<div class="pdp__pyr-row"><span>Heart</span><span>{{ mf.scent_heart }}</span></div>{%- endif -%}
+              {%- if mf.scent_base != blank and mf.scent_base != "—" -%}<div class="pdp__pyr-row"><span>Base</span><span>{{ mf.scent_base }}</span></div>{%- endif -%}
+            </div>
           </div>
-          <p class="pdp__sample-note">Free 2.5 ml from the L'Arbre de Vie collection with every order.</p>
-        </div>
+        </details>
+      {%- endif -%}
 
-        <button type="submit" class="pdp__add" id="pdp-add">
-          <span class="pdp__add-text">Add to Cart</span>
-          <div class="pdp__add-bar"></div>
-        </button>
-      </form>
+      {%- if mf.ingredients_inci != blank -%}
+        <details class="pdp__acc">
+          <summary>Ingredients <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></summary>
+          <div class="pdp__acc-body"><p class="pdp__acc-inci">{{ mf.ingredients_inci }}</p></div>
+        </details>
+      {%- endif -%}
 
-      <p class="pdp__shipping">Complimentary shipping on orders over $100 · 30-day returns</p>
+      {%- if mf.inspiration != blank -%}
+        <details class="pdp__acc">
+          <summary>The Inspiration <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></summary>
+          <div class="pdp__acc-body"><p>{{ mf.inspiration }}</p></div>
+        </details>
+      {%- endif -%}
 
-      <!-- ===== BELOW THE FOLD — Description + Accords ===== -->
-      <div class="pdp__details">
-        {%- if mf.olfactive_description != blank -%}
-          <details class="pdp__detail" open>
-            <summary>Description</summary>
-            <div class="pdp__detail-body">
-              <p class="pdp__olfactive">{{ mf.olfactive_description }}</p>
-              {%- if product.description != blank -%}
-                <p class="pdp__body-text">{{ product.description | strip_html }}</p>
-              {%- endif -%}
-            </div>
-          </details>
-        {%- elsif product.description != blank -%}
-          <details class="pdp__detail" open>
-            <summary>Description</summary>
-            <div class="pdp__detail-body">
-              <p class="pdp__body-text">{{ product.description | strip_html }}</p>
-            </div>
-          </details>
-        {%- endif -%}
-
-        <!-- Good to Know -->
-        {%- if mf.fragrance_family != blank or mf.sillage != blank or mf.gender != blank -%}
-          <details class="pdp__detail" open>
-            <summary>Good to Know</summary>
-            <div class="pdp__detail-body">
-              <div class="pdp__tags">
-                {%- if mf.fragrance_family != blank -%}<span class="pdp__tag">{{ mf.fragrance_family }}</span>{%- endif -%}
-                {%- if mf.gender != blank -%}<span class="pdp__tag">{{ mf.gender | capitalize }}</span>{%- endif -%}
-                {%- if mf.sillage != blank -%}<span class="pdp__tag">{{ mf.sillage }} Sillage</span>{%- endif -%}
-                {%- if mf.longevity != blank -%}<span class="pdp__tag">{{ mf.longevity }}</span>{%- endif -%}
-                {%- if mf.best_season != blank -%}<span class="pdp__tag">{{ mf.best_season }}</span>{%- endif -%}
-                {%- if mf.best_occasion != blank -%}<span class="pdp__tag">{{ mf.best_occasion }}</span>{%- endif -%}
-              </div>
-            </div>
-          </details>
-        {%- endif -%}
-
-        <!-- Notes & Accords -->
-        {%- if mf.scent_top != blank and mf.scent_top != "—" -%}
-          <details class="pdp__detail">
-            <summary>Notes &amp; Accords</summary>
-            <div class="pdp__detail-body">
-              <div class="pdp__pyramid">
-                {%- if mf.scent_top != blank and mf.scent_top != "—" -%}
-                  <div class="pdp__pyramid-row"><span class="pdp__pyramid-label">Top</span><span class="pdp__pyramid-notes">{{ mf.scent_top }}</span></div>
-                {%- endif -%}
-                {%- if mf.scent_heart != blank and mf.scent_heart != "—" -%}
-                  <div class="pdp__pyramid-row"><span class="pdp__pyramid-label">Heart</span><span class="pdp__pyramid-notes">{{ mf.scent_heart }}</span></div>
-                {%- endif -%}
-                {%- if mf.scent_base != blank and mf.scent_base != "—" -%}
-                  <div class="pdp__pyramid-row"><span class="pdp__pyramid-label">Base</span><span class="pdp__pyramid-notes">{{ mf.scent_base }}</span></div>
-                {%- endif -%}
-              </div>
-            </div>
-          </details>
-        {%- endif -%}
-
-        {%- if mf.inspiration != blank -%}
-          <details class="pdp__detail">
-            <summary>The Inspiration</summary>
-            <div class="pdp__detail-body"><p>{{ mf.inspiration }}</p></div>
-          </details>
-        {%- endif -%}
-
-        {%- if mf.about_the_name != blank -%}
-          <details class="pdp__detail">
-            <summary>About the Name</summary>
-            <div class="pdp__detail-body"><p>{{ mf.about_the_name }}</p></div>
-          </details>
-        {%- endif -%}
-
-        {%- if mf.perfumer_signature != blank -%}
-          <details class="pdp__detail">
-            <summary>Note from the Perfumer</summary>
-            <div class="pdp__detail-body"><p>{{ mf.perfumer_signature }}</p></div>
-          </details>
-        {%- endif -%}
-
-        {%- if mf.ingredients_inci != blank -%}
-          <details class="pdp__detail">
-            <summary>Ingredients</summary>
-            <div class="pdp__detail-body"><p class="pdp__inci">{{ mf.ingredients_inci }}</p></div>
-          </details>
-        {%- endif -%}
-      </div>
-
+      {%- if mf.pairs_well_with != blank -%}
+        <details class="pdp__acc">
+          <summary>Pairs Well With <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></summary>
+          <div class="pdp__acc-body"><p>{{ mf.pairs_well_with }}</p></div>
+        </details>
+      {%- endif -%}
     </div>
-  </div>
+  </section>
 </article>
 
-<!-- ===== FULL-SCREEN SCENT NOTES (Byredo-style vertical swiper) ===== -->
+<!-- ===== RELATED — THE COLLECTION ===== -->
+{%- assign rel = product.collections.first -%}
+{%- if rel != blank and rel.products.size > 1 -%}
+<section class="pdp-related">
+  <h2 class="pdp-related__title">The Collection</h2>
+  <div class="pdp-related__grid">
+    {%- assign cnt = 0 -%}
+    {%- for p in rel.products -%}{%- if p.id != product.id and cnt < 4 -%}
+      <a href="{{ p.url }}" class="pdp-related__card">
+        <div class="pdp-related__img">{%- if p.featured_image -%}<img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }}" loading="lazy">{%- else -%}<div class="pdp-related__ph"><em>{{ rel.title }}</em><strong>{{ p.title }}</strong></div>{%- endif -%}</div>
+        <h3 class="pdp-related__name">{{ p.title }}</h3>
+        <p class="pdp-related__price">{{ p.price | money }}</p>
+      </a>
+    {%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+  </div>
+</section>
+{%- endif -%}
+
+<!-- ===== FULL-SCREEN SCENT NOTES (Byredo vertical swiper) ===== -->
 {%- if mf.scent_top != blank and mf.scent_top != "—" -%}
-<section class="pdp-notes" aria-label="Scent notes">
-  <div class="pdp-notes__bg"
-       style="{% if product.images.size > 1 %}background-image: linear-gradient(0deg,rgba(0,0,0,0.45) 0%,rgba(0,0,0,0.45) 100%),url('{{ product.images[1] | image_url: width: 2400 }}');{% endif %}">
+<section class="pdp-notes" id="pdp-notes-section">
+  <div class="pdp-notes__bg" style="{% if product.images.size > 1 %}background-image: linear-gradient(0deg,rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url('{{ product.images.last | image_url: width: 2400 }}');{% endif %}">
     <div class="swiper pdp-notes__swiper" id="pdp-notes-swiper">
       <div class="swiper-wrapper">
         {%- if mf.scent_top != blank and mf.scent_top != "—" -%}
-        <div class="swiper-slide"><div class="pdp-notes__slide">
-          <div class="pdp-notes__label">Top Notes</div>
-          <ul class="pdp-notes__list">{%- assign tops = mf.scent_top | split: ", " -%}{%- for n in tops -%}<li>{{ n }}</li>{%- endfor -%}</ul>
-        </div></div>
+        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Top Notes</div><ul class="pdp-notes__list">{%- for n in mf.scent_top | split: ", " -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
         {%- endif -%}
         {%- if mf.scent_heart != blank and mf.scent_heart != "—" -%}
-        <div class="swiper-slide"><div class="pdp-notes__slide">
-          <div class="pdp-notes__label">Heart Notes</div>
-          <ul class="pdp-notes__list">{%- assign hearts = mf.scent_heart | split: ", " -%}{%- for n in hearts -%}<li>{{ n }}</li>{%- endfor -%}</ul>
-        </div></div>
+        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Heart Notes</div><ul class="pdp-notes__list">{%- for n in mf.scent_heart | split: ", " -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
         {%- endif -%}
         {%- if mf.scent_base != blank and mf.scent_base != "—" -%}
-        <div class="swiper-slide"><div class="pdp-notes__slide">
-          <div class="pdp-notes__label">Base Notes</div>
-          <ul class="pdp-notes__list">{%- assign bases = mf.scent_base | split: ", " -%}{%- for n in bases -%}<li>{{ n }}</li>{%- endfor -%}</ul>
-        </div></div>
+        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Base Notes</div><ul class="pdp-notes__list">{%- for n in mf.scent_base | split: ", " -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
         {%- endif -%}
       </div>
       <div class="swiper-scrollbar pdp-notes__scrollbar"></div>
@@ -244,50 +221,35 @@
 </section>
 {%- endif -%}
 
-<!-- ===== YOU MAY ALSO LIKE ===== -->
-{%- assign rel = product.collections.first -%}
-{%- if rel != blank and rel.products.size > 1 -%}
-<section class="pdp-related">
-  <div class="pdp-related__head">
-    <p class="pdp-related__label">You May Also Like</p>
-  </div>
-  <div class="pdp-related__grid">
-    {%- assign cnt = 0 -%}
-    {%- for p in rel.products -%}
-      {%- if p.id != product.id and cnt < 4 -%}
-        <a href="{{ p.url }}" class="pdp-related__card">
-          <div class="pdp-related__img">
-            {%- if p.featured_image -%}
-              <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }}" loading="lazy">
-            {%- else -%}
-              <div class="pdp-related__ph"><em>{{ rel.title }}</em><strong>{{ p.title }}</strong></div>
-            {%- endif -%}
-          </div>
-          <div class="pdp-related__info">
-            <h3 class="pdp-related__name">{{ p.title }}</h3>
-            <p class="pdp-related__price">{{ p.price | money }}</p>
-          </div>
-        </a>
-        {%- assign cnt = cnt | plus: 1 -%}
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
-</section>
-{%- endif -%}
-
-<!-- ===== JAVASCRIPT ===== -->
+<!-- ===== JS ===== -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 (function(){
+  /* Gallery horizontal swiper */
+  new Swiper('#pdp-gallery-swiper', {
+    slidesPerView: 1, speed: 600, loop: true,
+    navigation: { prevEl: '#pdp-prev', nextEl: '#pdp-next' },
+    pagination: { el: '#pdp-dots', clickable: true }
+  });
+
+  /* Notes vertical swiper */
+  if(document.getElementById('pdp-notes-swiper')){
+    new Swiper('#pdp-notes-swiper', {
+      direction: 'vertical', slidesPerView: 1, speed: 800,
+      mousewheel: { sensitivity: 1, releaseOnEdges: true },
+      scrollbar: { el: '.pdp-notes__scrollbar', draggable: true }
+    });
+  }
+
   /* Variant selector */
-  const priceEl = document.getElementById('pdp-price');
-  const variantInput = document.getElementById('pdp-variant-id');
-  document.querySelectorAll('.pdp__size').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.pdp__size').forEach(function(b){ b.classList.remove('is-active'); });
+  var priceEl = document.getElementById('pdp-price');
+  var vidInput = document.getElementById('pdp-variant-id');
+  document.querySelectorAll('.pdp__card-size').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.querySelectorAll('.pdp__card-size').forEach(function(x){ x.classList.remove('is-active'); });
       this.classList.add('is-active');
-      variantInput.value = this.dataset.id;
-      const metas = priceEl.querySelectorAll('meta');
+      vidInput.value = this.dataset.id;
+      var metas = priceEl.querySelectorAll('meta');
       priceEl.textContent = this.dataset.price;
       metas.forEach(function(m){ priceEl.appendChild(m); });
     });
@@ -296,59 +258,22 @@
   /* Add to cart */
   document.getElementById('pdp-form').addEventListener('submit', function(e){
     e.preventDefault();
-    const addBtn = document.getElementById('pdp-add');
-    const bar = addBtn.querySelector('.pdp__add-bar');
-    const txt = addBtn.querySelector('.pdp__add-text');
-    const sample = document.getElementById('pdp-sample');
+    var btn = document.getElementById('pdp-add');
+    var txt = btn.querySelector('.pdp__card-add-text');
+    var sample = document.getElementById('pdp-sample');
     txt.textContent = 'Adding...';
-    bar.style.width = '100%';
     fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: variantInput.value,
-        quantity: 1,
-        properties: { 'Complimentary Sample': sample ? sample.value : "Surprise me — Maison's choice" }
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ id: vidInput.value, quantity: 1,
+        properties: {'Complimentary Sample': sample ? sample.value : "Surprise me"}
       })
-    })
-    .then(function(r){ return r.json(); })
+    }).then(function(r){ return r.json(); })
     .then(function(){
       txt.textContent = 'Added ✓';
       if(window.mdlRefreshCart) window.mdlRefreshCart();
-      setTimeout(function(){
-        if(window.mdlOpenCart) window.mdlOpenCart();
-        txt.textContent = 'Add to Cart';
-        bar.style.width = '0';
-      }, 700);
-    })
-    .catch(function(){
-      txt.textContent = 'Add to Cart';
-      bar.style.width = '0';
-    });
+      setTimeout(function(){ if(window.mdlOpenCart) window.mdlOpenCart(); txt.textContent = 'Add to Cart'; }, 700);
+    }).catch(function(){ txt.textContent = 'Add to Cart'; });
   });
-
-  /* Notes swiper */
-  var notesEl = document.getElementById('pdp-notes-swiper');
-  if(notesEl){
-    new Swiper('#pdp-notes-swiper', {
-      direction: 'vertical',
-      slidesPerView: 1,
-      speed: 800,
-      mousewheel: { sensitivity: 1, releaseOnEdges: true },
-      scrollbar: { el: '.pdp-notes__scrollbar', draggable: true }
-    });
-  }
-
-  /* Scroll-reveal animations */
-  if('IntersectionObserver' in window){
-    var reveals = document.querySelectorAll('.pdp__detail, .pdp-related__card');
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.1 });
-    reveals.forEach(function(el){ io.observe(el); });
-  }
 })();
 </script>
 
