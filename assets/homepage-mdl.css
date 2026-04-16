@@ -66,6 +66,9 @@ html, body {
 .mdl-header.light-mode .mdl-header__burger span { background: rgba(10,10,10,0.6); }
 .mdl-header.light-mode .mdl-header__logo img { filter: drop-shadow(0 4px 28px rgba(201,168,76,0.35)) brightness(0.92); }
 
+.mdl-header__nav-wrap {
+  display: contents; /* pass through for grid on desktop */
+}
 .mdl-header__nav { display: flex; gap: 44px; list-style: none; }
 .mdl-header__nav a {
   font-size: 9px; font-weight: 500;
@@ -959,33 +962,178 @@ html, body {
 }
 .mdl-cart-drawer__checkout:hover { background: #B8983E; }
 
-/* MOBILE NAV DRAWER */
+/* ================================================
+   MOBILE NAV DRAWER — editorial luxury menu
+================================================ */
 .mdl-drawer {
-  position: fixed; inset: 0; background: #0A0A0A;
-  z-index: 600; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  position: fixed; inset: 0;
+  background: linear-gradient(180deg, #0A0A0A 0%, #08070A 100%);
+  z-index: 600;
   transform: translateX(-100%);
   transition: transform 0.55s cubic-bezier(0.77,0,0.175,1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .mdl-drawer.open { transform: translateX(0); }
+
 .mdl-drawer__close {
-  position: absolute; top: 28px; right: 28px;
-  background: none; border: none; cursor: pointer;
-  color: rgba(245,240,232,0.4);
+  position: fixed;
+  top: 22px; right: 22px;
+  background: rgba(245,240,232,0.05);
+  border: 1px solid rgba(245,240,232,0.08);
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(245,240,232,0.55);
+  z-index: 10;
+  transition: color 0.3s, background 0.3s;
 }
-.mdl-drawer__close svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.4; }
-.mdl-drawer nav ul { list-style: none; text-align: center; display: flex; flex-direction: column; gap: 28px; }
-.mdl-drawer nav a {
+.mdl-drawer__close:hover { color: #C9A84C; background: rgba(201,168,76,0.08); }
+.mdl-drawer__close svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+
+.mdl-drawer__inner {
+  padding: 40px 32px 60px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.mdl-drawer__logo {
+  text-align: center;
+  padding: 16px 0 40px;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+  margin-bottom: 30px;
+}
+.mdl-drawer__logo img {
+  height: 70px; width: auto;
+  filter: drop-shadow(0 2px 14px rgba(201,168,76,0.2));
+}
+
+.mdl-drawer__sec {
+  padding: 20px 0;
+  border-top: 1px solid rgba(201,168,76,0.07);
+}
+.mdl-drawer__sec:first-of-type { border-top: none; padding-top: 0; }
+
+.mdl-drawer__label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin: 0 0 18px 0;
+}
+
+.mdl-drawer__sec ul {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column;
+  gap: 12px;
+}
+.mdl-drawer__sec li {
+  line-height: 1.3;
+}
+
+.mdl-drawer__sec a {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 38px; font-weight: 300; font-style: italic;
-  color: #F5F0E8; text-decoration: none; transition: color 0.2s;
+  font-size: 22px;
+  font-weight: 300;
+  font-style: italic;
+  color: #F5F0E8;
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  transition: color 0.25s, padding-left 0.25s;
+  padding-left: 0;
 }
-.mdl-drawer nav a:hover { color: #C9A84C; }
+.mdl-drawer__sec a:hover,
+.mdl-drawer__sec a:active {
+  color: #C9A84C;
+  padding-left: 6px;
+}
+
+.mdl-drawer__hint {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-size: 8px; font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.28);
+}
+
+/* Coming soon items — gray italic + small badge */
+.mdl-drawer__coming {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  font-style: italic;
+  color: rgba(245,240,232,0.32);
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  cursor: default;
+}
+.mdl-drawer__coming em {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-size: 7px; font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #C9A84C;
+  border: 1px solid rgba(201,168,76,0.32);
+  padding: 3px 8px;
+  background: rgba(201,168,76,0.03);
+}
+
+/* Legal section — smaller text */
+.mdl-drawer__legal a {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px; font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  color: rgba(245,240,232,0.5);
+}
+
+/* Footer — Account + Cart utility buttons */
+.mdl-drawer__foot {
+  margin-top: 36px;
+  padding: 28px 0 0;
+  border-top: 1px solid rgba(201,168,76,0.1);
+  display: flex;
+  gap: 28px;
+}
+.mdl-drawer__util {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.7);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+.mdl-drawer__util:hover { color: #C9A84C; }
+.mdl-drawer__util svg {
+  width: 16px; height: 16px;
+  stroke: currentColor; fill: none; stroke-width: 1.3;
+}
+.mdl-drawer__util-count {
+  color: #C9A84C; font-weight: 700;
+}
+
+/* Desktop — never shown */
+@media (min-width: 1025px) {
+  .mdl-drawer { display: none; }
+}
 /* ================================================================
    MOBILE — same structure as desktop, scaled proportionally
 ================================================================ */
 @media (max-width: 1024px) {
-  html, body {
+  /* Lock body only when swiper is present on the page (homepage) */
+  html:has(.mdl-swiper-wrap), body:has(.mdl-swiper-wrap) {
     height: 100%; overflow: hidden;
     position: fixed; width: 100%;
   }

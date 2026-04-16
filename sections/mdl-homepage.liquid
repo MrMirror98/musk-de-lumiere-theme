@@ -14,19 +14,28 @@
 </div>
 
 <!-- HEADER -->
-<header class="mdl-header" id="mdl-header">
-  <nav><ul class="mdl-header__nav">
-    <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
-    <li><a href="/collections/les-essentials">Les Essentials</a></li>
-    <li><a href="/collections">Maison</a></li>
-    <li><a href="/pages/about">L'Histoire</a></li>
-  </ul></nav>
+<header class="mdl-header" id="mdl-header" role="banner">
+  <!-- Burger: sibling (not child of icons) so absolute positioning works -->
+  <button class="mdl-header__burger" id="mdl-burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav class="mdl-header__nav-wrap" role="navigation" aria-label="Primary">
+    <ul class="mdl-header__nav">
+      <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
+      <li><a href="/collections/les-essentials">Les Essentials</a></li>
+      <li><a href="/collections">Maison</a></li>
+      <li><a href="/pages/about">L'Histoire</a></li>
+    </ul>
+  </nav>
+
   <div class="mdl-header__logo">
-    <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+    <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
       <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}"
            alt="{{ shop.name }}" width="320" height="130" loading="eager" fetchpriority="high">
     </a>
   </div>
+
   <div class="mdl-header__icons">
     <button class="mdl-header__icon" id="mdl-search-open" aria-label="Search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
@@ -34,9 +43,6 @@
     <button class="mdl-header__icon" id="mdl-cart-open" aria-label="Cart">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       <span class="mdl-cart-bubble" id="mdl-cart-count" {% if cart.item_count == 0 %}style="display:none"{% endif %}>{{ cart.item_count }}</span>
-    </button>
-    <button class="mdl-header__burger" id="mdl-burger" aria-label="Menu">
-      <span></span><span></span><span></span>
     </button>
   </div>
 </header>
@@ -47,19 +53,87 @@
   <span class="mdl-slide-num__tot">/ 07</span>
 </div>
 
-<!-- MOBILE NAV DRAWER -->
-<div class="mdl-drawer" id="mdl-drawer">
-  <button class="mdl-drawer__close" id="mdl-close" aria-label="Close">
+<!-- MOBILE NAV DRAWER — luxury menu -->
+<nav class="mdl-drawer" id="mdl-drawer" aria-label="Mobile navigation" aria-hidden="true">
+  <button class="mdl-drawer__close" id="mdl-close" aria-label="Close menu">
     <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
-  <nav><ul>
-    <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
-    <li><a href="/collections/les-essentials">Les Essentials</a></li>
-    <li><a href="/collections">Maison</a></li>
-    <li><a href="/pages/about">L'Histoire</a></li>
-    <li><a href="/pages/contact">Contact</a></li>
-  </ul></nav>
-</div>
+
+  <div class="mdl-drawer__inner">
+    <div class="mdl-drawer__logo">
+      <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="Musk de Lumière" width="140" height="60">
+    </div>
+
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">La Collection</h4>
+      <ul>
+        <li><a href="/collections/larbre-de-vie">L'Arbre de Vie <span class="mdl-drawer__hint">8 Signatures</span></a></li>
+        <li><a href="/collections/larbre-de-vie">Les Racines <span class="mdl-drawer__hint">The Roots · Oud</span></a></li>
+        <li><a href="/collections/larbre-de-vie">Les Branches <span class="mdl-drawer__hint">The Light · Floral</span></a></li>
+        {%- assign ds = all_products['discovery-set-larbre-de-vie'] -%}
+        {%- if ds != blank and ds.id -%}
+          <li><a href="{{ ds.url }}">Discovery Set <span class="mdl-drawer__hint">8 × 2.5ml</span></a></li>
+        {%- else -%}
+          <li><a href="/collections/larbre-de-vie">Discovery Set <span class="mdl-drawer__hint">8 × 2.5ml</span></a></li>
+        {%- endif -%}
+      </ul>
+    </section>
+
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">Les Essentials</h4>
+      <ul>
+        <li><a href="/collections/les-essentials">Le Quotidien <span class="mdl-drawer__hint">Everyday · 10ml & 100ml</span></a></li>
+      </ul>
+    </section>
+
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">À Venir</h4>
+      <ul>
+        <li><span class="mdl-drawer__coming">Gift Sets <em>Coming Soon</em></span></li>
+        <li><span class="mdl-drawer__coming">Home Fragrances <em>Coming Soon</em></span></li>
+        <li><span class="mdl-drawer__coming">Les Essentials Discovery <em>Coming Soon</em></span></li>
+      </ul>
+    </section>
+
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">La Maison</h4>
+      <ul>
+        <li><a href="/pages/about">L'Histoire <span class="mdl-drawer__hint">Our Story</span></a></li>
+        <li><a href="/pages/the-craft">The Craft</a></li>
+        <li><a href="/pages/journal">Journal</a></li>
+        <li><a href="/pages/contact">Contact</a></li>
+      </ul>
+    </section>
+
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">Service</h4>
+      <ul>
+        <li><a href="/policies/shipping-policy">Shipping</a></li>
+        <li><a href="/policies/refund-policy">Returns</a></li>
+        <li><a href="/pages/faq">FAQ</a></li>
+      </ul>
+    </section>
+
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">Legal</h4>
+      <ul class="mdl-drawer__legal">
+        <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+      </ul>
+    </section>
+
+    <div class="mdl-drawer__foot">
+      <a href="/account" class="mdl-drawer__util">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        Account
+      </a>
+      <a href="/cart" class="mdl-drawer__util">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart <span class="mdl-drawer__util-count">({{ cart.item_count }})</span>
+      </a>
+    </div>
+  </div>
+</nav>
 
 <!-- SEARCH OVERLAY -->
 <div class="mdl-search-overlay" id="mdl-search">

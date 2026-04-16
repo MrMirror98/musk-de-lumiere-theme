@@ -1,23 +1,31 @@
 {{ 'homepage-mdl.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
-<div class="mdl-bar">
+<div class="mdl-bar" id="mdl-bar">
   Complimentary samples with every order &nbsp;·&nbsp;
   <a href="/collections/larbre-de-vie">&nbsp;Discover L'Arbre de Vie →</a>
 </div>
 
-<header class="mdl-header solid" id="mdl-header">
-  <nav><ul class="mdl-header__nav">
-    <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
-    <li><a href="/collections/les-essentials">Les Essentials</a></li>
-    <li><a href="/collections">Maison</a></li>
-    <li><a href="/pages/about">L'Histoire</a></li>
-  </ul></nav>
+<header class="mdl-header solid" id="mdl-header" role="banner">
+  <button class="mdl-header__burger" id="mdl-burger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav class="mdl-header__nav-wrap" role="navigation" aria-label="Primary">
+    <ul class="mdl-header__nav">
+      <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
+      <li><a href="/collections/les-essentials">Les Essentials</a></li>
+      <li><a href="/collections">Maison</a></li>
+      <li><a href="/pages/about">L'Histoire</a></li>
+    </ul>
+  </nav>
+
   <div class="mdl-header__logo">
-    <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+    <a href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
       <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="{{ shop.name }}" width="320" height="130" loading="eager">
     </a>
   </div>
+
   <div class="mdl-header__icons">
     <button class="mdl-header__icon" id="mdl-search-open" aria-label="Search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
@@ -26,32 +34,90 @@
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
       <span class="mdl-cart-bubble" id="mdl-cart-count" {% if cart.item_count == 0 %}style="display:none"{% endif %}>{{ cart.item_count }}</span>
     </button>
-    <button class="mdl-header__burger" id="mdl-burger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </header>
 
-<div class="mdl-drawer" id="mdl-drawer">
-  <button class="mdl-drawer__close" id="mdl-close" aria-label="Close">
+<!-- MOBILE NAV DRAWER — same as homepage -->
+<nav class="mdl-drawer" id="mdl-drawer" aria-label="Mobile navigation" aria-hidden="true">
+  <button class="mdl-drawer__close" id="mdl-close" aria-label="Close menu">
     <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
-  <nav><ul>
-    <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
-    <li><a href="/collections/les-essentials">Les Essentials</a></li>
-    <li><a href="/collections">Maison</a></li>
-    <li><a href="/pages/about">L'Histoire</a></li>
-    <li><a href="/pages/contact">Contact</a></li>
-  </ul></nav>
-</div>
+  <div class="mdl-drawer__inner">
+    <div class="mdl-drawer__logo">
+      <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="Musk de Lumière" width="140" height="60">
+    </div>
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">La Collection</h4>
+      <ul>
+        <li><a href="/collections/larbre-de-vie">L'Arbre de Vie <span class="mdl-drawer__hint">8 Signatures</span></a></li>
+        <li><a href="/collections/larbre-de-vie">Les Racines <span class="mdl-drawer__hint">The Roots · Oud</span></a></li>
+        <li><a href="/collections/larbre-de-vie">Les Branches <span class="mdl-drawer__hint">The Light · Floral</span></a></li>
+        {%- assign ds = all_products['discovery-set-larbre-de-vie'] -%}
+        {%- if ds != blank and ds.id -%}
+          <li><a href="{{ ds.url }}">Discovery Set <span class="mdl-drawer__hint">8 × 2.5ml</span></a></li>
+        {%- else -%}
+          <li><a href="/collections/larbre-de-vie">Discovery Set <span class="mdl-drawer__hint">8 × 2.5ml</span></a></li>
+        {%- endif -%}
+      </ul>
+    </section>
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">Les Essentials</h4>
+      <ul>
+        <li><a href="/collections/les-essentials">Le Quotidien <span class="mdl-drawer__hint">Everyday · 10ml & 100ml</span></a></li>
+      </ul>
+    </section>
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">À Venir</h4>
+      <ul>
+        <li><span class="mdl-drawer__coming">Gift Sets <em>Coming Soon</em></span></li>
+        <li><span class="mdl-drawer__coming">Home Fragrances <em>Coming Soon</em></span></li>
+        <li><span class="mdl-drawer__coming">Les Essentials Discovery <em>Coming Soon</em></span></li>
+      </ul>
+    </section>
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">La Maison</h4>
+      <ul>
+        <li><a href="/pages/about">L'Histoire <span class="mdl-drawer__hint">Our Story</span></a></li>
+        <li><a href="/pages/the-craft">The Craft</a></li>
+        <li><a href="/pages/journal">Journal</a></li>
+        <li><a href="/pages/contact">Contact</a></li>
+      </ul>
+    </section>
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">Service</h4>
+      <ul>
+        <li><a href="/policies/shipping-policy">Shipping</a></li>
+        <li><a href="/policies/refund-policy">Returns</a></li>
+        <li><a href="/pages/faq">FAQ</a></li>
+      </ul>
+    </section>
+    <section class="mdl-drawer__sec">
+      <h4 class="mdl-drawer__label">Legal</h4>
+      <ul class="mdl-drawer__legal">
+        <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+      </ul>
+    </section>
+    <div class="mdl-drawer__foot">
+      <a href="/account" class="mdl-drawer__util">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+        Account
+      </a>
+      <a href="/cart" class="mdl-drawer__util">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Cart <span class="mdl-drawer__util-count">({{ cart.item_count }})</span>
+      </a>
+    </div>
+  </div>
+</nav>
 
 <div class="mdl-search-overlay" id="mdl-search">
   <button class="mdl-search-overlay__close" id="mdl-search-close" aria-label="Close search">
     <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
-  <form class="mdl-search-overlay__form" action="/search" method="get">
+  <form class="mdl-search-overlay__form" action="/search" method="get" role="search">
     <input type="hidden" name="type" value="product">
-    <input class="mdl-search-overlay__input" type="search" name="q" placeholder="Search the Maison..." autocomplete="off" id="mdl-search-input">
+    <input class="mdl-search-overlay__input" type="search" name="q" placeholder="Search the Maison..." autocomplete="off" id="mdl-search-input" aria-label="Search products">
   </form>
   <div class="mdl-search-overlay__results">
     <p class="mdl-search-overlay__hint" id="mdl-search-hint">Start typing to discover fragrances</p>
@@ -60,7 +126,7 @@
 </div>
 
 <div class="mdl-cart-drawer__overlay" id="mdl-cart-overlay"></div>
-<aside class="mdl-cart-drawer" id="mdl-cart-drawer">
+<aside class="mdl-cart-drawer" id="mdl-cart-drawer" aria-label="Shopping cart">
   <div class="mdl-cart-drawer__head">
     <h2 class="mdl-cart-drawer__title">Your Cart</h2>
     <button class="mdl-cart-drawer__close" id="mdl-cart-close" aria-label="Close cart">
@@ -84,17 +150,32 @@
 
 <script>
 (function(){
-  // Mobile drawer
-  document.getElementById('mdl-burger').addEventListener('click', function(){
-    document.getElementById('mdl-drawer').classList.add('open');
+  // iOS viewport height variable
+  function setVh(){
+    document.documentElement.style.setProperty('--mdl-vh', window.innerHeight + 'px');
+  }
+  setVh();
+  window.addEventListener('resize', setVh);
+  window.addEventListener('orientationchange', () => setTimeout(setVh, 250));
+
+  const burger = document.getElementById('mdl-burger');
+  const drawer = document.getElementById('mdl-drawer');
+  const closeBtn = document.getElementById('mdl-close');
+
+  burger.addEventListener('click', function(){
+    drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden','false');
+    burger.setAttribute('aria-expanded','true');
     document.body.style.overflow = 'hidden';
   });
   function closeDrawer(){
-    document.getElementById('mdl-drawer').classList.remove('open');
+    drawer.classList.remove('open');
+    drawer.setAttribute('aria-hidden','true');
+    burger.setAttribute('aria-expanded','false');
     document.body.style.overflow = '';
   }
-  document.getElementById('mdl-close').addEventListener('click', closeDrawer);
-  document.querySelectorAll('.mdl-drawer a').forEach(a => a.addEventListener('click', closeDrawer));
+  closeBtn.addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
 
   // Search
   const searchOverlay = document.getElementById('mdl-search');
@@ -110,14 +191,14 @@
   searchInput.addEventListener('input', function(e){
     clearTimeout(searchTimer);
     const q = e.target.value.trim();
-    if(q.length < 2) { searchResults.innerHTML = ''; searchHint.textContent = 'Start typing to discover fragrances'; return; }
+    if(q.length < 2){ searchResults.innerHTML=''; searchHint.textContent='Start typing to discover fragrances'; return; }
     searchHint.textContent = 'Searching...';
     searchTimer = setTimeout(() => {
       fetch(`/search/suggest.json?q=${encodeURIComponent(q)}&resources[type]=product&resources[limit]=6`)
         .then(r => r.json())
         .then(data => {
           const products = data.resources.results.products || [];
-          if(products.length === 0) { searchHint.textContent = 'No fragrances found'; searchResults.innerHTML = ''; return; }
+          if(products.length === 0){ searchHint.textContent='No fragrances found'; searchResults.innerHTML=''; return; }
           searchHint.textContent = `${products.length} ${products.length === 1 ? 'result' : 'results'}`;
           searchResults.innerHTML = products.map(p => `
             <a href="${p.url}" class="mdl-search-result">
@@ -136,7 +217,7 @@
   const cartTotal = document.getElementById('mdl-cart-total');
   const cartCount = document.getElementById('mdl-cart-count');
   function fmt(c){ return '$' + (c/100).toFixed(2); }
-  function fetchCart(){ fetch('/cart.js').then(r=>r.json()).then(renderCart); }
+  function fetchCart(){ fetch('/cart.js').then(r => r.json()).then(renderCart); }
   function renderCart(cart){
     if(cartCount){ cartCount.textContent = cart.item_count; cartCount.style.display = cart.item_count > 0 ? 'flex' : 'none'; }
     if(cart.item_count === 0){
@@ -169,7 +250,7 @@
         const item = cartBody.querySelector(`.mdl-cart-item[data-key="${key}"]`);
         const cur = parseInt(item.querySelector('.mdl-cart-item__qty span').textContent);
         let q = cur;
-        if(act==='inc') q = cur+1; if(act==='dec') q = Math.max(0,cur-1); if(act==='rm') q = 0;
+        if(act==='inc') q=cur+1; if(act==='dec') q=Math.max(0,cur-1); if(act==='rm') q=0;
         fetch('/cart/change.js', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:key,quantity:q})}).then(r=>r.json()).then(renderCart);
       });
     });
