@@ -135,72 +135,45 @@
         </div>
       </div>
 
-      <!-- SLIDE 2: DISCOVERY SET — L'ARBRE DE VIE -->
-      <div class="swiper-slide s-discovery" data-mode="dark">
-        <div class="s-discovery__bg-gradient"></div>
-        <div class="s-discovery__visual">
-          <div class="s-discovery__hero-img">
-            {%- if section.settings.discovery_image != blank -%}
-              <img src="{{ section.settings.discovery_image | image_url: width: 1000 }}" alt="L'Arbre de Vie Discovery Set">
-            {%- elsif discovery_product != blank and discovery_product.featured_image -%}
-              <img src="{{ discovery_product.featured_image | image_url: width: 1000 }}" alt="L'Arbre de Vie Discovery Set">
-            {%- else -%}
-              <div class="s-discovery__hero-placeholder">
-                <em>Coffret · Discovery Set</em>
-                <strong>L'Arbre de Vie</strong>
-              </div>
-            {%- endif -%}
-          </div>
-          <div class="s-discovery__thumbs">
-            {%- if section.settings.discovery_thumb_1 != blank -%}
-              <div class="s-discovery__thumb"><img src="{{ section.settings.discovery_thumb_1 | image_url: width: 200 }}" alt=""></div>
-            {%- else -%}
-              <div class="s-discovery__thumb">Royale</div>
-            {%- endif -%}
-            {%- if section.settings.discovery_thumb_2 != blank -%}
-              <div class="s-discovery__thumb"><img src="{{ section.settings.discovery_thumb_2 | image_url: width: 200 }}" alt=""></div>
-            {%- else -%}
-              <div class="s-discovery__thumb">Chérie</div>
-            {%- endif -%}
-            {%- if section.settings.discovery_thumb_3 != blank -%}
-              <div class="s-discovery__thumb"><img src="{{ section.settings.discovery_thumb_3 | image_url: width: 200 }}" alt=""></div>
-            {%- else -%}
-              <div class="s-discovery__thumb">Hayal</div>
-            {%- endif -%}
-            {%- if section.settings.discovery_thumb_4 != blank -%}
-              <div class="s-discovery__thumb"><img src="{{ section.settings.discovery_thumb_4 | image_url: width: 200 }}" alt=""></div>
-            {%- else -%}
-              <div class="s-discovery__thumb">Néroli</div>
-            {%- endif -%}
-          </div>
-        </div>
-        <div class="s-discovery__info">
-          <p class="s-discovery__chapter">02 — Le Coffret</p>
-          <h2 class="s-discovery__title">The <em>Discovery</em>.</h2>
-          <p class="s-discovery__lead">Begin your journey through the Maison. The L'Arbre de Vie Discovery Set holds eight signatures in miniature — the full architecture of the tree, in your hands.</p>
-          <div class="s-discovery__includes">
-            <p class="s-discovery__includes-label">Eight Signatures · 2ml each</p>
-            <ul class="s-discovery__includes-list">
-              <li>Royale Oud</li>
-              <li>Chérie Oud</li>
-              <li>Sultanat Oud</li>
-              <li>Impériale Oud</li>
-              <li>Paradis de Bleu</li>
-              <li>Néroli de Nuit</li>
-              <li>Hayal</li>
-              <li>Rosée Blanche</li>
-            </ul>
-          </div>
-          {%- if discovery_product != blank and discovery_product.id -%}
-            <a href="{{ discovery_product.url }}" class="s-discovery__cta">
-              Shop the Discovery Set —— {{ discovery_product.price | money }}
-            </a>
+      <!-- SLIDE 2: DISCOVERY SET — Showcase + Popup (Byredo style) -->
+      <div class="swiper-slide s-showcase s-showcase--dark" data-mode="dark">
+        <div class="s-showcase__bg">
+          {%- if section.settings.discovery_image != blank -%}
+            <img src="{{ section.settings.discovery_image | image_url: width: 2400 }}" alt="L'Arbre de Vie Discovery Set">
+          {%- elsif discovery_product != blank and discovery_product.featured_image -%}
+            <img src="{{ discovery_product.featured_image | image_url: width: 2400 }}" alt="L'Arbre de Vie Discovery Set">
           {%- else -%}
-            <a href="/collections/larbre-de-vie" class="s-discovery__cta">
-              Explore the Collection →
-            </a>
+            <div class="s-showcase__bg s-showcase__bg--gradient-discovery" style="position:absolute;inset:0;"></div>
           {%- endif -%}
         </div>
+        <div class="s-showcase__overlay"></div>
+        <div class="s-showcase__title-wrap">
+          <p class="s-showcase__chapter">02 — Le Coffret</p>
+          <h2 class="s-showcase__title">The <em>Discovery</em>.</h2>
+          <p class="s-showcase__lead">Begin your journey through the Maison. The L'Arbre de Vie Discovery Set holds the eight signatures in miniature — the full architecture of the tree, in your hands.</p>
+        </div>
+        <div class="s-showcase__num"><em>02</em>/ 07</div>
+        {%- if discovery_product != blank and discovery_product.id -%}
+          <a href="{{ discovery_product.url }}" class="s-popup">
+        {%- else -%}
+          <a href="/collections/larbre-de-vie" class="s-popup">
+        {%- endif -%}
+          <div class="s-popup__img">
+            {%- if section.settings.discovery_image != blank -%}
+              <img src="{{ section.settings.discovery_image | image_url: width: 300 }}" alt="">
+            {%- elsif discovery_product != blank and discovery_product.featured_image -%}
+              <img src="{{ discovery_product.featured_image | image_url: width: 300 }}" alt="">
+            {%- else -%}
+              <div class="s-popup__img-placeholder">Coffret</div>
+            {%- endif -%}
+          </div>
+          <div class="s-popup__content">
+            <p class="s-popup__tag">L'Arbre de Vie</p>
+            <h3 class="s-popup__name">Discovery Set</h3>
+            <p class="s-popup__sub">Eight signatures · 2.5ml each</p>
+            <span class="s-popup__cta">Explore the Collection <span class="s-popup__cta-line"></span></span>
+          </div>
+        </a>
       </div>
 
       <!-- SLIDE 3: THE ROOTS — Showcase + Popup -->
@@ -219,11 +192,20 @@
           <p class="s-showcase__lead">From the base of the tree. Heavy, smoke-laden, leather-warm — the four oud-rooted signatures that form the architecture of the Maison's deepest creations.</p>
         </div>
         <div class="s-showcase__num"><em>03</em>/ 07</div>
-        <a href="/collections/larbre-de-vie?filter=roots" class="s-popup">
-          <p class="s-popup__tag">L'Arbre de Vie</p>
-          <h3 class="s-popup__name">Les Racines</h3>
-          <p class="s-popup__sub">Royale · Chérie · Sultanat · Impériale</p>
-          <span class="s-popup__cta">Explore <span class="s-popup__cta-line"></span></span>
+        <a href="/collections/larbre-de-vie" class="s-popup">
+          <div class="s-popup__img">
+            {%- if section.settings.roots_popup_image != blank -%}
+              <img src="{{ section.settings.roots_popup_image | image_url: width: 300 }}" alt="">
+            {%- else -%}
+              <div class="s-popup__img-placeholder">Les Racines</div>
+            {%- endif -%}
+          </div>
+          <div class="s-popup__content">
+            <p class="s-popup__tag">L'Arbre de Vie</p>
+            <h3 class="s-popup__name">Les Racines</h3>
+            <p class="s-popup__sub">Royale · Chérie · Sultanat · Impériale</p>
+            <span class="s-popup__cta">Explore the Roots <span class="s-popup__cta-line"></span></span>
+          </div>
         </a>
       </div>
 
@@ -243,11 +225,20 @@
           <p class="s-showcase__lead">From the canopy. Néroli at midnight, white rose, oceanic blue, the dream of Hayal — the Maison's lighter expressions, where the tree reaches for the sun.</p>
         </div>
         <div class="s-showcase__num"><em>04</em>/ 07</div>
-        <a href="/collections/larbre-de-vie?filter=light" class="s-popup">
-          <p class="s-popup__tag">L'Arbre de Vie</p>
-          <h3 class="s-popup__name">Les Branches</h3>
-          <p class="s-popup__sub">Paradis · Néroli · Hayal · Rosée</p>
-          <span class="s-popup__cta">Explore <span class="s-popup__cta-line"></span></span>
+        <a href="/collections/larbre-de-vie" class="s-popup">
+          <div class="s-popup__img">
+            {%- if section.settings.light_popup_image != blank -%}
+              <img src="{{ section.settings.light_popup_image | image_url: width: 300 }}" alt="">
+            {%- else -%}
+              <div class="s-popup__img-placeholder">Les Branches</div>
+            {%- endif -%}
+          </div>
+          <div class="s-popup__content">
+            <p class="s-popup__tag">L'Arbre de Vie</p>
+            <h3 class="s-popup__name">Les Branches</h3>
+            <p class="s-popup__sub">Paradis · Néroli · Hayal · Rosée</p>
+            <span class="s-popup__cta">Explore the Light <span class="s-popup__cta-line"></span></span>
+          </div>
         </a>
       </div>
 
@@ -536,7 +527,9 @@
     { "type": "image_picker", "id": "discovery_thumb_4", "label": "Thumbnail 4" },
     { "type": "header", "content": "Showcase Slides" },
     { "type": "image_picker", "id": "roots_image", "label": "The Roots background image" },
+    { "type": "image_picker", "id": "roots_popup_image", "label": "The Roots popup card thumbnail" },
     { "type": "image_picker", "id": "light_image", "label": "The Light background image" },
+    { "type": "image_picker", "id": "light_popup_image", "label": "The Light popup card thumbnail" },
     { "type": "header", "content": "Story" },
     { "type": "image_picker", "id": "story_image", "label": "Brand story image" }
   ],

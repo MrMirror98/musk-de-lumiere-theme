@@ -329,23 +329,26 @@ html, body {
 .s-showcase--dark .s-showcase__lead { color: rgba(245,240,232,0.45); }
 .s-showcase--light .s-showcase__lead { color: rgba(10,10,10,0.5); }
 
-/* The little popup card in the corner — Byredo style */
+/* ==============================================
+   BYREDO-STYLE POPUP CARD
+   Horizontal: optional image left + text right
+============================================== */
 .s-popup {
   position: absolute; z-index: 3;
   bottom: 56px; right: 80px;
-  background: rgba(245,240,232,0.96);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 22px 28px;
-  width: 320px;
+  width: 380px; min-height: 110px;
+  background: rgba(245,240,232,0.55);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   text-decoration: none;
-  display: block;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  display: flex; align-items: stretch;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.45);
   transform: translateY(40px);
   opacity: 0;
   transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.4s,
               opacity 0.7s ease 0.4s,
-              padding 0.4s ease;
+              background 0.4s ease, box-shadow 0.4s ease;
   border-left: 2px solid #C9A84C;
 }
 .swiper-slide-active .s-popup {
@@ -353,37 +356,62 @@ html, body {
   opacity: 1;
 }
 .s-popup:hover {
-  padding-left: 36px;
-  background: rgba(255,255,255,1);
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.55);
+}
+
+/* Image side — Byredo-style square thumbnail on the left */
+.s-popup__img {
+  flex: 0 0 110px;
+  position: relative; overflow: hidden;
+  background: linear-gradient(155deg, #1A1612, #0F0E0C);
+}
+.s-popup__img img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.s-popup__img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; font-style: italic;
+  color: rgba(201,168,76,0.5);
+  text-align: center; padding: 8px;
+}
+
+/* Text side */
+.s-popup__content {
+  flex: 1; padding: 18px 22px;
+  display: flex; flex-direction: column; justify-content: center;
 }
 .s-popup__tag {
   font-size: 8px; font-weight: 600;
   letter-spacing: 0.4em; text-transform: uppercase;
-  color: #8B6F2A;
-  margin-bottom: 10px;
+  color: #C9A84C;
+  margin-bottom: 8px;
 }
 .s-popup__name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; font-weight: 400; font-style: italic;
-  color: #0A0A0A; margin-bottom: 6px;
+  font-size: 19px; font-weight: 400; font-style: italic;
+  color: #0A0A0A; margin-bottom: 4px;
   letter-spacing: 0.02em; line-height: 1.2;
 }
 .s-popup__sub {
-  font-size: 10px; font-weight: 400;
-  letter-spacing: 0.12em; color: rgba(10,10,10,0.55);
-  margin-bottom: 14px;
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.1em; color: rgba(10,10,10,0.55);
+  margin-bottom: 12px;
+  line-height: 1.5;
 }
 .s-popup__cta {
   display: inline-flex; align-items: center; gap: 10px;
-  font-size: 9px; font-weight: 600;
+  font-size: 8px; font-weight: 700;
   letter-spacing: 0.35em; text-transform: uppercase;
   color: #0A0A0A;
 }
 .s-popup__cta-line {
-  display: block; width: 24px; height: 1px;
+  display: block; width: 22px; height: 1px;
   background: currentColor; transition: width 0.3s;
 }
-.s-popup:hover .s-popup__cta-line { width: 40px; }
+.s-popup:hover .s-popup__cta-line { width: 36px; }
 
 /* Decorative corner number */
 .s-showcase__num {
