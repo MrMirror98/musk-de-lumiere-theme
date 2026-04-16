@@ -1,28 +1,27 @@
 {{ 'homepage-mdl.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 {%- assign larbre = collections['larbre-de-vie'] -%}
 
 <!-- ANNOUNCEMENT BAR -->
 <div class="mdl-bar">
   Complimentary samples with every order &nbsp;·&nbsp;
-  <a href="/collections">&nbsp;Discover L'Arbre de Vie →</a>
+  <a href="/collections/larbre-de-vie">&nbsp;Discover L'Arbre de Vie →</a>
 </div>
 
-<!-- HEADER — transparent by default -->
+<!-- HEADER -->
 <header class="mdl-header" id="mdl-header">
   <nav><ul class="mdl-header__nav">
     <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
     <li><a href="/collections/les-essentials">Les Essentials</a></li>
-    <li><a href="/collections">Collections</a></li>
-    <li><a href="/pages/about">About</a></li>
+    <li><a href="/collections">Maison</a></li>
+    <li><a href="/pages/about">L'Histoire</a></li>
   </ul></nav>
 
   <div class="mdl-header__logo">
     <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
       <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}"
-           alt="{{ shop.name }}" width="280" height="110" loading="eager"
+           alt="{{ shop.name }}" width="320" height="130" loading="eager"
            fetchpriority="high">
     </a>
   </div>
@@ -57,8 +56,8 @@
   <nav><ul>
     <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
     <li><a href="/collections/les-essentials">Les Essentials</a></li>
-    <li><a href="/collections">Collections</a></li>
-    <li><a href="/pages/about">About</a></li>
+    <li><a href="/collections">Maison</a></li>
+    <li><a href="/pages/about">L'Histoire</a></li>
     <li><a href="/pages/contact">Contact</a></li>
   </ul></nav>
 </div>
@@ -68,26 +67,30 @@
   <div class="swiper mdl-swiper" id="mdl-swiper">
     <div class="swiper-wrapper">
 
-      <!-- SLIDE 1: HERO -->
+      <!-- SLIDE 1: VIDEO HERO -->
       <div class="swiper-slide s-hero">
-        <div class="s-hero__bg">
-          {%- if section.settings.hero_image != blank -%}
-            <img src="{{ section.settings.hero_image | image_url: width: 2400 }}" alt="" loading="eager">
+        <div class="s-hero__media">
+          {%- if section.settings.hero_video != blank -%}
+            <video autoplay muted loop playsinline poster="{% if section.settings.hero_image != blank %}{{ section.settings.hero_image | image_url: width: 1600 }}{% endif %}">
+              <source src="{{ section.settings.hero_video }}" type="video/mp4">
+            </video>
+          {%- elsif section.settings.hero_image != blank -%}
+            <img src="{{ section.settings.hero_image | image_url: width: 2400 }}" alt="">
           {%- else -%}
-            <div class="s-hero__glow"></div>
+            <div class="s-hero__media-fallback"></div>
           {%- endif -%}
         </div>
         <div class="s-hero__overlay"></div>
         <div class="s-hero__content">
-          <p class="s-eyebrow">Parfums d'Exception</p>
-          <h1 class="s-hero__h1">Where Light<br>Becomes <em>Scent</em></h1>
-          <p class="s-hero__sub">Twelve fragrances born from the marriage of French perfumery and ancient oud tradition.</p>
+          <p class="s-eyebrow">Une Maison de Parfumerie</p>
+          <h1 class="s-hero__h1">The Art of <em>Parfumerie</em></h1>
+          <p class="s-hero__sub">Eight signatures crafted from the marriage of French perfumery tradition and the ancient heritage of oud.</p>
           <a href="/collections/larbre-de-vie" class="s-cta">
-            Explore the Collection <span class="s-cta__line"></span>
+            Discover L'Arbre de Vie <span class="s-cta__line"></span>
           </a>
         </div>
         <div class="s-scroll">
-          <span class="s-scroll__txt">Scroll</span>
+          <span class="s-scroll__txt">Scroll to Explore</span>
           <span class="s-scroll__line"></span>
         </div>
       </div>
@@ -102,17 +105,17 @@
           </div>
           <div class="s-panel__num">01</div>
           <div class="s-panel__content">
-            <p class="s-panel__label">Full Collection · 50ml</p>
+            <p class="s-panel__label">The Collection · 50ml</p>
             <h2 class="s-panel__title">L'Arbre<br>de Vie</h2>
-            <p class="s-panel__desc">Eight fragrances. Oud, leather, rose, amber — the full architecture of a perfume house.</p>
-            <span class="s-panel__link">Discover <span class="s-panel__link-line"></span></span>
+            <p class="s-panel__desc">Eight fragrances. The full architecture of the Maison — Royale, Chérie, Sultanat, Impériale, Rosée Blanche, Néroli, Paradis, Hayal.</p>
+            <span class="s-panel__link">Explore the Collection <span class="s-panel__link-line"></span></span>
           </div>
         </a>
       </div>
 
-      <!-- SLIDE 3: LES ESSENTIALS -->
+      <!-- SLIDE 3: LES ESSENTIALS — COMING SOON -->
       <div class="swiper-slide">
-        <a href="/collections/les-essentials" class="s-panel s-panel--cream">
+        <div class="s-panel s-panel--cream" style="cursor: default;">
           <div class="s-panel__bg">
             {%- if section.settings.essentials_image != blank -%}
               <img src="{{ section.settings.essentials_image | image_url: width: 2000 }}" alt="" loading="lazy">
@@ -120,33 +123,38 @@
           </div>
           <div class="s-panel__num">02</div>
           <div class="s-panel__content">
+            <span class="s-coming-soon">Coming Soon</span>
             <p class="s-panel__label">Discovery Set · 10ml</p>
             <h2 class="s-panel__title">Les<br>Essentials</h2>
-            <p class="s-panel__desc">Four signatures. The perfect way to begin your journey into Musk de Lumière.</p>
-            <span class="s-panel__link">Discover <span class="s-panel__link-line"></span></span>
+            <p class="s-panel__desc">Four signatures distilled into the Maison's first discovery edition. The perfect introduction to L'Arbre de Vie.</p>
+            <a href="#" onclick="event.preventDefault(); document.getElementById('mdl-cur').parentElement.style.animation='pulse 0.5s';" class="s-panel__link">Notify Me <span class="s-panel__link-line"></span></a>
           </div>
-        </a>
+        </div>
       </div>
 
       <!-- SLIDE 4: PRODUCTS -->
       <div class="swiper-slide s-products">
         <div class="s-products__head">
           <div>
-            <p class="s-section-eyebrow">The Collection</p>
-            <h2 class="s-section-title">L'Arbre de Vie</h2>
+            <p class="s-section-eyebrow">L'Arbre de Vie</p>
+            <h2 class="s-section-title">The Maison</h2>
           </div>
           <a href="/collections/larbre-de-vie" class="s-view-all">View All</a>
         </div>
         <div class="s-grid">
           {%- assign pnames = "Royale Oud,Chérie Oud,Sultanat Oud,Impériale Oud" | split: "," -%}
           {%- assign pnotes = "Leather · Oud · Smoke,Oud · Vanilla · Tonka,Powder · Amberwood · Oud,Rose · Velvet · Oud" | split: "," -%}
+          {%- assign showed = 0 -%}
           {%- for product in larbre.products limit: 4 -%}
             <a href="{{ product.url }}" class="s-card">
               <div class="s-card__img">
                 {%- if product.featured_image -%}
                   <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}" loading="lazy">
                 {%- else -%}
-                  <div class="s-card__placeholder">{{ product.title }}</div>
+                  <div class="s-card__placeholder">
+                    <em>Product Image</em>
+                    <strong>{{ product.title }}</strong>
+                  </div>
                 {%- endif -%}
               </div>
               <div class="s-card__info">
@@ -155,10 +163,17 @@
                 <p class="s-card__price">{{ product.price | money }}</p>
               </div>
             </a>
-          {%- else -%}
+            {%- assign showed = showed | plus: 1 -%}
+          {%- endfor -%}
+          {%- if showed == 0 -%}
             {%- for i in (0..3) -%}
               <div class="s-card">
-                <div class="s-card__img"><div class="s-card__placeholder">{{ pnames[i] }}</div></div>
+                <div class="s-card__img">
+                  <div class="s-card__placeholder">
+                    <em>Product Image</em>
+                    <strong>{{ pnames[i] }}</strong>
+                  </div>
+                </div>
                 <div class="s-card__info">
                   <p class="s-card__tag">L'Arbre de Vie</p>
                   <h3 class="s-card__name">{{ pnames[i] }}</h3>
@@ -166,33 +181,35 @@
                 </div>
               </div>
             {%- endfor -%}
-          {%- endfor -%}
+          {%- endif -%}
         </div>
       </div>
 
       <!-- SLIDE 5: STORY -->
-      <div class="swiper-slide s-story">
-        <div class="s-story__left">
-          <p class="s-story__eyebrow">The House</p>
-          <h2 class="s-story__title">Born from light.<br>Rooted in <em>tradition.</em></h2>
-          <p class="s-story__body">Musk de Lumière is a fragrance house built on the belief that scent is the closest thing to memory. Drawing from French perfumery tradition and the ancient art of oud, each fragrance is an architecture — composed not worn.</p>
-          <a href="/pages/about" class="s-story__link">Our Story <span></span></a>
-        </div>
-        <div class="s-story__right">
-          {%- if section.settings.story_image != blank -%}
-            <img src="{{ section.settings.story_image | image_url: width: 1000 }}" alt="" loading="lazy">
-          {%- else -%}
-            <div class="s-story__placeholder">Campaign Image</div>
-          {%- endif -%}
+      <div class="swiper-slide">
+        <div class="s-story">
+          <div class="s-story__left">
+            <p class="s-story__eyebrow">L'Histoire de la Maison</p>
+            <h2 class="s-story__title">A house built on <em>memory.</em></h2>
+            <p class="s-story__body">Musk de Lumière is a fragrance house built on the belief that scent is the closest thing to memory. From our atelier in New Jersey, we draw from French perfumery tradition and the ancient heritage of oud — composing each fragrance not to be worn, but to be lived in.</p>
+            <a href="/pages/about" class="s-story__link">Read Our Story <span></span></a>
+          </div>
+          <div class="s-story__right">
+            {%- if section.settings.story_image != blank -%}
+              <img src="{{ section.settings.story_image | image_url: width: 1000 }}" alt="" loading="lazy">
+            {%- else -%}
+              <div class="s-story__placeholder">Maison Image</div>
+            {%- endif -%}
+          </div>
         </div>
       </div>
 
       <!-- SLIDE 6: NEWSLETTER + FOOTER -->
       <div class="swiper-slide s-last">
         <div class="s-newsletter">
-          <p class="s-newsletter__eyebrow">The Inner Circle</p>
-          <h2 class="s-newsletter__title">First Access. Always.</h2>
-          <p class="s-newsletter__sub">New collections, exclusive releases, and the art behind the scent.</p>
+          <p class="s-newsletter__eyebrow">Le Cercle Privé</p>
+          <h2 class="s-newsletter__title">Where Light Begins.</h2>
+          <p class="s-newsletter__sub">First access to new releases, private events, and the rituals of the Maison.</p>
           {%- form 'customer', id: 'mdl-nl' -%}
             <input type="hidden" name="contact[tags]" value="newsletter">
             <div class="s-newsletter__form">
@@ -204,26 +221,28 @@
         </div>
         <div class="s-footer">
           <div>
-            <img class="s-footer__logo" src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="{{ shop.name }}" width="110" height="44">
-            <p class="s-footer__tag">A fragrance house born from light and rooted in the art of perfumery.</p>
+            <img class="s-footer__logo" src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="{{ shop.name }}" width="120" height="44">
+            <p class="s-footer__tag">Une maison de parfumerie. Born in New Jersey, rooted in tradition.</p>
             <div class="s-footer__social">
-              {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}">Instagram</a>{%- endif -%}
-              {%- if settings.social_tiktok_link != blank -%}<a href="{{ settings.social_tiktok_link }}">TikTok</a>{%- endif -%}
+              {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
+              {%- if settings.social_tiktok_link != blank -%}<a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener">TikTok</a>{%- endif -%}
             </div>
           </div>
-          <div class="s-footer__col"><h4>Collections</h4><ul>
+          <div class="s-footer__col"><h4>La Maison</h4><ul>
             <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
             <li><a href="/collections/les-essentials">Les Essentials</a></li>
             <li><a href="/collections">All Fragrances</a></li>
           </ul></div>
-          <div class="s-footer__col"><h4>The House</h4><ul>
+          <div class="s-footer__col"><h4>L'Histoire</h4><ul>
             <li><a href="/pages/about">Our Story</a></li>
+            <li><a href="/pages/the-craft">The Craft</a></li>
             <li><a href="/pages/contact">Contact</a></li>
           </ul></div>
           <div class="s-footer__col"><h4>Information</h4><ul>
             <li><a href="/policies/shipping-policy">Shipping</a></li>
             <li><a href="/policies/refund-policy">Returns</a></li>
             <li><a href="/policies/privacy-policy">Privacy</a></li>
+            <li><a href="/policies/terms-of-service">Terms</a></li>
           </ul></div>
         </div>
         <div class="s-footer__bottom">
@@ -254,16 +273,12 @@
       slideChange: function() {
         const n = String(this.activeIndex + 1).padStart(2,'0');
         if(counter) counter.textContent = n;
-        if(this.activeIndex === 0) {
-          header.classList.remove('solid');
-        } else {
-          header.classList.add('solid');
-        }
+        if(this.activeIndex === 0) header.classList.remove('solid');
+        else header.classList.add('solid');
       }
     }
   });
 
-  // Burger
   document.getElementById('mdl-burger').addEventListener('click', function(){
     document.getElementById('mdl-drawer').classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -283,9 +298,13 @@
 {
   "name": "MDL Homepage",
   "settings": [
-    { "type": "image_picker", "id": "hero_image", "label": "Hero background image" },
+    { "type": "header", "content": "Hero Video" },
+    { "type": "url", "id": "hero_video", "label": "Hero video URL (MP4)", "info": "Upload your video to Shopify Files, copy the URL here" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero fallback image (used if no video)" },
+    { "type": "header", "content": "Collections" },
     { "type": "image_picker", "id": "larbre_image", "label": "L'Arbre de Vie image" },
     { "type": "image_picker", "id": "essentials_image", "label": "Les Essentials image" },
+    { "type": "header", "content": "Story" },
     { "type": "image_picker", "id": "story_image", "label": "Brand story image" }
   ],
   "presets": [{ "name": "MDL Homepage" }]
