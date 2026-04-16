@@ -2,6 +2,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 {%- assign larbre = collections['larbre-de-vie'] -%}
+{%- assign essentials = collections['les-essentials'] -%}
+
+<!-- Get specific products by handle for the tree structure -->
+{%- assign heavy_handles = "royale-oud,cherie-oud,sultanat-oud,imperiale-oud" | split: "," -%}
+{%- assign light_handles = "paradis-de-bleu,neroli-de-nuit,hayal,rosee-blanche" | split: "," -%}
+{%- assign essential_handles = "prism,bel-homme,madam-alece,fleur-rouge" | split: "," -%}
 
 <!-- ANNOUNCEMENT BAR -->
 <div class="mdl-bar">
@@ -17,25 +23,20 @@
     <li><a href="/collections">Maison</a></li>
     <li><a href="/pages/about">L'Histoire</a></li>
   </ul></nav>
-
   <div class="mdl-header__logo">
     <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
       <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}"
-           alt="{{ shop.name }}" width="320" height="130" loading="eager"
-           fetchpriority="high">
+           alt="{{ shop.name }}" width="320" height="130" loading="eager" fetchpriority="high">
     </a>
   </div>
-
   <div class="mdl-header__icons">
-    <a href="{{ routes.search_url }}" class="mdl-header__icon" aria-label="Search">
+    <button class="mdl-header__icon" id="mdl-search-open" aria-label="Search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
-    </a>
-    <a href="{{ routes.cart_url }}" class="mdl-header__icon" aria-label="Cart">
+    </button>
+    <button class="mdl-header__icon" id="mdl-cart-open" aria-label="Cart">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      {%- if cart.item_count > 0 -%}
-        <span class="mdl-cart-bubble">{{ cart.item_count }}</span>
-      {%- endif -%}
-    </a>
+      <span class="mdl-cart-bubble" id="mdl-cart-count" {% if cart.item_count == 0 %}style="display:none"{% endif %}>{{ cart.item_count }}</span>
+    </button>
     <button class="mdl-header__burger" id="mdl-burger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -43,13 +44,13 @@
 </header>
 
 <!-- SLIDE NUMBER -->
-<div class="mdl-slide-num">
+<div class="mdl-slide-num" id="mdl-slidenum">
   <span class="mdl-slide-num__cur" id="mdl-cur">01</span>
   <span class="mdl-slide-num__tot">/ 06</span>
 </div>
 
-<!-- MOBILE DRAWER -->
-<div class="mdl-drawer" id="mdl-drawer" aria-hidden="true">
+<!-- MOBILE NAV DRAWER -->
+<div class="mdl-drawer" id="mdl-drawer">
   <button class="mdl-drawer__close" id="mdl-close" aria-label="Close">
     <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
@@ -62,13 +63,54 @@
   </ul></nav>
 </div>
 
-<!-- SWIPER -->
+<!-- SEARCH OVERLAY -->
+<div class="mdl-search-overlay" id="mdl-search">
+  <button class="mdl-search-overlay__close" id="mdl-search-close" aria-label="Close search">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <form class="mdl-search-overlay__form" action="/search" method="get" role="search">
+    <input type="hidden" name="type" value="product">
+    <input class="mdl-search-overlay__input" type="search" name="q" placeholder="Search the Maison..." autocomplete="off" id="mdl-search-input">
+  </form>
+  <div class="mdl-search-overlay__results">
+    <p class="mdl-search-overlay__hint" id="mdl-search-hint">Start typing to discover fragrances</p>
+    <div id="mdl-search-results"></div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="mdl-cart-drawer__overlay" id="mdl-cart-overlay"></div>
+<aside class="mdl-cart-drawer" id="mdl-cart-drawer" aria-hidden="true">
+  <div class="mdl-cart-drawer__head">
+    <h2 class="mdl-cart-drawer__title">Your Cart</h2>
+    <button class="mdl-cart-drawer__close" id="mdl-cart-close" aria-label="Close cart">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="mdl-cart-drawer__body" id="mdl-cart-body">
+    <div class="mdl-cart-drawer__empty">
+      <p>Your cart awaits.</p>
+      <a href="/collections/larbre-de-vie">Discover the Maison →</a>
+    </div>
+  </div>
+  <div class="mdl-cart-drawer__foot" id="mdl-cart-foot" style="display:none;">
+    <div class="mdl-cart-drawer__total">
+      <span class="mdl-cart-drawer__total-label">Subtotal</span>
+      <span class="mdl-cart-drawer__total-amount" id="mdl-cart-total">$0.00</span>
+    </div>
+    <a href="/checkout" class="mdl-cart-drawer__checkout">Checkout</a>
+  </div>
+</aside>
+
+<!-- ============================================
+     SWIPER — 6 SLIDES, TREE STRUCTURE
+============================================ -->
 <div class="mdl-swiper-wrap">
   <div class="swiper mdl-swiper" id="mdl-swiper">
     <div class="swiper-wrapper">
 
       <!-- SLIDE 1: VIDEO HERO -->
-      <div class="swiper-slide s-hero">
+      <div class="swiper-slide s-hero" data-mode="dark">
         <div class="s-hero__media">
           {%- if section.settings.hero_video != blank -%}
             <video autoplay muted loop playsinline poster="{% if section.settings.hero_image != blank %}{{ section.settings.hero_image | image_url: width: 1600 }}{% endif %}">
@@ -84,109 +126,178 @@
         <div class="s-hero__content">
           <p class="s-eyebrow">Une Maison de Parfumerie</p>
           <h1 class="s-hero__h1">The Art of <em>Parfumerie</em></h1>
-          <p class="s-hero__sub">Eight signatures crafted from the marriage of French perfumery tradition and the ancient heritage of oud.</p>
+          <p class="s-hero__sub">Twelve fragrances. Eight oud-rooted signatures. Four everyday creations. One Maison.</p>
           <a href="/collections/larbre-de-vie" class="s-cta">
             Discover L'Arbre de Vie <span class="s-cta__line"></span>
           </a>
         </div>
         <div class="s-scroll">
-          <span class="s-scroll__txt">Scroll to Explore</span>
+          <span class="s-scroll__txt">Scroll</span>
           <span class="s-scroll__line"></span>
         </div>
       </div>
 
-      <!-- SLIDE 2: L'ARBRE DE VIE -->
-      <div class="swiper-slide">
-        <a href="/collections/larbre-de-vie" class="s-panel s-panel--dark">
-          <div class="s-panel__bg">
-            {%- if section.settings.larbre_image != blank -%}
-              <img src="{{ section.settings.larbre_image | image_url: width: 2000 }}" alt="" loading="lazy">
-            {%- endif -%}
-          </div>
-          <div class="s-panel__num">01</div>
-          <div class="s-panel__content">
-            <p class="s-panel__label">The Collection · 50ml</p>
-            <h2 class="s-panel__title">L'Arbre<br>de Vie</h2>
-            <p class="s-panel__desc">Eight fragrances. The full architecture of the Maison — Royale, Chérie, Sultanat, Impériale, Rosée Blanche, Néroli, Paradis, Hayal.</p>
-            <span class="s-panel__link">Explore the Collection <span class="s-panel__link-line"></span></span>
-          </div>
-        </a>
-      </div>
-
-      <!-- SLIDE 3: LES ESSENTIALS — COMING SOON -->
-      <div class="swiper-slide">
-        <div class="s-panel s-panel--cream" style="cursor: default;">
-          <div class="s-panel__bg">
-            {%- if section.settings.essentials_image != blank -%}
-              <img src="{{ section.settings.essentials_image | image_url: width: 2000 }}" alt="" loading="lazy">
-            {%- endif -%}
-          </div>
-          <div class="s-panel__num">02</div>
-          <div class="s-panel__content">
-            <span class="s-coming-soon">Coming Soon</span>
-            <p class="s-panel__label">Discovery Set · 10ml</p>
-            <h2 class="s-panel__title">Les<br>Essentials</h2>
-            <p class="s-panel__desc">Four signatures distilled into the Maison's first discovery edition. The perfect introduction to L'Arbre de Vie.</p>
-            <a href="#" onclick="event.preventDefault(); document.getElementById('mdl-cur').parentElement.style.animation='pulse 0.5s';" class="s-panel__link">Notify Me <span class="s-panel__link-line"></span></a>
-          </div>
-        </div>
-      </div>
-
-      <!-- SLIDE 4: PRODUCTS -->
-      <div class="swiper-slide s-products">
-        <div class="s-products__head">
-          <div>
-            <p class="s-section-eyebrow">L'Arbre de Vie</p>
-            <h2 class="s-section-title">The Maison</h2>
+      <!-- SLIDE 2: L'ARBRE DE VIE — HEAVY/OUD (BOTTOM OF TREE) — DARK -->
+      <div class="swiper-slide s-collection s-collection--dark" data-mode="dark">
+        <div class="s-bignum">02</div>
+        <div class="s-collection__head">
+          <div class="s-collection__head-left">
+            <p class="s-collection__eyebrow">L'Arbre de Vie · Les Racines</p>
+            <h2 class="s-collection__title">The <em>Roots</em>.</h2>
+            <p class="s-collection__sub">Four oud-rooted signatures from the base of the tree. Heavy, smoke-laden, leather-warm — the architecture of the Maison's deepest creations.</p>
           </div>
           <a href="/collections/larbre-de-vie" class="s-view-all">View All</a>
         </div>
         <div class="s-grid">
-          {%- assign pnames = "Royale Oud,Chérie Oud,Sultanat Oud,Impériale Oud" | split: "," -%}
-          {%- assign pnotes = "Leather · Oud · Smoke,Oud · Vanilla · Tonka,Powder · Amberwood · Oud,Rose · Velvet · Oud" | split: "," -%}
-          {%- assign showed = 0 -%}
-          {%- for product in larbre.products limit: 4 -%}
-            <a href="{{ product.url }}" class="s-card">
-              <div class="s-card__img">
-                {%- if product.featured_image -%}
-                  <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}" loading="lazy">
-                {%- else -%}
-                  <div class="s-card__placeholder">
-                    <em>Product Image</em>
-                    <strong>{{ product.title }}</strong>
-                  </div>
-                {%- endif -%}
-              </div>
-              <div class="s-card__info">
-                <p class="s-card__tag">L'Arbre de Vie</p>
-                <h3 class="s-card__name">{{ product.title }}</h3>
-                <p class="s-card__price">{{ product.price | money }}</p>
-              </div>
-            </a>
-            {%- assign showed = showed | plus: 1 -%}
-          {%- endfor -%}
-          {%- if showed == 0 -%}
-            {%- for i in (0..3) -%}
+          {%- assign heavy_names = "Royale Oud,Chérie Oud,Sultanat Oud,Impériale Oud" | split: "," -%}
+          {%- assign heavy_notes = "Leather · Smoke,Vanilla · Tonka,Amberwood · Powder,Velvet Rose" | split: "," -%}
+          {%- for h in heavy_handles -%}
+            {%- assign p = all_products[h] -%}
+            {%- if p != blank and p.id -%}
+              <a href="{{ p.url }}" class="s-card">
+                <div class="s-card__img">
+                  {%- if p.featured_image -%}
+                    <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }}" loading="lazy">
+                  {%- else -%}
+                    <div class="s-card__placeholder">
+                      <em>L'Arbre de Vie</em>
+                      <strong>{{ p.title }}</strong>
+                    </div>
+                  {%- endif -%}
+                </div>
+                <div class="s-card__info">
+                  <p class="s-card__tag">L'Arbre de Vie</p>
+                  <h3 class="s-card__name">{{ p.title }}</h3>
+                  <p class="s-card__price">{{ p.price | money }}</p>
+                </div>
+              </a>
+            {%- else -%}
               <div class="s-card">
                 <div class="s-card__img">
                   <div class="s-card__placeholder">
-                    <em>Product Image</em>
-                    <strong>{{ pnames[i] }}</strong>
+                    <em>L'Arbre de Vie</em>
+                    <strong>{{ heavy_names[forloop.index0] }}</strong>
                   </div>
                 </div>
                 <div class="s-card__info">
                   <p class="s-card__tag">L'Arbre de Vie</p>
-                  <h3 class="s-card__name">{{ pnames[i] }}</h3>
-                  <p class="s-card__price">{{ pnotes[i] }}</p>
+                  <h3 class="s-card__name">{{ heavy_names[forloop.index0] }}</h3>
+                  <p class="s-card__price">{{ heavy_notes[forloop.index0] }}</p>
                 </div>
               </div>
-            {%- endfor -%}
-          {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
         </div>
       </div>
 
-      <!-- SLIDE 5: STORY -->
-      <div class="swiper-slide">
+      <!-- SLIDE 3: L'ARBRE DE VIE — LIGHT/FLORAL (TOP OF TREE) — CREAM -->
+      <div class="swiper-slide s-collection s-collection--cream" data-mode="light">
+        <div class="s-bignum">03</div>
+        <div class="s-collection__head">
+          <div class="s-collection__head-left">
+            <p class="s-collection__eyebrow">L'Arbre de Vie · Les Branches</p>
+            <h2 class="s-collection__title">The <em>Light</em>.</h2>
+            <p class="s-collection__sub">Four florals from the canopy. Néroli at midnight, white rose, oceanic blue, the dream of Hayal — the Maison's lighter expressions.</p>
+          </div>
+          <a href="/collections/larbre-de-vie" class="s-view-all">View All</a>
+        </div>
+        <div class="s-grid">
+          {%- assign light_names = "Paradis de Bleu,Néroli de Nuit,Hayal,Rosée Blanche" | split: "," -%}
+          {%- assign light_notes = "Aquatic · Salt · Iris,Néroli · Bergamot · Dusk,Saffron · Amber · Dream,White Rose · Powder · Musk" | split: "," -%}
+          {%- for h in light_handles -%}
+            {%- assign p = all_products[h] -%}
+            {%- if p != blank and p.id -%}
+              <a href="{{ p.url }}" class="s-card">
+                <div class="s-card__img">
+                  {%- if p.featured_image -%}
+                    <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }}" loading="lazy">
+                  {%- else -%}
+                    <div class="s-card__placeholder">
+                      <em>L'Arbre de Vie</em>
+                      <strong>{{ p.title }}</strong>
+                    </div>
+                  {%- endif -%}
+                </div>
+                <div class="s-card__info">
+                  <p class="s-card__tag">L'Arbre de Vie</p>
+                  <h3 class="s-card__name">{{ p.title }}</h3>
+                  <p class="s-card__price">{{ p.price | money }}</p>
+                </div>
+              </a>
+            {%- else -%}
+              <div class="s-card">
+                <div class="s-card__img">
+                  <div class="s-card__placeholder">
+                    <em>L'Arbre de Vie</em>
+                    <strong>{{ light_names[forloop.index0] }}</strong>
+                  </div>
+                </div>
+                <div class="s-card__info">
+                  <p class="s-card__tag">L'Arbre de Vie</p>
+                  <h3 class="s-card__name">{{ light_names[forloop.index0] }}</h3>
+                  <p class="s-card__price">{{ light_notes[forloop.index0] }}</p>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- SLIDE 4: LES ESSENTIALS — EVERYDAY -->
+      <div class="swiper-slide s-collection s-collection--neutral" data-mode="dark">
+        <div class="s-bignum">04</div>
+        <div class="s-collection__head">
+          <div class="s-collection__head-left">
+            <p class="s-collection__eyebrow">Les Essentials · Le Quotidien</p>
+            <h2 class="s-collection__title">For <em>every day</em>.</h2>
+            <p class="s-collection__sub">Four magnificent everyday creations. Lighter, fresher, accessible — the Maison's signatures distilled for modern living. Available in 10ml and 100ml.</p>
+          </div>
+          <a href="/collections/les-essentials" class="s-view-all">View All</a>
+        </div>
+        <div class="s-grid">
+          {%- assign ess_names = "Prism,Bel Homme,Madam Alece,Fleur Rouge" | split: "," -%}
+          {%- assign ess_notes = "Citrus · Cedar · Vetiver,Bergamot · Lavender · Musk,Iris · Pear · White Tea,Rose · Pink Pepper · Patchouli" | split: "," -%}
+          {%- for h in essential_handles -%}
+            {%- assign p = all_products[h] -%}
+            {%- if p != blank and p.id -%}
+              <a href="{{ p.url }}" class="s-card">
+                <div class="s-card__img">
+                  {%- if p.featured_image -%}
+                    <img src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.title }}" loading="lazy">
+                  {%- else -%}
+                    <div class="s-card__placeholder">
+                      <em>Les Essentials</em>
+                      <strong>{{ p.title }}</strong>
+                    </div>
+                  {%- endif -%}
+                </div>
+                <div class="s-card__info">
+                  <p class="s-card__tag">Les Essentials</p>
+                  <h3 class="s-card__name">{{ p.title }}</h3>
+                  <p class="s-card__price">{{ p.price | money }}</p>
+                </div>
+              </a>
+            {%- else -%}
+              <div class="s-card">
+                <div class="s-card__img">
+                  <div class="s-card__placeholder">
+                    <em>Les Essentials</em>
+                    <strong>{{ ess_names[forloop.index0] }}</strong>
+                  </div>
+                </div>
+                <div class="s-card__info">
+                  <p class="s-card__tag">Les Essentials</p>
+                  <h3 class="s-card__name">{{ ess_names[forloop.index0] }}</h3>
+                  <p class="s-card__price">{{ ess_notes[forloop.index0] }}</p>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- SLIDE 5: BRAND STORY -->
+      <div class="swiper-slide" data-mode="dark">
         <div class="s-story">
           <div class="s-story__left">
             <p class="s-story__eyebrow">L'Histoire de la Maison</p>
@@ -205,7 +316,7 @@
       </div>
 
       <!-- SLIDE 6: NEWSLETTER + FOOTER -->
-      <div class="swiper-slide s-last">
+      <div class="swiper-slide s-last" data-mode="dark">
         <div class="s-newsletter">
           <p class="s-newsletter__eyebrow">Le Cercle Privé</p>
           <h2 class="s-newsletter__title">Where Light Begins.</h2>
@@ -221,7 +332,7 @@
         </div>
         <div class="s-footer">
           <div>
-            <img class="s-footer__logo" src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="{{ shop.name }}" width="120" height="44">
+            <img class="s-footer__logo" src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="{{ shop.name }}">
             <p class="s-footer__tag">Une maison de parfumerie. Born in New Jersey, rooted in tradition.</p>
             <div class="s-footer__social">
               {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">Instagram</a>{%- endif -%}
@@ -235,14 +346,12 @@
           </ul></div>
           <div class="s-footer__col"><h4>L'Histoire</h4><ul>
             <li><a href="/pages/about">Our Story</a></li>
-            <li><a href="/pages/the-craft">The Craft</a></li>
             <li><a href="/pages/contact">Contact</a></li>
           </ul></div>
           <div class="s-footer__col"><h4>Information</h4><ul>
             <li><a href="/policies/shipping-policy">Shipping</a></li>
             <li><a href="/policies/refund-policy">Returns</a></li>
             <li><a href="/policies/privacy-policy">Privacy</a></li>
-            <li><a href="/policies/terms-of-service">Terms</a></li>
           </ul></div>
         </div>
         <div class="s-footer__bottom">
@@ -261,6 +370,8 @@
 (function(){
   const header = document.getElementById('mdl-header');
   const counter = document.getElementById('mdl-cur');
+  const slidenum = document.getElementById('mdl-slidenum');
+  const swiperEl = document.getElementById('mdl-swiper');
 
   const swiper = new Swiper('#mdl-swiper', {
     direction: 'vertical',
@@ -273,24 +384,180 @@
       slideChange: function() {
         const n = String(this.activeIndex + 1).padStart(2,'0');
         if(counter) counter.textContent = n;
-        if(this.activeIndex === 0) header.classList.remove('solid');
-        else header.classList.add('solid');
+        const slide = this.slides[this.activeIndex];
+        const mode = slide.getAttribute('data-mode') || 'dark';
+        // Header style
+        if(this.activeIndex === 0) {
+          header.classList.remove('solid', 'light-mode');
+        } else {
+          header.classList.add('solid');
+          if(mode === 'light') header.classList.add('light-mode');
+          else header.classList.remove('light-mode');
+        }
+        // Pagination + slide num style
+        if(mode === 'light') {
+          swiperEl.classList.add('pagination-light');
+          slidenum.classList.add('light');
+        } else {
+          swiperEl.classList.remove('pagination-light');
+          slidenum.classList.remove('light');
+        }
       }
     }
   });
 
+  // Mobile drawer
   document.getElementById('mdl-burger').addEventListener('click', function(){
     document.getElementById('mdl-drawer').classList.add('open');
     document.body.style.overflow = 'hidden';
     swiper.mousewheel.disable();
   });
-  function close(){
+  function closeDrawer(){
     document.getElementById('mdl-drawer').classList.remove('open');
     document.body.style.overflow = '';
     swiper.mousewheel.enable();
   }
-  document.getElementById('mdl-close').addEventListener('click', close);
-  document.querySelectorAll('.mdl-drawer a').forEach(a => a.addEventListener('click', close));
+  document.getElementById('mdl-close').addEventListener('click', closeDrawer);
+  document.querySelectorAll('.mdl-drawer a').forEach(a => a.addEventListener('click', closeDrawer));
+
+  // ============= SEARCH =============
+  const searchOverlay = document.getElementById('mdl-search');
+  const searchInput = document.getElementById('mdl-search-input');
+  const searchResults = document.getElementById('mdl-search-results');
+  const searchHint = document.getElementById('mdl-search-hint');
+  let searchTimer = null;
+
+  document.getElementById('mdl-search-open').addEventListener('click', function(){
+    searchOverlay.classList.add('open');
+    setTimeout(() => searchInput.focus(), 300);
+    swiper.mousewheel.disable();
+  });
+  document.getElementById('mdl-search-close').addEventListener('click', function(){
+    searchOverlay.classList.remove('open');
+    swiper.mousewheel.enable();
+  });
+  searchInput.addEventListener('input', function(e){
+    clearTimeout(searchTimer);
+    const q = e.target.value.trim();
+    if(q.length < 2) {
+      searchResults.innerHTML = '';
+      searchHint.textContent = 'Start typing to discover fragrances';
+      return;
+    }
+    searchHint.textContent = 'Searching...';
+    searchTimer = setTimeout(() => {
+      fetch(`/search/suggest.json?q=${encodeURIComponent(q)}&resources[type]=product&resources[limit]=6`)
+        .then(r => r.json())
+        .then(data => {
+          const products = data.resources.results.products || [];
+          if(products.length === 0) {
+            searchHint.textContent = 'No fragrances found';
+            searchResults.innerHTML = '';
+            return;
+          }
+          searchHint.textContent = `${products.length} ${products.length === 1 ? 'result' : 'results'}`;
+          searchResults.innerHTML = products.map(p => `
+            <a href="${p.url}" class="mdl-search-result">
+              ${p.image ? `<img src="${p.image}" class="mdl-search-result__img" alt="${p.title}">` : '<div class="mdl-search-result__img"></div>'}
+              <div>
+                <div class="mdl-search-result__name">${p.title}</div>
+                <div class="mdl-search-result__price">${p.price}</div>
+              </div>
+            </a>
+          `).join('');
+        });
+    }, 250);
+  });
+
+  // ============= CART =============
+  const cartDrawer = document.getElementById('mdl-cart-drawer');
+  const cartOverlay = document.getElementById('mdl-cart-overlay');
+  const cartBody = document.getElementById('mdl-cart-body');
+  const cartFoot = document.getElementById('mdl-cart-foot');
+  const cartTotal = document.getElementById('mdl-cart-total');
+  const cartCount = document.getElementById('mdl-cart-count');
+
+  function openCart(){
+    cartDrawer.classList.add('open');
+    cartOverlay.classList.add('open');
+    swiper.mousewheel.disable();
+    fetchCart();
+  }
+  function closeCart(){
+    cartDrawer.classList.remove('open');
+    cartOverlay.classList.remove('open');
+    swiper.mousewheel.enable();
+  }
+  document.getElementById('mdl-cart-open').addEventListener('click', openCart);
+  document.getElementById('mdl-cart-close').addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+
+  function formatMoney(cents){
+    return '$' + (cents/100).toFixed(2);
+  }
+
+  function fetchCart(){
+    fetch('/cart.js').then(r => r.json()).then(cart => renderCart(cart));
+  }
+  function renderCart(cart){
+    if(cartCount) {
+      cartCount.textContent = cart.item_count;
+      cartCount.style.display = cart.item_count > 0 ? 'flex' : 'none';
+    }
+    if(cart.item_count === 0) {
+      cartBody.innerHTML = `<div class="mdl-cart-drawer__empty">
+        <p>Your cart awaits.</p>
+        <a href="/collections/larbre-de-vie">Discover the Maison →</a>
+      </div>`;
+      cartFoot.style.display = 'none';
+      return;
+    }
+    cartBody.innerHTML = cart.items.map(item => `
+      <div class="mdl-cart-item" data-key="${item.key}">
+        ${item.image ? `<img src="${item.image}" alt="${item.product_title}">` : '<div></div>'}
+        <div class="mdl-cart-item__info">
+          <div class="mdl-cart-item__name">${item.product_title}</div>
+          <div class="mdl-cart-item__variant">${item.variant_title || ''}</div>
+          <div class="mdl-cart-item__row">
+            <div class="mdl-cart-item__qty">
+              <button data-act="dec" data-key="${item.key}">−</button>
+              <span>${item.quantity}</span>
+              <button data-act="inc" data-key="${item.key}">+</button>
+            </div>
+            <div class="mdl-cart-item__price">${formatMoney(item.line_price)}</div>
+          </div>
+          <button class="mdl-cart-item__remove" data-act="rm" data-key="${item.key}">Remove</button>
+        </div>
+      </div>
+    `).join('');
+    cartTotal.textContent = formatMoney(cart.total_price);
+    cartFoot.style.display = 'block';
+    bindCartActions();
+  }
+  function bindCartActions(){
+    cartBody.querySelectorAll('button[data-act]').forEach(btn => {
+      btn.addEventListener('click', function(){
+        const key = this.getAttribute('data-key');
+        const act = this.getAttribute('data-act');
+        const item = cartBody.querySelector(`.mdl-cart-item[data-key="${key}"]`);
+        const currentQty = parseInt(item.querySelector('.mdl-cart-item__qty span').textContent);
+        let newQty = currentQty;
+        if(act === 'inc') newQty = currentQty + 1;
+        if(act === 'dec') newQty = Math.max(0, currentQty - 1);
+        if(act === 'rm') newQty = 0;
+        fetch('/cart/change.js', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({id: key, quantity: newQty})
+        }).then(r => r.json()).then(cart => renderCart(cart));
+      });
+    });
+  }
+  // Initial cart load
+  fetchCart();
+  // Expose globally for product pages
+  window.mdlOpenCart = openCart;
+  window.mdlRefreshCart = fetchCart;
 })();
 </script>
 
@@ -299,11 +566,8 @@
   "name": "MDL Homepage",
   "settings": [
     { "type": "header", "content": "Hero Video" },
-    { "type": "url", "id": "hero_video", "label": "Hero video URL (MP4)", "info": "Upload your video to Shopify Files, copy the URL here" },
-    { "type": "image_picker", "id": "hero_image", "label": "Hero fallback image (used if no video)" },
-    { "type": "header", "content": "Collections" },
-    { "type": "image_picker", "id": "larbre_image", "label": "L'Arbre de Vie image" },
-    { "type": "image_picker", "id": "essentials_image", "label": "Les Essentials image" },
+    { "type": "url", "id": "hero_video", "label": "Hero video URL (MP4)", "info": "Upload to Shopify Files, paste URL here" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero fallback image" },
     { "type": "header", "content": "Story" },
     { "type": "image_picker", "id": "story_image", "label": "Brand story image" }
   ],

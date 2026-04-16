@@ -17,16 +17,12 @@
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
 
-    <!-- Brand fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- SEO: Open Graph -->
     <meta property="og:site_name" content="{{ shop.name }}">
     <meta property="og:url" content="{{ canonical_url }}">
     <meta property="og:title" content="{{ page_title }}">
@@ -37,30 +33,24 @@
     {{ content_for_header }}
 
     <style>
-      :root {
-        --mdl-black: #0A0A0A;
-        --mdl-gold: #C9A84C;
-        --mdl-cream: #F5F0E8;
-        --mdl-text: #1A1A1A;
-      }
       *, *::before, *::after { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; background: #0A0A0A; color: #F5F0E8; font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased; }
       a { color: inherit; }
     </style>
   </head>
 
-  <body class="mdl-body">
-    <a class="visually-hidden" href="#mdl-main">{{ 'accessibility.skip_to_text' | t }}</a>
-    <main id="mdl-main">
-      {{ content_for_layout }}
-    </main>
+  <body>
+    {%- unless template == 'index' -%}
+      {%- render 'mdl-chrome' -%}
+    {%- endunless -%}
+
+    <main>{{ content_for_layout }}</main>
 
     <script>
       window.routes = {
         cart_url: "{{ routes.cart_url }}",
         cart_add_url: "{{ routes.cart_add_url }}",
         cart_change_url: "{{ routes.cart_change_url }}",
-        cart_update_url: "{{ routes.cart_update_url }}",
         search_url: "{{ routes.search_url }}",
         root_url: "{{ routes.root_url }}"
       };

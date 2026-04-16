@@ -1,0 +1,151 @@
+{{ 'product-mdl.css' | asset_url | stylesheet_tag }}
+
+<section class="mdl-pdp">
+  <!-- Image Gallery -->
+  <div class="mdl-pdp__gallery">
+    {%- if product.images.size > 0 -%}
+      {%- for image in product.images -%}
+        <div class="mdl-pdp__img-wrap">
+          <img src="{{ image | image_url: width: 1400 }}" alt="{{ product.title }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="mdl-pdp__img-wrap">
+        <div class="mdl-pdp__placeholder">
+          <em>{{ product.collections.first.title | default: 'Musk de Lumière' }}</em>
+          <strong>{{ product.title }}</strong>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Product Info Sidebar -->
+  <aside class="mdl-pdp__info">
+    <div class="mdl-pdp__info-inner">
+      <p class="mdl-pdp__collection">{{ product.collections.first.title | default: "Musk de Lumière" }}</p>
+      <h1 class="mdl-pdp__name">{{ product.title }}</h1>
+
+      {%- if product.metafields.custom.notes != blank -%}
+        <p class="mdl-pdp__notes">{{ product.metafields.custom.notes }}</p>
+      {%- endif -%}
+
+      <p class="mdl-pdp__price" id="mdl-pdp-price">{{ product.selected_or_first_available_variant.price | money }}</p>
+
+      {%- if product.description != blank -%}
+        <div class="mdl-pdp__desc">{{ product.description }}</div>
+      {%- endif -%}
+
+      <form id="mdl-pdp-form" data-product-id="{{ product.id }}">
+        {%- if product.variants.size > 1 -%}
+          <div class="mdl-pdp__variants">
+            <p class="mdl-pdp__variants-label">Size</p>
+            <div class="mdl-pdp__variants-grid">
+              {%- for variant in product.variants -%}
+                <button type="button" class="mdl-pdp__variant {% if forloop.first %}active{% endif %}"
+                        data-id="{{ variant.id }}" data-price="{{ variant.price }}"
+                        data-price-formatted="{{ variant.price | money }}">
+                  {{ variant.title }}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <input type="hidden" name="id" id="mdl-pdp-variant" value="{{ product.selected_or_first_available_variant.id }}">
+
+        <button type="submit" class="mdl-pdp__add" id="mdl-pdp-add">
+          <span>Add to Cart</span>
+        </button>
+      </form>
+
+      {%- if product.metafields.custom.scent_pyramid_top != blank or product.metafields.custom.scent_pyramid_heart != blank or product.metafields.custom.scent_pyramid_base != blank -%}
+        <div class="mdl-pdp__pyramid">
+          <h3>The Composition</h3>
+          {%- if product.metafields.custom.scent_pyramid_top != blank -%}
+            <div class="mdl-pdp__pyramid-row">
+              <span class="mdl-pdp__pyramid-label">Top</span>
+              <span class="mdl-pdp__pyramid-notes">{{ product.metafields.custom.scent_pyramid_top }}</span>
+            </div>
+          {%- endif -%}
+          {%- if product.metafields.custom.scent_pyramid_heart != blank -%}
+            <div class="mdl-pdp__pyramid-row">
+              <span class="mdl-pdp__pyramid-label">Heart</span>
+              <span class="mdl-pdp__pyramid-notes">{{ product.metafields.custom.scent_pyramid_heart }}</span>
+            </div>
+          {%- endif -%}
+          {%- if product.metafields.custom.scent_pyramid_base != blank -%}
+            <div class="mdl-pdp__pyramid-row">
+              <span class="mdl-pdp__pyramid-label">Base</span>
+              <span class="mdl-pdp__pyramid-notes">{{ product.metafields.custom.scent_pyramid_base }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="mdl-pdp__details">
+        <details class="mdl-pdp__detail">
+          <summary>The Inspiration</summary>
+          <p>{{ product.metafields.custom.inspiration | default: "A signature crafted in the Maison's atelier, drawing from French perfumery tradition and the heritage of oud." }}</p>
+        </details>
+        <details class="mdl-pdp__detail">
+          <summary>Ingredients</summary>
+          <p>{{ product.metafields.custom.ingredients | default: "Alcohol Denat. 40B, Parfum (Fragrance), Aqua. Full ingredient list available on packaging." }}</p>
+        </details>
+        <details class="mdl-pdp__detail">
+          <summary>Shipping & Returns</summary>
+          <p>Complimentary shipping on all orders. 30-day returns on unopened items. Discrete packaging, signature wrapping.</p>
+        </details>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<script>
+(function(){
+  const form = document.getElementById('mdl-pdp-form');
+  const priceEl = document.getElementById('mdl-pdp-price');
+  const variantInput = document.getElementById('mdl-pdp-variant');
+  const addBtn = document.getElementById('mdl-pdp-add');
+
+  // Variant selection
+  document.querySelectorAll('.mdl-pdp__variant').forEach(btn => {
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.mdl-pdp__variant').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      variantInput.value = this.getAttribute('data-id');
+      priceEl.textContent = this.getAttribute('data-price-formatted');
+    });
+  });
+
+  // Add to cart
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    addBtn.querySelector('span').textContent = 'Adding...';
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({id: variantInput.value, quantity: 1})
+    })
+    .then(r => r.json())
+    .then(() => {
+      addBtn.querySelector('span').textContent = 'Added ✓';
+      if(window.mdlRefreshCart) window.mdlRefreshCart();
+      setTimeout(() => {
+        if(window.mdlOpenCart) window.mdlOpenCart();
+        addBtn.querySelector('span').textContent = 'Add to Cart';
+      }, 600);
+    })
+    .catch(() => {
+      addBtn.querySelector('span').textContent = 'Add to Cart';
+      alert('Something went wrong. Please try again.');
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "MDL Product",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,186 @@
+{{ 'homepage-mdl.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+<div class="mdl-bar">
+  Complimentary samples with every order &nbsp;·&nbsp;
+  <a href="/collections/larbre-de-vie">&nbsp;Discover L'Arbre de Vie →</a>
+</div>
+
+<header class="mdl-header solid" id="mdl-header">
+  <nav><ul class="mdl-header__nav">
+    <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
+    <li><a href="/collections/les-essentials">Les Essentials</a></li>
+    <li><a href="/collections">Maison</a></li>
+    <li><a href="/pages/about">L'Histoire</a></li>
+  </ul></nav>
+  <div class="mdl-header__logo">
+    <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+      <img src="{{ 'logo-musk-de-lumiere.png' | asset_url }}" alt="{{ shop.name }}" width="320" height="130" loading="eager">
+    </a>
+  </div>
+  <div class="mdl-header__icons">
+    <button class="mdl-header__icon" id="mdl-search-open" aria-label="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+    </button>
+    <button class="mdl-header__icon" id="mdl-cart-open" aria-label="Cart">
+      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="mdl-cart-bubble" id="mdl-cart-count" {% if cart.item_count == 0 %}style="display:none"{% endif %}>{{ cart.item_count }}</span>
+    </button>
+    <button class="mdl-header__burger" id="mdl-burger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mdl-drawer" id="mdl-drawer">
+  <button class="mdl-drawer__close" id="mdl-close" aria-label="Close">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <nav><ul>
+    <li><a href="/collections/larbre-de-vie">L'Arbre de Vie</a></li>
+    <li><a href="/collections/les-essentials">Les Essentials</a></li>
+    <li><a href="/collections">Maison</a></li>
+    <li><a href="/pages/about">L'Histoire</a></li>
+    <li><a href="/pages/contact">Contact</a></li>
+  </ul></nav>
+</div>
+
+<div class="mdl-search-overlay" id="mdl-search">
+  <button class="mdl-search-overlay__close" id="mdl-search-close" aria-label="Close search">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <form class="mdl-search-overlay__form" action="/search" method="get">
+    <input type="hidden" name="type" value="product">
+    <input class="mdl-search-overlay__input" type="search" name="q" placeholder="Search the Maison..." autocomplete="off" id="mdl-search-input">
+  </form>
+  <div class="mdl-search-overlay__results">
+    <p class="mdl-search-overlay__hint" id="mdl-search-hint">Start typing to discover fragrances</p>
+    <div id="mdl-search-results"></div>
+  </div>
+</div>
+
+<div class="mdl-cart-drawer__overlay" id="mdl-cart-overlay"></div>
+<aside class="mdl-cart-drawer" id="mdl-cart-drawer">
+  <div class="mdl-cart-drawer__head">
+    <h2 class="mdl-cart-drawer__title">Your Cart</h2>
+    <button class="mdl-cart-drawer__close" id="mdl-cart-close" aria-label="Close cart">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="mdl-cart-drawer__body" id="mdl-cart-body">
+    <div class="mdl-cart-drawer__empty">
+      <p>Your cart awaits.</p>
+      <a href="/collections/larbre-de-vie">Discover the Maison →</a>
+    </div>
+  </div>
+  <div class="mdl-cart-drawer__foot" id="mdl-cart-foot" style="display:none;">
+    <div class="mdl-cart-drawer__total">
+      <span class="mdl-cart-drawer__total-label">Subtotal</span>
+      <span class="mdl-cart-drawer__total-amount" id="mdl-cart-total">$0.00</span>
+    </div>
+    <a href="/checkout" class="mdl-cart-drawer__checkout">Checkout</a>
+  </div>
+</aside>
+
+<script>
+(function(){
+  // Mobile drawer
+  document.getElementById('mdl-burger').addEventListener('click', function(){
+    document.getElementById('mdl-drawer').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  function closeDrawer(){
+    document.getElementById('mdl-drawer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('mdl-close').addEventListener('click', closeDrawer);
+  document.querySelectorAll('.mdl-drawer a').forEach(a => a.addEventListener('click', closeDrawer));
+
+  // Search
+  const searchOverlay = document.getElementById('mdl-search');
+  const searchInput = document.getElementById('mdl-search-input');
+  const searchResults = document.getElementById('mdl-search-results');
+  const searchHint = document.getElementById('mdl-search-hint');
+  let searchTimer = null;
+  document.getElementById('mdl-search-open').addEventListener('click', function(){
+    searchOverlay.classList.add('open');
+    setTimeout(() => searchInput.focus(), 300);
+  });
+  document.getElementById('mdl-search-close').addEventListener('click', () => searchOverlay.classList.remove('open'));
+  searchInput.addEventListener('input', function(e){
+    clearTimeout(searchTimer);
+    const q = e.target.value.trim();
+    if(q.length < 2) { searchResults.innerHTML = ''; searchHint.textContent = 'Start typing to discover fragrances'; return; }
+    searchHint.textContent = 'Searching...';
+    searchTimer = setTimeout(() => {
+      fetch(`/search/suggest.json?q=${encodeURIComponent(q)}&resources[type]=product&resources[limit]=6`)
+        .then(r => r.json())
+        .then(data => {
+          const products = data.resources.results.products || [];
+          if(products.length === 0) { searchHint.textContent = 'No fragrances found'; searchResults.innerHTML = ''; return; }
+          searchHint.textContent = `${products.length} ${products.length === 1 ? 'result' : 'results'}`;
+          searchResults.innerHTML = products.map(p => `
+            <a href="${p.url}" class="mdl-search-result">
+              ${p.image ? `<img src="${p.image}" class="mdl-search-result__img" alt="${p.title}">` : '<div class="mdl-search-result__img"></div>'}
+              <div><div class="mdl-search-result__name">${p.title}</div><div class="mdl-search-result__price">${p.price}</div></div>
+            </a>`).join('');
+        });
+    }, 250);
+  });
+
+  // Cart
+  const cartDrawer = document.getElementById('mdl-cart-drawer');
+  const cartOverlay = document.getElementById('mdl-cart-overlay');
+  const cartBody = document.getElementById('mdl-cart-body');
+  const cartFoot = document.getElementById('mdl-cart-foot');
+  const cartTotal = document.getElementById('mdl-cart-total');
+  const cartCount = document.getElementById('mdl-cart-count');
+  function fmt(c){ return '$' + (c/100).toFixed(2); }
+  function fetchCart(){ fetch('/cart.js').then(r=>r.json()).then(renderCart); }
+  function renderCart(cart){
+    if(cartCount){ cartCount.textContent = cart.item_count; cartCount.style.display = cart.item_count > 0 ? 'flex' : 'none'; }
+    if(cart.item_count === 0){
+      cartBody.innerHTML = `<div class="mdl-cart-drawer__empty"><p>Your cart awaits.</p><a href="/collections/larbre-de-vie">Discover the Maison →</a></div>`;
+      cartFoot.style.display = 'none'; return;
+    }
+    cartBody.innerHTML = cart.items.map(item => `
+      <div class="mdl-cart-item" data-key="${item.key}">
+        ${item.image ? `<img src="${item.image}" alt="${item.product_title}">` : '<div></div>'}
+        <div class="mdl-cart-item__info">
+          <div class="mdl-cart-item__name">${item.product_title}</div>
+          <div class="mdl-cart-item__variant">${item.variant_title || ''}</div>
+          <div class="mdl-cart-item__row">
+            <div class="mdl-cart-item__qty">
+              <button data-act="dec" data-key="${item.key}">−</button>
+              <span>${item.quantity}</span>
+              <button data-act="inc" data-key="${item.key}">+</button>
+            </div>
+            <div class="mdl-cart-item__price">${fmt(item.line_price)}</div>
+          </div>
+          <button class="mdl-cart-item__remove" data-act="rm" data-key="${item.key}">Remove</button>
+        </div>
+      </div>`).join('');
+    cartTotal.textContent = fmt(cart.total_price);
+    cartFoot.style.display = 'block';
+    cartBody.querySelectorAll('button[data-act]').forEach(btn => {
+      btn.addEventListener('click', function(){
+        const key = this.getAttribute('data-key');
+        const act = this.getAttribute('data-act');
+        const item = cartBody.querySelector(`.mdl-cart-item[data-key="${key}"]`);
+        const cur = parseInt(item.querySelector('.mdl-cart-item__qty span').textContent);
+        let q = cur;
+        if(act==='inc') q = cur+1; if(act==='dec') q = Math.max(0,cur-1); if(act==='rm') q = 0;
+        fetch('/cart/change.js', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:key,quantity:q})}).then(r=>r.json()).then(renderCart);
+      });
+    });
+  }
+  function openCart(){ cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); fetchCart(); }
+  function closeCart(){ cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); }
+  document.getElementById('mdl-cart-open').addEventListener('click', openCart);
+  document.getElementById('mdl-cart-close').addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+  fetchCart();
+  window.mdlOpenCart = openCart;
+  window.mdlRefreshCart = fetchCart;
+})();
+</script>
