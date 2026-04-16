@@ -206,13 +206,13 @@
     <div class="swiper pdp-notes__swiper" id="pdp-notes-swiper">
       <div class="swiper-wrapper">
         {%- if mf.scent_top != blank and mf.scent_top != "—" -%}
-        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Top Notes</div><ul class="pdp-notes__list">{%- for n in mf.scent_top | split: ", " -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
+        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Top Notes</div><ul class="pdp-notes__list">{%- assign top_notes = mf.scent_top | split: ", " -%}{%- for n in top_notes -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
         {%- endif -%}
         {%- if mf.scent_heart != blank and mf.scent_heart != "—" -%}
-        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Heart Notes</div><ul class="pdp-notes__list">{%- for n in mf.scent_heart | split: ", " -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
+        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Heart Notes</div><ul class="pdp-notes__list">{%- assign heart_notes = mf.scent_heart | split: ", " -%}{%- for n in heart_notes -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
         {%- endif -%}
         {%- if mf.scent_base != blank and mf.scent_base != "—" -%}
-        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Base Notes</div><ul class="pdp-notes__list">{%- for n in mf.scent_base | split: ", " -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
+        <div class="swiper-slide"><div class="pdp-notes__slide"><div class="pdp-notes__label">Base Notes</div><ul class="pdp-notes__list">{%- assign base_notes = mf.scent_base | split: ", " -%}{%- for n in base_notes -%}<li>{{ n }}</li>{%- endfor -%}</ul></div></div>
         {%- endif -%}
       </div>
       <div class="swiper-scrollbar pdp-notes__scrollbar"></div>
