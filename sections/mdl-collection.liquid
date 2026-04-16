@@ -1,16 +1,16 @@
 {{ 'homepage-mdl.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 <style>
-/* COLLECTION PAGE — Byredo editorial style */
 html, body { overflow: auto !important; height: auto !important; position: static !important; }
 
-.mdl-coll { background: #FFFFFF; color: #0A0A0A; min-height: 100vh; padding-top: 180px; }
+/* ============================================
+   COLLECTION PAGE — Editorial luxury layout
+============================================ */
+.mdl-coll { background: #FFFFFF; color: #0A0A0A; min-height: 100vh; padding-top: 160px; }
 
-/* Hero */
-.mdl-coll__hero {
-  padding: 0 96px 80px;
-  max-width: 700px;
-}
+/* ===== HERO ===== */
+.mdl-coll__hero { padding: 0 96px 64px; max-width: 700px; }
 .mdl-coll__eyebrow {
   font-family: 'Montserrat', sans-serif;
   font-size: 10px; font-weight: 600;
@@ -19,156 +19,292 @@ html, body { overflow: auto !important; height: auto !important; position: stati
 }
 .mdl-coll__title {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(48px, 6vw, 80px);
+  font-size: clamp(42px, 5vw, 72px);
   font-weight: 300; line-height: 0.95;
   letter-spacing: -0.02em; color: #0A0A0A;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
-.mdl-coll__title em { font-style: italic; color: #C9A84C; }
 .mdl-coll__desc {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 17px; font-style: italic; font-weight: 300;
-  line-height: 1.8; color: rgba(10,10,10,0.55);
-  max-width: 520px;
+  font-size: 16px; font-style: italic; font-weight: 300;
+  line-height: 1.8; color: rgba(10,10,10,0.5);
+  max-width: 480px;
 }
 
-/* Product grid — editorial 2-column with large cards */
+/* ===== SECTION HEADERS ===== */
+.mdl-coll__section-head {
+  padding: 60px 96px 36px;
+  display: flex; align-items: baseline; gap: 20px;
+}
+.mdl-coll__section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px; font-weight: 600;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: #C9A84C;
+}
+.mdl-coll__section-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; font-style: italic; font-weight: 300;
+  color: rgba(10,10,10,0.4);
+}
+
+/* ===== PRODUCT GRID — 4 columns, clean luxury cards ===== */
 .mdl-coll__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  padding: 0 96px;
+  background: rgba(10,10,10,0.04);
 }
 .mdl-coll__card {
+  background: #FFFFFF;
   display: flex; flex-direction: column;
   text-decoration: none; color: inherit;
   overflow: hidden;
-  border-top: 1px solid rgba(10,10,10,0.06);
+  transition: background 0.4s;
 }
-.mdl-coll__card:nth-child(odd) { border-right: 1px solid rgba(10,10,10,0.06); }
+.mdl-coll__card:hover { background: #FAFAF7; }
 
 .mdl-coll__card-img {
-  aspect-ratio: 4/5;
+  aspect-ratio: 3/4;
   overflow: hidden;
-  background: linear-gradient(160deg, #F2EDE6, #E8DFCF);
+  background: linear-gradient(160deg, #F5F0E8, #EBE3D5);
 }
 .mdl-coll__card-img img {
   width: 100%; height: 100%; object-fit: cover;
-  transition: transform 1s cubic-bezier(0.19,1,0.22,1);
+  transition: transform 0.9s cubic-bezier(0.19,1,0.22,1);
 }
-.mdl-coll__card:hover .mdl-coll__card-img img { transform: scale(1.06); }
+.mdl-coll__card:hover .mdl-coll__card-img img { transform: scale(1.05); }
 
 .mdl-coll__card-placeholder {
   width: 100%; height: 100%;
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 14px;
+  align-items: center; justify-content: center; gap: 12px;
 }
 .mdl-coll__card-placeholder em {
-  font-style: normal; font-size: 9px; font-weight: 600;
-  letter-spacing: 0.4em; text-transform: uppercase;
-  color: rgba(10,10,10,0.2);
+  font-style: normal; font-size: 8px; font-weight: 600;
+  letter-spacing: 0.38em; text-transform: uppercase;
+  color: rgba(10,10,10,0.18);
 }
 .mdl-coll__card-placeholder strong {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 28px; font-weight: 400; font-style: italic;
-  color: rgba(10,10,10,0.32);
+  font-size: 22px; font-weight: 400; font-style: italic;
+  color: rgba(10,10,10,0.3);
 }
 
-.mdl-coll__card-info { padding: 28px 32px 40px; }
+.mdl-coll__card-info { padding: 20px 16px 28px; text-align: center; }
 .mdl-coll__card-tag {
   font-family: 'Montserrat', sans-serif;
-  font-size: 8px; font-weight: 600;
-  letter-spacing: 0.35em; text-transform: uppercase;
-  color: #C9A84C; margin-bottom: 10px;
+  font-size: 7px; font-weight: 600;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  color: #C9A84C; margin-bottom: 8px;
 }
 .mdl-coll__card-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 26px; font-weight: 300;
+  font-size: 20px; font-weight: 300;
   color: #0A0A0A; margin-bottom: 6px;
-  letter-spacing: -0.01em;
 }
 .mdl-coll__card-notes {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 13px; font-style: italic; font-weight: 300;
-  color: rgba(10,10,10,0.45);
-  line-height: 1.6; margin-bottom: 14px;
+  font-size: 11px; font-style: italic; font-weight: 300;
+  color: rgba(10,10,10,0.4);
+  line-height: 1.5; margin-bottom: 10px;
 }
 .mdl-coll__card-price {
   font-family: 'Montserrat', sans-serif;
-  font-size: 12px; font-weight: 400;
-  letter-spacing: 0.1em; color: rgba(10,10,10,0.65);
+  font-size: 11px; font-weight: 400;
+  letter-spacing: 0.08em; color: rgba(10,10,10,0.6);
 }
 
-/* Full-width editorial banner between products */
-.mdl-coll__banner {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 60vh;
-  background: #0A0A0A; color: #F5F0E8;
+/* ===== DISCOVERY SET INTERSTITIAL — scroll-zoom with popup ===== */
+.mdl-coll__discovery {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  margin: 80px 0;
+  background: #0A0A0A;
 }
-.mdl-coll__banner-img { overflow: hidden; }
-.mdl-coll__banner-img img { width: 100%; height: 100%; object-fit: cover; }
-.mdl-coll__banner-text {
-  padding: 80px 64px;
-  display: flex; flex-direction: column;
-  justify-content: center;
+.mdl-coll__discovery-img {
+  position: absolute; inset: -10%;
+  will-change: transform;
+  transition: transform 0.1s linear;
 }
-.mdl-coll__banner-eyebrow {
-  font-size: 9px; font-weight: 600;
-  letter-spacing: 0.4em; text-transform: uppercase;
-  color: #C9A84C; margin-bottom: 20px;
+.mdl-coll__discovery-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0.7;
 }
-.mdl-coll__banner-title {
+.mdl-coll__discovery-img-placeholder {
+  width: 100%; height: 100%;
+  background:
+    radial-gradient(ellipse at 40% 40%, rgba(201,168,76,0.12) 0%, transparent 55%),
+    linear-gradient(160deg, #151210, #0A0A0A);
+  display: flex; align-items: center; justify-content: center;
+}
+.mdl-coll__discovery-img-placeholder span {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(32px, 4vw, 52px);
-  font-weight: 300; font-style: italic;
-  line-height: 1.1; margin-bottom: 24px;
+  font-size: 80px; font-weight: 300; font-style: italic;
+  color: rgba(201,168,76,0.08);
 }
-.mdl-coll__banner-body {
-  font-size: 13px; font-weight: 300;
-  line-height: 1.9; letter-spacing: 0.06em;
-  color: rgba(245,240,232,0.6);
-  max-width: 420px; margin-bottom: 32px;
+.mdl-coll__discovery-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.3) 50%, rgba(10,10,10,0.6) 100%);
+  z-index: 1;
 }
-.mdl-coll__banner-cta {
-  font-size: 9px; font-weight: 700;
-  letter-spacing: 0.32em; text-transform: uppercase;
-  color: #F5F0E8; text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.mdl-coll__banner-cta:hover { color: #C9A84C; }
 
-/* Footer area */
-.mdl-coll__footer {
-  grid-column: 1 / -1;
+/* Title top-left */
+.mdl-coll__discovery-text {
+  position: absolute;
+  top: 180px; left: 96px;
+  z-index: 2; max-width: 500px;
+}
+.mdl-coll__discovery-chapter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; font-style: italic;
+  color: #C9A84C; letter-spacing: 0.12em;
+  margin-bottom: 14px;
+}
+.mdl-coll__discovery-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 300; line-height: 0.92;
+  color: #F5F0E8; margin-bottom: 18px;
+}
+.mdl-coll__discovery-title em { font-style: italic; color: #C9A84C; }
+.mdl-coll__discovery-lead {
+  font-size: 12px; font-weight: 300;
+  line-height: 2; letter-spacing: 0.07em;
+  color: rgba(245,240,232,0.6);
+  max-width: 400px;
+}
+
+/* Popup card — bottom right, Byredo-style */
+.mdl-coll__discovery-popup {
+  position: absolute;
+  bottom: 80px; right: 96px;
+  z-index: 3;
+  display: flex;
+  background: rgba(245,240,232,0.55);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  border-left: 2px solid #C9A84C;
+  min-height: 120px;
+  max-width: 440px;
+  text-decoration: none; color: inherit;
+  transition: background 0.3s;
+}
+.mdl-coll__discovery-popup:hover {
+  background: rgba(245,240,232,0.7);
+}
+.mdl-coll__popup-img {
+  flex: 0 0 120px;
+  background: linear-gradient(160deg, #1A150E, #0D0B08);
+  overflow: hidden;
+}
+.mdl-coll__popup-img img { width: 100%; height: 100%; object-fit: cover; }
+.mdl-coll__popup-img-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; font-style: italic;
+  color: rgba(201,168,76,0.5);
+}
+.mdl-coll__popup-content { padding: 18px 24px; flex: 1; position: relative; }
+.mdl-coll__popup-tag {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 7px; font-weight: 600;
+  letter-spacing: 0.35em; text-transform: uppercase;
+  color: #C9A84C; margin-bottom: 6px;
+}
+.mdl-coll__popup-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 400;
+  color: #0A0A0A; margin-bottom: 4px;
+}
+.mdl-coll__popup-sub {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px; font-weight: 400;
+  letter-spacing: 0.08em; color: rgba(10,10,10,0.5);
+  margin-bottom: 12px;
+}
+.mdl-coll__popup-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.mdl-coll__popup-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 300; color: #0A0A0A;
+}
+.mdl-coll__popup-cta {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 7px; font-weight: 700;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: #0A0A0A;
+  display: flex; align-items: center; gap: 8px;
+}
+.mdl-coll__popup-cta span {
+  display: block; width: 24px; height: 1px;
+  background: #C9A84C;
+}
+
+/* ===== CROSS-SELL FOOTER ===== */
+.mdl-coll__cross {
   padding: 80px 96px;
   text-align: center;
+  background: #FFFFFF;
 }
-.mdl-coll__footer-cta {
+.mdl-coll__cross-link {
   font-family: 'Montserrat', sans-serif;
   font-size: 10px; font-weight: 700;
   letter-spacing: 0.35em; text-transform: uppercase;
   color: #0A0A0A; text-decoration: underline;
   text-underline-offset: 4px;
 }
-.mdl-coll__footer-cta:hover { color: #C9A84C; }
+.mdl-coll__cross-link:hover { color: #C9A84C; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  .mdl-coll { padding-top: 140px; }
+  .mdl-coll { padding-top: 130px; }
   .mdl-coll__hero { padding: 0 24px 48px; }
-  .mdl-coll__title { font-size: 44px; }
-  .mdl-coll__desc { font-size: 15px; }
-  .mdl-coll__card-info { padding: 20px 20px 32px; }
-  .mdl-coll__card-name { font-size: 22px; }
-  .mdl-coll__banner { grid-template-columns: 1fr; min-height: auto; }
-  .mdl-coll__banner-text { padding: 48px 24px; }
+  .mdl-coll__section-head { padding: 40px 24px 24px; }
+  .mdl-coll__grid { grid-template-columns: 1fr 1fr; padding: 0 24px; }
+  .mdl-coll__card-name { font-size: 18px; }
+  .mdl-coll__card-notes { font-size: 10px; }
+  .mdl-coll__discovery-text { top: 140px; left: 24px; right: 24px; }
+  .mdl-coll__discovery-popup {
+    bottom: 60px; right: 24px; left: 24px;
+    max-width: none;
+  }
+  .mdl-coll__cross { padding: 60px 24px; }
 }
 @media (max-width: 600px) {
-  .mdl-coll__grid { grid-template-columns: 1fr; }
-  .mdl-coll__card:nth-child(odd) { border-right: none; }
+  .mdl-coll__grid { grid-template-columns: 1fr 1fr; gap: 1px; padding: 0 16px; }
+  .mdl-coll__card-info { padding: 14px 10px 20px; }
+  .mdl-coll__card-name { font-size: 16px; }
+  .mdl-coll__discovery-title { font-size: 36px; }
+  .mdl-coll__discovery-popup { flex-direction: column; }
+  .mdl-coll__popup-img { flex: 0 0 160px; }
 }
 </style>
+
+{%- comment -%}
+  Separate products into Light, Roots, and Discovery
+{%- endcomment -%}
+
+{%- assign light_products = "" | split: "" -%}
+{%- assign root_products = "" | split: "" -%}
+{%- assign discovery_product = nil -%}
+{%- assign other_products = "" | split: "" -%}
+
+{%- for product in collection.products -%}
+  {%- if product.tags contains "Discovery Set" -%}
+    {%- assign discovery_product = product -%}
+  {%- elsif product.tags contains "Les Branches" -%}
+    {%- assign light_products = light_products | concat: product | default: light_products -%}
+  {%- elsif product.tags contains "Les Racines" -%}
+    {%- assign root_products = root_products | concat: product | default: root_products -%}
+  {%- else -%}
+    {%- assign other_products = other_products | concat: product | default: other_products -%}
+  {%- endif -%}
+{%- endfor -%}
 
 <div class="mdl-coll">
   <!-- HERO -->
@@ -180,93 +316,181 @@ html, body { overflow: auto !important; height: auto !important; position: stati
     {%- endif -%}
   </header>
 
-  <!-- PRODUCT GRID -->
-  <div class="mdl-coll__grid">
-    {%- for product in collection.products -%}
+  {%- if collection.handle == 'larbre-de-vie' -%}
 
-      {%- comment -%} Insert editorial banner after the 4th product {%- endcomment -%}
-      {%- if forloop.index == 5 -%}
-        <div class="mdl-coll__banner">
-          <div class="mdl-coll__banner-img">
-            {%- if section.settings.banner_image != blank -%}
-              <img src="{{ section.settings.banner_image | image_url: width: 1400 }}" alt="{{ collection.title }}" loading="lazy">
-            {%- else -%}
-              <div style="width:100%;height:100%;background:linear-gradient(135deg,#1A150E,#0A0807);"></div>
-            {%- endif -%}
-          </div>
-          <div class="mdl-coll__banner-text">
-            <p class="mdl-coll__banner-eyebrow">The Collection</p>
-            <h2 class="mdl-coll__banner-title">
-              {%- if collection.handle == 'larbre-de-vie' -%}
-                Eight signatures. Four Roots. Four Branches. One tree.
-              {%- elsif collection.handle == 'les-essentials' -%}
-                Four everyday fragrances. One essential ritual.
+    <!-- ============ THE LIGHT — 4 bottles ============ -->
+    <div class="mdl-coll__section-head">
+      <span class="mdl-coll__section-label">Les Branches</span>
+      <span class="mdl-coll__section-sub">The Light · Floral</span>
+    </div>
+    <div class="mdl-coll__grid">
+      {%- for product in collection.products -%}
+        {%- if product.tags contains "Les Branches" -%}
+          <a href="{{ product.url }}" class="mdl-coll__card">
+            <div class="mdl-coll__card-img">
+              {%- if product.featured_image -%}
+                <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title }}" loading="lazy">
               {%- else -%}
-                {{ collection.title }}
+                <div class="mdl-coll__card-placeholder">
+                  <em>Les Branches</em>
+                  <strong>{{ product.title }}</strong>
+                </div>
               {%- endif -%}
-            </h2>
-            <p class="mdl-coll__banner-body">
-              {%- if collection.handle == 'larbre-de-vie' -%}
-                L'Arbre de Vie is the architecture of the Maison — oud-rooted signatures that form the Roots, and lighter florals that reach for the sun as the Branches. Each one composed to be worn, remembered, and returned to.
-              {%- elsif collection.handle == 'les-essentials' -%}
-                Les Essentials are the everyday signatures — lighter, versatile, ready to wear from morning to midnight.
-              {%- else -%}
-                {{ collection.description | strip_html }}
-              {%- endif -%}
-            </p>
-            {%- assign disc = all_products['discovery-set-larbre-de-vie'] -%}
-            {%- if disc != blank and disc.id and collection.handle == 'larbre-de-vie' -%}
-              <a href="{{ disc.url }}" class="mdl-coll__banner-cta">Discover the Discovery Set →</a>
-            {%- endif -%}
-          </div>
-        </div>
-      {%- endif -%}
-
-      <a href="{{ product.url }}" class="mdl-coll__card">
-        <div class="mdl-coll__card-img">
-          {%- if product.featured_image -%}
-            <img src="{{ product.featured_image | image_url: width: 1000 }}" alt="{{ product.title }} by Musk de Lumière" loading="lazy">
-          {%- else -%}
-            <div class="mdl-coll__card-placeholder">
-              <em>{{ collection.title }}</em>
-              <strong>{{ product.title }}</strong>
             </div>
+            <div class="mdl-coll__card-info">
+              <p class="mdl-coll__card-tag">Les Branches</p>
+              <h2 class="mdl-coll__card-name">{{ product.title }}</h2>
+              {%- if product.metafields.custom.notes_summary != blank -%}
+                <p class="mdl-coll__card-notes">{{ product.metafields.custom.notes_summary }}</p>
+              {%- endif -%}
+              <p class="mdl-coll__card-price">{{ product.price | money }}</p>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- ============ DISCOVERY SET INTERSTITIAL ============ -->
+    {%- assign ds = all_products['discovery-set-larbre-de-vie'] -%}
+    <div class="mdl-coll__discovery" id="mdl-discovery-scroll">
+      <div class="mdl-coll__discovery-img" id="mdl-discovery-img">
+        {%- if ds != blank and ds.featured_image -%}
+          <img src="{{ ds.featured_image | image_url: width: 2400 }}" alt="L'Arbre de Vie Discovery Set">
+        {%- elsif section.settings.discovery_image != blank -%}
+          <img src="{{ section.settings.discovery_image | image_url: width: 2400 }}" alt="Discovery Set">
+        {%- else -%}
+          <div class="mdl-coll__discovery-img-placeholder"><span>L'Arbre de Vie</span></div>
+        {%- endif -%}
+      </div>
+      <div class="mdl-coll__discovery-overlay"></div>
+
+      <div class="mdl-coll__discovery-text">
+        <p class="mdl-coll__discovery-chapter">Le Coffret</p>
+        <h2 class="mdl-coll__discovery-title">The <em>Discovery</em>.</h2>
+        <p class="mdl-coll__discovery-lead">Eight signatures in miniature. The full architecture of the tree — from the smoke of the Roots to the light of the Branches — sized for discovery.</p>
+      </div>
+
+      <a href="{% if ds != blank and ds.id %}{{ ds.url }}{% else %}/collections/larbre-de-vie{% endif %}" class="mdl-coll__discovery-popup">
+        <div class="mdl-coll__popup-img">
+          {%- if ds != blank and ds.featured_image -%}
+            <img src="{{ ds.featured_image | image_url: width: 400 }}" alt="">
+          {%- else -%}
+            <div class="mdl-coll__popup-img-ph">Coffret</div>
           {%- endif -%}
         </div>
-        <div class="mdl-coll__card-info">
-          <p class="mdl-coll__card-tag">
-            {%- if product.tags contains "Les Racines" -%}Les Racines — The Roots
-            {%- elsif product.tags contains "Les Branches" -%}Les Branches — The Light
-            {%- elsif product.tags contains "Discovery Set" -%}Discovery Coffret
-            {%- elsif product.tags contains "Les Essentials" -%}Les Essentials
-            {%- else -%}{{ collection.title }}
-            {%- endif -%}
-          </p>
-          <h2 class="mdl-coll__card-name">{{ product.title }}</h2>
-          {%- if product.metafields.custom.notes_summary != blank -%}
-            <p class="mdl-coll__card-notes">{{ product.metafields.custom.notes_summary }}</p>
-          {%- endif -%}
-          <p class="mdl-coll__card-price">{{ product.price | money }}</p>
+        <div class="mdl-coll__popup-content">
+          <p class="mdl-coll__popup-tag">L'Arbre de Vie</p>
+          <h3 class="mdl-coll__popup-name">Discovery Set</h3>
+          <p class="mdl-coll__popup-sub">8 × 2.5 ml travel sprays</p>
+          <div class="mdl-coll__popup-bottom">
+            <span class="mdl-coll__popup-price">{% if ds != blank %}{{ ds.price | money }}{% else %}$60{% endif %}</span>
+            <span class="mdl-coll__popup-cta">Discover the Set <span></span></span>
+          </div>
         </div>
       </a>
-    {%- endfor -%}
-
-    <!-- Bottom CTA -->
-    <div class="mdl-coll__footer">
-      {%- if collection.handle == 'larbre-de-vie' -%}
-        <a href="/collections/les-essentials" class="mdl-coll__footer-cta">Explore Les Essentials →</a>
-      {%- elsif collection.handle == 'les-essentials' -%}
-        <a href="/collections/larbre-de-vie" class="mdl-coll__footer-cta">Explore L'Arbre de Vie →</a>
-      {%- endif -%}
     </div>
+
+    <!-- ============ THE ROOTS — 4 ouds ============ -->
+    <div class="mdl-coll__section-head">
+      <span class="mdl-coll__section-label">Les Racines</span>
+      <span class="mdl-coll__section-sub">The Roots · De Bois</span>
+    </div>
+    <div class="mdl-coll__grid">
+      {%- for product in collection.products -%}
+        {%- if product.tags contains "Les Racines" -%}
+          <a href="{{ product.url }}" class="mdl-coll__card">
+            <div class="mdl-coll__card-img">
+              {%- if product.featured_image -%}
+                <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title }}" loading="lazy">
+              {%- else -%}
+                <div class="mdl-coll__card-placeholder">
+                  <em>Les Racines</em>
+                  <strong>{{ product.title }}</strong>
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="mdl-coll__card-info">
+              <p class="mdl-coll__card-tag">Les Racines</p>
+              <h2 class="mdl-coll__card-name">{{ product.title }}</h2>
+              {%- if product.metafields.custom.notes_summary != blank -%}
+                <p class="mdl-coll__card-notes">{{ product.metafields.custom.notes_summary }}</p>
+              {%- endif -%}
+              <p class="mdl-coll__card-price">{{ product.price | money }}</p>
+            </div>
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  {%- else -%}
+
+    <!-- ============ GENERIC COLLECTION (Les Essentials, etc) ============ -->
+    <div class="mdl-coll__grid">
+      {%- for product in collection.products -%}
+        <a href="{{ product.url }}" class="mdl-coll__card">
+          <div class="mdl-coll__card-img">
+            {%- if product.featured_image -%}
+              <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title }}" loading="lazy">
+            {%- else -%}
+              <div class="mdl-coll__card-placeholder">
+                <em>{{ collection.title }}</em>
+                <strong>{{ product.title }}</strong>
+              </div>
+            {%- endif -%}
+          </div>
+          <div class="mdl-coll__card-info">
+            <p class="mdl-coll__card-tag">{{ collection.title }}</p>
+            <h2 class="mdl-coll__card-name">{{ product.title }}</h2>
+            {%- if product.metafields.custom.notes_summary != blank -%}
+              <p class="mdl-coll__card-notes">{{ product.metafields.custom.notes_summary }}</p>
+            {%- endif -%}
+            <p class="mdl-coll__card-price">{{ product.price | money }}</p>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+  {%- endif -%}
+
+  <!-- CROSS-SELL -->
+  <div class="mdl-coll__cross">
+    {%- if collection.handle == 'larbre-de-vie' -%}
+      <a href="/collections/les-essentials" class="mdl-coll__cross-link">Explore Les Essentials →</a>
+    {%- elsif collection.handle == 'les-essentials' -%}
+      <a href="/collections/larbre-de-vie" class="mdl-coll__cross-link">Explore L'Arbre de Vie →</a>
+    {%- endif -%}
   </div>
 </div>
+
+<!-- Scroll-zoom effect on Discovery Set image -->
+<script>
+(function(){
+  const section = document.getElementById('mdl-discovery-scroll');
+  const img = document.getElementById('mdl-discovery-img');
+  if(!section || !img) return;
+
+  function onScroll(){
+    const rect = section.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // Only animate when section is in viewport
+    if(rect.bottom < 0 || rect.top > vh) return;
+    // Progress: 0 when section enters bottom, 1 when it exits top
+    const progress = 1 - (rect.bottom / (vh + rect.height));
+    // Scale from 1.0 to 1.15 as user scrolls through
+    const scale = 1 + (progress * 0.15);
+    img.style.transform = 'scale(' + Math.min(scale, 1.15) + ')';
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
 
 {% schema %}
 {
   "name": "MDL Collection",
   "settings": [
-    { "type": "image_picker", "id": "banner_image", "label": "Editorial banner image (shown after 4th product)" }
+    { "type": "image_picker", "id": "discovery_image", "label": "Discovery Set background image (fallback)" }
   ]
 }
 {% endschema %}
